@@ -1,4 +1,4 @@
-import '@/assets/tailwimd.css'
+import '@/assets/style/tailwimd.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
