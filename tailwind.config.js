@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-// eslint-disable-next-line no-undef
-// const colors = require('tailwindcss/colors')
+
 // eslint-disable-next-line no-undef
 module.exports = {
   content: ['./public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
@@ -24,6 +23,16 @@ module.exports = {
         8: '8px'
       },
       boxShadow: {
+        'inner-custom1': 'inset 0 0 0 1px rgba(215, 231, 203, 1)',
+        'inner-custom2': 'inset 0 0 0 3px rgba(221, 193, 148, 1)',
+        'inner-custom3': 'inset 0 0 0 1px rgba(200, 103, 6, 1)',
+        'inner-custom4': 'inset 0 0 0 3px rgba(127, 66, 15, 1)',
+        'inner-custom5': 'inset 0 0 0 1px rgba(251, 248, 241, 1)',
+        'inner-custom6': 'inset 0 0 0 1px rgba(235, 219, 189, 1)',
+        'inner-custom7': 'inset 0 0 0 1px rgba(229, 231, 235, 1)',
+        'inner-custom8': 'inset 0 0 0 3px rgba(158, 80, 14, 1)',
+        'inner-custom9': 'inset 0 0 0 2px rgba(200, 103, 6, 1)',
+        'inner-custom10': 'inset 0 0 0 1px rgba(220, 220, 220, 1)',
         sm: '0 1px 2px 0px rgba(0, 0, 0, 0.08)',
         DEFAULT: '0 1px 3px 0px rgba(0, 0, 0, 0.1),0 1px 2px -1px rgba(0, 0, 0, 0.1)',
         md: '0 4px 6px -1px rgba(0, 0, 0, 0.1),0 2px 4px -2px rgba(0, 0, 0, 0.05)',
@@ -184,7 +193,7 @@ module.exports = {
             900: '#7F211D',
             950: '#450C0A'
           },
-          gray: {
+          netural: {
             50: '#F6F6F6',
             100: '#EFEFEF',
             200: '#DCDCDC',
