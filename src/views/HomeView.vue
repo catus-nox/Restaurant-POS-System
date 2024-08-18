@@ -1,59 +1,23 @@
 <script setup lang="ts">
-// import TheWelcome from '../components/TheWelcome.vue'
-import testbtn from '@/components/ui/UiButton.vue'
-import testIcon from '@/components/icons/IconCaretLeft.vue'
+import UiButton from '@/components/ui/UiButton.vue'
 </script>
 
 <template>
-  <main>
-    <testbtn
-      :btn-style="'style1'"
-      :left-icon="testIcon"
-      :btn-width="'w-fit'"
-      :btn-padding="'px-5 py-2'"
-      :icon-size="'w-6 h-6'"
-      :is-only-icon="false"
-      :font-size="'text'"
-      :font-padding="'px-2.5'"
-    >
-      555
-    </testbtn>
-    <testbtn
-      :btn-style="'style2'"
-      :left-icon="testIcon"
-      :btn-width="'w-fit'"
-      :btn-padding="'px-5 py-2'"
-      :icon-size="'w-6 h-6'"
-      :is-only-icon="false"
-      :font-size="'text'"
-      :font-padding="'px-2.5'"
-    >
-      555
-    </testbtn>
-    <testbtn
-      :btn-style="'style3'"
-      :left-icon="testIcon"
-      :btn-width="'w-fit'"
-      :btn-padding="'px-5 py-2'"
-      :icon-size="'w-6 h-6'"
-      :is-only-icon="false"
-      :font-size="'text'"
-      :font-padding="'px-2.5'"
-    >
-      555
-    </testbtn>
-
-    <testbtn
-      :btn-style="'style4'"
-      :left-icon="testIcon"
-      :btn-width="'w-fit'"
-      :btn-padding="'px-5 py-2'"
-      :icon-size="'w-6 h-6'"
-      :is-only-icon="false"
-      :font-size="'text'"
-      :font-padding="'px-2.5'"
-    >
-      555
-    </testbtn>
-  </main>
+  <div
+    class="bg-img1002946 flex min-h-screen w-full items-end justify-center bg-cover bg-center px-3"
+  >
+    <div class="mb-[12vh]">
+      <UiButton
+        :btn-style="'style1'"
+        :btn-width="'min-w-60'"
+        :btn-padding="'px-5 py-2'"
+        :is-only-icon="false"
+        :font-size="'text'"
+        :font-padding="'px-2.5'"
+      >
+        <RouterLink to="/cart">查看菜單</RouterLink>
+      </UiButton>
+    </div>
+  </div>
 </template>
+<style scoped></style>
