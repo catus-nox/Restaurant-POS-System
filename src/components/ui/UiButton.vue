@@ -9,6 +9,7 @@ const props = defineProps({
   fontSize: String,
   fontPadding: String,
   iconSize: String,
+  iconStyle: String,
   btnWidth: String,
   btnPadding: String
 })
@@ -20,7 +21,11 @@ const props = defineProps({
       class="bg-tickets-primary-700 font-Noto-Sans-TC hover:bg-tickets-primary-600 focus:bg-tickets-primary-500 disabled:bg-color-neutral-300 hover:shadow-inner-custom1 focus:shadow-inner-custom2 flex items-center justify-center rounded-full disabled:hover:shadow-none"
       :class="[props.btnWidth, props.btnPadding]"
     >
-      <component class="stroke-white" :class="props.iconSize" :is="props.leftIcon" />
+      <component
+        class="stroke-white"
+        :class="[props.iconSize, props.iconStyle]"
+        :is="props.leftIcon"
+      />
       <span
         class="px-5 font-normal text-white"
         :class="[props.fontSize, props.fontPadding]"
@@ -28,7 +33,11 @@ const props = defineProps({
       >
         <slot></slot>
       </span>
-      <component class="stroke-white" :class="props.iconSize" :is="props.rightIcon" />
+      <component
+        class="stroke-white"
+        :class="[props.iconSize, props.iconStyle]"
+        :is="props.rightIcon"
+      />
     </button>
   </template>
 
@@ -40,7 +49,7 @@ const props = defineProps({
     >
       <component
         class="stroke-tickets-primary-700 group-focus:stroke-tickets-primary-900 group-disabled:stroke-white group-[.press2]:stroke-white"
-        :class="props.iconSize"
+        :class="[props.iconSize, props.iconStyle]"
         :is="props.leftIcon"
       />
       <span
@@ -52,7 +61,7 @@ const props = defineProps({
       </span>
       <component
         class="stroke-tickets-primary-700 group-focus:stroke-tickets-primary-900 group-disabled:stroke-white group-[.press2]:stroke-white"
-        :class="props.iconSize"
+        :class="[props.iconSize, props.iconStyle]"
         :is="props.rightIcon"
       />
     </button>
@@ -63,7 +72,11 @@ const props = defineProps({
       class="bg-tickets-netural-950 shadow-inner-custom5 font-Noto-Sans-TC hover:bg-tickets-primary-700 focus:bg-tickets-primary-600 hover:shadow-inner-custom6 focus:shadow-inner-custom2 flex items-center justify-center rounded-full"
       :class="[props.btnWidth, props.btnPadding]"
     >
-      <component class="stroke-white" :class="props.iconSize" :is="props.leftIcon" />
+      <component
+        class="stroke-white"
+        :class="[props.iconSize, props.iconStyle]"
+        :is="props.leftIcon"
+      />
       <span
         class="px-5 font-normal text-white"
         :class="[props.fontSize, props.fontPadding]"
@@ -71,7 +84,11 @@ const props = defineProps({
       >
         <slot></slot>
       </span>
-      <component class="stroke-white" :class="props.iconSize" :is="props.rightIcon" />
+      <component
+        class="stroke-white"
+        :class="[props.iconSize, props.iconStyle]"
+        :is="props.rightIcon"
+      />
     </button>
   </template>
 
@@ -83,7 +100,7 @@ const props = defineProps({
     >
       <component
         class="stroke-tickets-netural-950 group-hover:stroke-tickets-primary-700 group-focus:stroke-tickets-primary-800 group-[.press4]:stroke-tickets-primary-700 group-disabled:stroke-tickets-netural-400"
-        :class="props.iconSize"
+        :class="[props.iconSize, props.iconStyle]"
         :is="props.leftIcon"
       />
       <span
@@ -95,7 +112,7 @@ const props = defineProps({
       </span>
       <component
         class="stroke-tickets-netural-950 group-hover:stroke-tickets-primary-700 group-focus:stroke-tickets-primary-800 group-[.press4]:stroke-tickets-primary-700 group-disabled:stroke-tickets-netural-400"
-        :class="props.iconSize"
+        :class="[props.iconSize, props.iconStyle]"
         :is="props.rightIcon"
       />
     </button>
