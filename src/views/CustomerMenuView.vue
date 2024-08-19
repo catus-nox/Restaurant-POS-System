@@ -28,7 +28,9 @@ import IconSearch from '@/components/icons/IconSearch.vue'
     <h2 class="text-h5 font-bold text-black">義式咖啡</h2>
 
     <div v-for="index in 10" :key="index">
-      <UiProductItem />
+      <RouterLink to="/productOrder">
+        <UiProductItem />
+      </RouterLink>
     </div>
   </div>
 </template>

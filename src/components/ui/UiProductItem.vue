@@ -2,16 +2,6 @@
 import IconMoney from '@/components/icons/IconMoney.vue'
 import IconPlus from '@/components/icons/IconPlus.vue'
 import IconTicket from '@/components/icons/IconTicket.vue'
-
-const pages = [
-  { text: '義式咖啡', press: 'press-menu-navbar-btn' },
-  { text: '茶飲', press: '' },
-  { text: '冰沙系列', press: '' },
-  { text: '蛋糕', press: '' },
-  { text: '其他點心', press: '' },
-  { text: 'test test', press: '' },
-  { text: 'test test', press: '' }
-]
 </script>
 
 <template>
