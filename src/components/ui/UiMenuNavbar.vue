@@ -12,7 +12,7 @@ const pages = [
 </script>
 
 <template>
-  <div class="top-18 fixed left-0 z-50 h-full w-[305px] bg-white">
+  <div class="top-18 fixed left-auto z-50 h-full w-[305px] bg-white">
     <ul>
       <template v-for="(page, index) in pages" :key="index">
         <li class="border-tickets-netural-300 border-b text-xl">
