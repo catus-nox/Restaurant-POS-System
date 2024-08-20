@@ -3,9 +3,7 @@ import UiButton from '@/components/ui/UiButton.vue'
 </script>
 
 <template>
-  <div
-    class="bg-img1002946 flex min-h-screen w-full items-end justify-center bg-cover bg-center px-3"
-  >
+  <div class="bg-ad1 flex min-h-screen w-full items-end justify-center bg-cover bg-center px-3">
     <div class="mb-[12vh]">
       <RouterLink to="/menu">
         <UiButton
