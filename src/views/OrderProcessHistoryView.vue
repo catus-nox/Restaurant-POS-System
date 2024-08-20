@@ -1,17 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import UiCartProcess from '@/components/ui/UiCartProcess.vue'
-import UiCounter from '@/components/ui/UiCounter.vue'
 import UiButton from '@/components/ui/UiButton.vue'
-
-const nowClick = ref<number>(0)
-function toggleMenu(index: number) {
-  console.log(index)
-
-  nowClick.value = index
-}
-
-const customerStatus = [{ name: '預約自取' }, { name: '現場外帶' }, { name: '內用' }]
 </script>
 
 <template>
@@ -66,7 +54,7 @@ const customerStatus = [{ name: '預約自取' }, { name: '現場外帶' }, { na
 
     <div class="flex items-center justify-center gap-3">
       <div class="w-full">
-        <RouterLink to="/">
+        <RouterLink to="/orderHistory">
           <UiButton
             :btn-style="'style1'"
             :btn-width="'w-full '"
