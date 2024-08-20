@@ -3,7 +3,8 @@ const props = defineProps({
   status: {
     type: String,
     default: '-translate-x-1/4',
-    validator: (value: string) => ['-translate-x-1/4', '-translate-x-0'].includes(value)
+    validator: (value: string) =>
+      ['-translate-x-1/4', '-translate-x-[10%]', '-translate-x-0'].includes(value)
   },
   done: {
     type: Number,
@@ -28,7 +29,7 @@ const status = ['訂單資訊', '付款資訊', '確認送出']
       <template v-for="(sta, index) in status" :key="index">
         <div
           class="done group left-0 flex w-fit flex-col items-center gap-2"
-          v-if="index === props.done"
+          v-if="index <= props.done"
         >
           <div
             class="flex h-4 w-4 items-center justify-center rounded-full border border-tickets-netural-400 bg-white text-xs text-tickets-netural-400 group-[.done]:border-tickets-primary-700 group-[.done]:bg-tickets-primary-700 group-[.done]:text-white"

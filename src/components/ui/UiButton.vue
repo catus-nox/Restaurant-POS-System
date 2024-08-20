@@ -78,7 +78,7 @@ const props = defineProps({
 
   <template v-if="props.btnStyle === 'style3'">
     <button
-      class="flex items-center justify-center rounded-full bg-tickets-netural-950 font-Noto-Sans-TC shadow-inner-custom5 hover:bg-tickets-primary-700 hover:shadow-inner-custom6 focus:bg-tickets-primary-600 focus:shadow-inner-custom2"
+      class="flex items-center justify-center rounded-full bg-tickets-netural-950 font-Noto-Sans-TC hover:bg-tickets-primary-700 hover:shadow-inner-custom6 focus:bg-tickets-primary-600 focus:shadow-inner-custom2"
       :class="[props.btnWidth, props.btnPadding]"
     >
       <component

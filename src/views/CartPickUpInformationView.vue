@@ -248,22 +248,26 @@ const customerStatus = [{ name: '預約自取' }, { name: '現場外帶' }, { na
         繼續點餐
       </UiButton>
     </RouterLink>
-    <UiButton
-      :btn-style="'style1'"
-      :btn-width="'w-full '"
-      :btn-padding="'px-6 py-2'"
-      :icon-size="''"
-      :icon-style="''"
-      :is-only-icon="false"
-      :font-size="'text justify-between flex w-full items-center'"
-      :font-padding="'px-0'"
-    >
-      <span
-        class="bet inline-flex h-4 w-4 flex-col items-center justify-center rounded border border-white text-sm"
-        ><span>1</span></span
-      >
-      <span>前往結帳</span> <span>$100</span>
-    </UiButton>
+    <div class="w-full">
+      <RouterLink to="/cartPayInformation">
+        <UiButton
+          :btn-style="'style1'"
+          :btn-width="'w-full '"
+          :btn-padding="'px-6 py-2'"
+          :icon-size="''"
+          :icon-style="''"
+          :is-only-icon="false"
+          :font-size="'text justify-between flex w-full items-center'"
+          :font-padding="'px-0'"
+        >
+          <span
+            class="bet inline-flex h-4 w-4 flex-col items-center justify-center rounded border border-white text-sm"
+            ><span>1</span></span
+          >
+          <span>前往結帳</span> <span>$100</span>
+        </UiButton>
+      </RouterLink>
+    </div>
   </div>
 </template>
 <style scoped></style>
