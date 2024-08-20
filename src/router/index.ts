@@ -5,6 +5,7 @@ import ProductOrderView from '@/views/ProductOrderView.vue'
 import CartPickUpInformationView from '@/views/CartPickUpInformationView.vue'
 import CartPayInformationView from '@/views/CartPayInformationView.vue'
 import CartConfirmInformationView from '@/views/CartConfirmInformationView.vue'
+import OrderProcessHistoryView from '@/views/OrderProcessHistoryView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,8 +26,8 @@ const router = createRouter({
       component: ProductOrderView
     },
     {
-      path: '/cartInformation',
-      name: 'cartInformation',
+      path: '/cartPickUpInformation',
+      name: 'cartPickUpInformation',
       component: CartPickUpInformationView
     },
     {
@@ -38,6 +39,16 @@ const router = createRouter({
       path: '/cartConfirmInformation',
       name: 'cartConfirmInformation',
       component: CartConfirmInformationView
+    },
+    {
+      path: '/cartConfirmInformation',
+      name: 'cartConfirmInformation',
+      component: CartConfirmInformationView
+    },
+    {
+      path: '/orderProcessHistory',
+      name: 'orderProcessHistory',
+      component: OrderProcessHistoryView
     }
     // {
     //   path: '/about',
