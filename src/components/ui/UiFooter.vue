@@ -7,7 +7,7 @@ const route = useRoute()
 watch(
   () => route.path,
   (newPath, oldPath) => {
-    console.log(`路由從 ${oldPath} 變化到 ${newPath}`)
+    console.log(`路由從 ${oldPath} 變化到 ${newPath} `)
   }
 )
 </script>

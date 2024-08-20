@@ -32,7 +32,7 @@ function toggleMenu() {
 
 <template>
   <template v-if="['menu', 'productOrder'].includes(route.name as string)">
-    <div class="bg-tickets-primary-700 flex h-fit w-full justify-between p-3">
+    <div class="flex h-fit w-full justify-between bg-tickets-primary-700 p-3">
       <template v-if="route.name === 'menu'">
         <div @click="toggleMenu">
           <UiButton
@@ -57,15 +57,16 @@ function toggleMenu() {
           </RouterLink>
         </div>
       </template>
-
-      <UiButton
-        :btn-style="'style4'"
-        :left-icon="IconShoppingCartSimple"
-        :btn-width="'w-9 h-9'"
-        :icon-size="'w-4 h-4'"
-        :icon-style="'fill-tickets-netural-950 stroke-tickets-netural-950 stroke-2  '"
-        :is-only-icon="true"
-      />
+      <RouterLink to="/cartInformation">
+        <UiButton
+          :btn-style="'style4'"
+          :left-icon="IconShoppingCartSimple"
+          :btn-width="'w-9 h-9'"
+          :icon-size="'w-4 h-4'"
+          :icon-style="'fill-tickets-netural-950 stroke-tickets-netural-950 stroke-2'"
+          :is-only-icon="true"
+        />
+      </RouterLink>
     </div>
     <template v-if="route.name === 'menu'">
       <UiMenuNavbar v-show="menuClickComputed" />

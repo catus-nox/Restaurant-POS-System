@@ -44,7 +44,7 @@ const textareaText = ref('')
         </div>
       </div>
       <div
-        class="bg-tickets-primary-200 flex w-fit items-center justify-center gap-1 rounded-full px-2.5 py-0.5"
+        class="flex w-fit items-center justify-center gap-1 rounded-full bg-tickets-primary-200 px-2.5 py-0.5"
       >
         <IconTicket class="h-3 w-3 stroke-[#314225]" />
         <span class="text-xs text-[#314225]">特價商品不集點</span>
@@ -58,7 +58,7 @@ const textareaText = ref('')
       <div class="flex flex-col gap-3">
         <div class="flex items-center justify-between">
           <div class="text-h6 text-black">{{ pickedData.name }}</div>
-          <span class="bg-tickets-primary-200 rounded p-1 text-xs">必填</span>
+          <span class="rounded bg-tickets-primary-200 p-1 text-xs">必填</span>
         </div>
 
         <div class="flex flex-col gap-2">
@@ -82,7 +82,7 @@ const textareaText = ref('')
       <div class="flex flex-col gap-3">
         <div class="flex items-center justify-between">
           <div class="text-h6 text-black">{{ checkedData.name }}</div>
-          <span class="bg-tickets-primary-200 rounded p-1 text-xs">選填</span>
+          <span class="rounded bg-tickets-primary-200 p-1 text-xs">選填</span>
         </div>
 
         <div class="flex flex-col gap-2">
@@ -105,7 +105,7 @@ const textareaText = ref('')
               <span>{{ option.item }}</span>
               <span class="flex items-center gap-1">
                 <IconPlus class="tickets-netural-600 h-3 w-3" />
-                <span class="text-tickets-netural-600 text-xs"> {{ option.price }}</span>
+                <span class="text-xs text-tickets-netural-600"> {{ option.price }}</span>
               </span>
             </label>
           </div>
@@ -115,7 +115,7 @@ const textareaText = ref('')
       <div class="flex flex-col gap-3">
         <div class="flex items-center justify-between">
           <div class="text-h6 text-black">餐點備註</div>
-          <span class="bg-tickets-primary-200 rounded p-1 text-xs">選填</span>
+          <span class="rounded bg-tickets-primary-200 p-1 text-xs">選填</span>
         </div>
 
         <div class="flex flex-col gap-2">
@@ -124,7 +124,7 @@ const textareaText = ref('')
             v-model="textareaText"
             placeholder="新增備註"
           ></textarea>
-          <span class="text-tickets-netural-600 self-end">0/100</span>
+          <span class="self-end text-tickets-netural-600">0/100</span>
         </div>
       </div>
 
@@ -135,16 +135,19 @@ const textareaText = ref('')
         <RouterLink to="/menu" class="w-full">
           <UiButton
             :btn-style="'style1'"
-            :btn-width="'w-full'"
-            :btn-padding="'px-5 py-2'"
-            :left-icon="IconShoppingCartSimple"
-            :icon-size="'w-5 h-5'"
-            :icon-style="'fill-white stroke-white stroke-2'"
+            :btn-width="'w-full '"
+            :btn-padding="'px-6 py-2'"
+            :icon-size="''"
+            :icon-style="''"
             :is-only-icon="false"
-            :font-size="'text'"
-            :font-padding="'px-2.5'"
+            :font-size="'text justify-between flex w-full items-center'"
+            :font-padding="'px-0'"
           >
-            加入購物車
+            <span
+              class="bet inline-flex h-4 w-4 flex-col items-center justify-center rounded border border-white text-sm"
+              ><span>1</span></span
+            >
+            <span>加入購物車</span> <span>$100</span>
           </UiButton>
         </RouterLink>
       </div>
