@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import CustomerMenuView from '@/views/CustomerMenuView.vue'
 import ProductOrderView from '@/views/ProductOrderView.vue'
 import CartPickUpInformationView from '@/views/CartPickUpInformationView.vue'
+import CartPayInformationView from '@/views/CartPayInformationView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,11 @@ const router = createRouter({
       path: '/cartInformation',
       name: 'cartInformation',
       component: CartPickUpInformationView
+    },
+    {
+      path: '/cartPayInformation',
+      name: 'cartPayInformation',
+      component: CartPayInformationView
     }
     // {
     //   path: '/about',
