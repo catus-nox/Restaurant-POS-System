@@ -176,7 +176,7 @@ const payData = {
       </UiButton>
     </RouterLink>
     <div class="w-full">
-      <RouterLink to="/menu">
+      <RouterLink to="/cartConfirmInformation">
         <UiButton
           :btn-style="'style1'"
           :btn-width="'w-full '"
