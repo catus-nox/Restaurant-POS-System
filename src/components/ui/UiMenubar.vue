@@ -31,9 +31,9 @@ function toggleMenu() {
 </script>
 
 <template>
-  <template v-if="['menu', 'productOrder'].includes(route.name as string)">
+  <template v-if="['menu', 'productOrder', 'orderProcessHistory'].includes(route.name as string)">
     <div class="flex h-fit w-full justify-between bg-tickets-primary-700 p-3">
-      <template v-if="route.name === 'menu'">
+      <template v-if="['menu', 'orderProcessHistory'].includes(route.name as string)">
         <div @click="toggleMenu">
           <UiButton
             :btn-style="'style4'"
@@ -57,7 +57,7 @@ function toggleMenu() {
           </RouterLink>
         </div>
       </template>
-      <RouterLink to="/cartInformation">
+      <RouterLink to="/cartPickUpInformation">
         <UiButton
           :btn-style="'style4'"
           :left-icon="IconShoppingCartSimple"
@@ -68,7 +68,7 @@ function toggleMenu() {
         />
       </RouterLink>
     </div>
-    <template v-if="route.name === 'menu'">
+    <template v-if="['menu', 'orderProcessHistory'].includes(route.name as string)">
       <UiMenuNavbar v-show="menuClickComputed" />
     </template>
   </template>
