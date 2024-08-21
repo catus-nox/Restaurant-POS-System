@@ -185,7 +185,7 @@ const payData = {
           :icon-style="''"
           :is-only-icon="false"
           :font-size="'text justify-between flex w-full items-center'"
-          :font-padding="'px-0'"
+          :font-padding="'!px-0'"
         >
           <span
             class="bet inline-flex h-4 w-4 flex-col items-center justify-center rounded border border-white text-sm"
