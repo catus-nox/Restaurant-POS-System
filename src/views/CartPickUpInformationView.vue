@@ -36,7 +36,7 @@ const customerStatus = [{ name: '預約自取' }, { name: '現場外帶' }, { na
                 :icon-style="''"
                 :is-only-icon="false"
                 :font-size="'text-xs'"
-                :font-padding="'px-0'"
+                :font-padding="'!px-0'"
                 :btn-press="'press4'"
               >
                 {{ sta.name }}
@@ -53,7 +53,7 @@ const customerStatus = [{ name: '預約自取' }, { name: '現場外帶' }, { na
                 :icon-style="''"
                 :is-only-icon="false"
                 :font-size="'text-xs'"
-                :font-padding="'px-0'"
+                :font-padding="'!px-0'"
               >
                 {{ sta.name }}
               </UiButton>
@@ -258,7 +258,7 @@ const customerStatus = [{ name: '預約自取' }, { name: '現場外帶' }, { na
           :icon-style="''"
           :is-only-icon="false"
           :font-size="'text justify-between flex w-full items-center'"
-          :font-padding="'px-0'"
+          :font-padding="'!px-0'"
         >
           <span
             class="bet inline-flex h-4 w-4 flex-col items-center justify-center rounded border border-white text-sm"
