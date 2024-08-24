@@ -2,7 +2,11 @@
 
 // eslint-disable-next-line no-undef
 module.exports = {
-  content: ['./public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  content: [
+    './public/**/*.html',
+    './src/**/*.{vue,js,ts,jsx,tsx}',
+    './node_modules/flowbite/**/*.js'
+  ],
   theme: {
     extend: {
       backgroundImage: {
@@ -248,5 +252,8 @@ module.exports = {
       fontFamily: { 'Noto-Sans-TC': ['Noto Sans TC', 'system-ui'] }
     }
   },
-  plugins: []
+  plugins: [
+    // eslint-disable-next-line no-undef
+    require('flowbite/plugin')
+  ]
 }
