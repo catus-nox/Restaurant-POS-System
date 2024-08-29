@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import CustomerMenuView from '@/views/CustomerMenuView.vue'
-import ProductOrderView from '@/views/ProductOrderView.vue'
-import CartPickUpInformationView from '@/views/CartPickUpInformationView.vue'
-import CartPayInformationView from '@/views/CartPayInformationView.vue'
-import CartConfirmInformationView from '@/views/CartConfirmInformationView.vue'
-import OrderProcessHistoryView from '@/views/OrderProcessHistoryView.vue'
-import OrderHistoryView from '@/views/OrderHistoryView.vue'
+import HomeView from '@/components/views/HomeView.vue'
+import CustomerMenuView from '@/components/views/CustomerMenuView.vue'
+import ProductOrderView from '@/components/views/ProductOrderView.vue'
+import CartPickUpInformationView from '@/components/views/CartPickUpInformationView.vue'
+import CartPayInformationView from '@/components/views/CartPayInformationView.vue'
+import CartConfirmInformationView from '@/components/views/CartConfirmInformationView.vue'
+import OrderProcessHistoryView from '@/components/views/OrderProcessHistoryView.vue'
+import OrderHistoryView from '@/components/views/OrderHistoryView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
