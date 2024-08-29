@@ -15,7 +15,7 @@ const pages = [
     <ul class="scrollbar flex gap-4 overflow-x-auto">
       <template v-for="(page, index) in pages" :key="index">
         <li
-          class="text-tickets-netural-600 hover:border-tickets-primary-700 hover:text-tickets-primary-700 block min-w-16 cursor-pointer pb-2 text-center text-base hover:border-b"
+          class="block min-w-16 cursor-pointer pb-2 text-center text-base text-tickets-netural-600 hover:border-b hover:border-tickets-primary-700 hover:text-tickets-primary-700"
           :class="page.press"
         >
           {{ page.text }}
@@ -27,7 +27,7 @@ const pages = [
 
 <style scoped>
 .press-menu-navbar-btn {
-  @apply border-tickets-primary-700 text-tickets-primary-700 border-b;
+  @apply border-primary-700 text-primary-700 border-b;
 }
 .scrollbar::-webkit-scrollbar {
   @apply hidden;

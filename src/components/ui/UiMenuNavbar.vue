@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { watch } from 'vue'
-
+import 'flowbite'
 const pages = [
   { text: '會員中心(x)', pathName: '/' },
   { text: '點數兌換商城(x)', pathName: '/' },
@@ -12,15 +10,13 @@ const pages = [
 </script>
 
 <template>
-  <div class="top-18 fixed left-auto z-50 h-full w-[305px] bg-white">
-    <ul>
-      <template v-for="(page, index) in pages" :key="index">
-        <li class="border-b border-tickets-netural-300 text-xl">
-          <RouterLink :to="page.pathName" class="block p-5">{{ page.text }}</RouterLink>
-        </li>
-      </template>
-    </ul>
-  </div>
+  <ul>
+    <template v-for="(page, index) in pages" :key="index">
+      <li class="border-b border-netural-300 text-h5">
+        <RouterLink :to="page.pathName" class="block p-5">{{ page.text }}</RouterLink>
+      </li>
+    </template>
+  </ul>
 </template>
 
 <style scoped></style>
