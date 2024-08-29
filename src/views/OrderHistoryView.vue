@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import UiButton from '@/components/ui/UiButton.vue'
-
-import IconRepeat from '@/components/icons/IconRepeat.vue'
 </script>
 
 <template>
@@ -18,22 +16,36 @@ import IconRepeat from '@/components/icons/IconRepeat.vue'
             :btn-style="'style4'"
             :btn-width="'w-fit'"
             :btn-padding="'px-6 py-2'"
-            :left-icon="IconRepeat"
             :icon-size="''"
             :icon-style="''"
             :is-only-icon="false"
-            :font-size="'text-xs'"
+            :font-size="'text-xs font-medium'"
             :font-padding="'px-1'"
           >
+            <template #left-icon>
+              <svg
+                class="h-4 w-4 text-gray-800"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+                />
+              </svg>
+            </template>
             刷新進度
           </UiButton>
         </div>
 
-        <div class="flex flex-col gap-3 rounded-xl border border-tickets-netural-900 bg-white p-4">
-          <div class="flex h-6 justify-between gap-2">
-            <div class="text-base font-medium leading-normal text-black">取餐邊號 :</div>
-            <div class="text-base font-medium leading-normal text-black">01</div>
-          </div>
+        <div class="flex flex-col gap-3 rounded-xl border border-netural-900 bg-white p-4">
           <div class="flex h-6 justify-between gap-2">
             <div class="text-base font-medium leading-normal text-black">訂單進度 :</div>
             <div class="text-base font-medium leading-normal text-black">準備中</div>
@@ -45,6 +57,10 @@ import IconRepeat from '@/components/icons/IconRepeat.vue'
           <div class="flex h-6 justify-between gap-2">
             <div class="text-base font-medium leading-normal text-black">付款狀態 :</div>
             <div class="text-base font-medium leading-normal text-black">已結帳</div>
+          </div>
+          <div class="flex h-6 justify-between gap-2">
+            <div class="text-base font-medium leading-normal text-black">訂單邊號 :</div>
+            <div class="text-base font-medium leading-normal text-black">00001</div>
           </div>
           <div class="flex h-6 justify-between gap-2">
             <div class="text-base font-medium leading-normal text-black">結帳金額 :</div>
@@ -88,11 +104,11 @@ import IconRepeat from '@/components/icons/IconRepeat.vue'
         </div>
 
         <div
-          class="inline-flex min-h-56 flex-col items-center justify-center gap-3 rounded-xl border border-tickets-netural-400 bg-white p-4"
+          class="inline-flex min-h-56 flex-col items-center justify-center gap-3 rounded-xl border border-netural-400 bg-white p-4"
         >
           <div class="flex h-5 flex-col items-start justify-start gap-2">
             <div class="inline-flex items-center justify-between">
-              <div class="text-base font-bold text-tickets-netural-400">
+              <div class="text-base font-bold text-netural-400">
                 登入會員後，可顯示歷史訂單
               </div>
             </div>
@@ -101,7 +117,7 @@ import IconRepeat from '@/components/icons/IconRepeat.vue'
 
         <div v-for="index in 10" :key="index">
           <div
-            class="flex flex-col gap-3 rounded-xl border border-tickets-netural-900 bg-white p-4"
+            class="flex flex-col gap-3 rounded-xl border border-netural-900 bg-white p-4"
           >
             <div class="flex h-6 justify-between gap-2">
               <div class="text-base font-medium leading-normal text-black">訂單進度 :</div>

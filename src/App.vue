@@ -5,7 +5,7 @@ import UiFooter from '@/components/ui/UiFooter.vue'
 </script>
 
 <template>
-  <body class="m-auto min-h-screen w-full max-w-[414px] bg-tickets-primary-50 font-Noto-Sans-TC">
+  <body class="m-auto min-h-screen w-full max-w-[414px] bg-primary-50 font-Noto-Sans-TC">
     <UiMenubar />
     <main>
       <RouterView />
