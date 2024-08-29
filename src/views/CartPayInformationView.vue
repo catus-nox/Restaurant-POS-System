@@ -2,6 +2,9 @@
 import { ref } from 'vue'
 import UiCartProcess from '@/components/ui/UiCartProcess.vue'
 import UiButton from '@/components/ui/UiButton.vue'
+import UiBadge from '@/components/ui/UiBadge.vue'
+import UiInput from '@/components/ui/UiInput.vue'
+import UiInputOption from '@/components/ui/UiInputOption.vue'
 
 const nowClick = ref<number>(0)
 function toggleMenu(index: number) {
@@ -35,13 +38,11 @@ const payData = {
             <div @click="toggleMenu(index)">
               <UiButton
                 :btn-style="'style4'"
-                :btn-width="'w-fit'"
                 :btn-padding="'px-6 py-2'"
                 :icon-size="''"
                 :icon-style="''"
                 :is-only-icon="false"
-                :font-size="'text-xs'"
-                :font-padding="'px-0'"
+                :font-size="'text-xs font-medium'"
                 :btn-press="'press4'"
               >
                 {{ sta.name }}
@@ -52,13 +53,11 @@ const payData = {
             <div @click="toggleMenu(index)">
               <UiButton
                 :btn-style="'style4'"
-                :btn-width="'w-fit'"
                 :btn-padding="'px-6 py-2'"
                 :icon-size="''"
                 :icon-style="''"
                 :is-only-icon="false"
-                :font-size="'text-xs'"
-                :font-padding="'px-0'"
+                :font-size="'text-xs font-medium'"
               >
                 {{ sta.name }}
               </UiButton>
@@ -72,39 +71,24 @@ const payData = {
         <div class="flex flex-col gap-2" v-for="(option, index) in payData.options" :key="index">
           <div class="flex items-center justify-between" v-if="index === 0">
             <div class="text text-black">發票資訊</div>
-            <div
-              class="flex items-center justify-center gap-1 rounded-full bg-tickets-primary-200 px-2.5 py-0.5"
-            >
-              <span class="tickets-netural-950 text-center text-xs font-medium">必填</span>
-            </div>
+            <UiBadge :style="'radioBadge'" />
           </div>
-          <div class="flex items-center gap-2">
-            <input
-              class="h-4 w-4 border-[10px] border-black bg-white accent-black"
-              type="radio"
-              :id="option"
-              :value="option"
-              v-model="pay"
-            />
-            <label class="cursor-pointer" :for="option">{{ option }}</label>
-          </div>
+
+          <UiInputOption :key="index" :id="option" :value="option" :type="'radio'">
+            {{ option }}
+          </UiInputOption>
+
           <div class="flex flex-col gap-2" v-if="index === 0">
-            <div>
-              <!-- <label for="day" class=""></label> -->
-              <div
-                class="flex items-center gap-2 rounded-full border border-tickets-netural-950 bg-white py-2 pl-4 pr-3"
-              >
-                <input
-                  id="day"
-                  name="email"
-                  type="data"
-                  placeholder="/ABC1234"
-                  aria-describedby="day-description"
-                  class="shrink grow basis-0 text-base font-medium text-tickets-netural-950 placeholder:text-gray-500 focus-visible:outline-none"
-                />
-              </div>
-              <!-- <p id="day-description" class="">選擇日期時間</p> -->
-            </div>
+            <UiInput
+              :is-label="false"
+              :label="'載具'"
+              :placeholder="'/ABC1234'"
+              :is-important="false"
+              :type="'text'"
+            >
+              <template #helper></template>
+              <template #validationMessage></template>
+            </UiInput>
             <div class="flex gap-2">
               <UiButton
                 :btn-style="'style3'"
@@ -113,8 +97,7 @@ const payData = {
                 :icon-size="''"
                 :icon-style="''"
                 :is-only-icon="false"
-                :font-size="'text-xs'"
-                :font-padding="'px-0'"
+                :font-size="'text-xs font-medium'"
               >
                 確認
               </UiButton>
@@ -125,8 +108,7 @@ const payData = {
                 :icon-size="''"
                 :icon-style="''"
                 :is-only-icon="false"
-                :font-size="'text-xs'"
-                :font-padding="'px-0'"
+                :font-size="'text-xs  font-medium'"
               >
                 取消
               </UiButton>
@@ -142,7 +124,7 @@ const payData = {
       </div>
 
       <div
-        class="flex items-center justify-between rounded-lg border border-tickets-netural-950 bg-white p-3"
+        class="border-tickets-netural-950 flex items-center justify-between rounded-lg border bg-white p-3"
       >
         <div class="flex items-center gap-4">
           <img
@@ -150,8 +132,8 @@ const payData = {
             src="../assets/img/1002930.jpg"
           />
           <div class="flex w-[118px] flex-col gap-1">
-            <div class="text-base font-medium text-black">經典美式咖啡</div>
-            <div class="text-base font-medium text-tickets-netural-300">少冰</div>
+            <div class="text-base font-bold text-black">經典美式咖啡</div>
+            <div class="text-base font-medium text-netural-300">少冰</div>
             <div class="text-base font-medium text-black">$ 120</div>
           </div>
         </div>
@@ -159,42 +141,45 @@ const payData = {
     </div>
   </div>
 
-  <div class="flex items-center justify-center gap-3 border-t border-tickets-netural-500 p-3">
-    <RouterLink to="/menu">
-      <UiButton
-        :btn-style="'style4'"
-        :btn-width="'w-fit'"
-        :btn-padding="'px-6 py-2'"
-        :icon-size="''"
-        :icon-style="''"
-        :is-only-icon="false"
-        :font-size="'text whitespace-nowrap !text-black'"
-        :font-padding="'px-0'"
-        :btn-press="'press4'"
-      >
-        繼續點餐
-      </UiButton>
-    </RouterLink>
-    <div class="w-full">
-      <RouterLink to="/cartConfirmInformation">
-        <UiButton
-          :btn-style="'style1'"
-          :btn-width="'w-full '"
-          :btn-padding="'px-6 py-2'"
-          :icon-size="''"
-          :icon-style="''"
-          :is-only-icon="false"
-          :font-size="'text justify-between flex w-full items-center'"
-          :font-padding="'!px-0'"
+  <div class="border-tickets-netural-500 flex items-center justify-center gap-3 border-t p-3">
+    <UiButton
+      :btn-style="'style4'"
+      :btn-width="'w-fit'"
+      :btn-padding="'px-6 py-2'"
+      :icon-size="''"
+      :icon-style="''"
+      :is-only-icon="false"
+      :font-size="'text whitespace-nowrap !text-black font-medium  '"
+      :font-padding="'px-0'"
+      :btn-press="'press4'"
+      :router-name="'menu'"
+    >
+      繼續點餐
+    </UiButton>
+    <UiButton
+      :btn-style="'style1'"
+      :btn-width="'w-full '"
+      :btn-padding="'px-6 py-2'"
+      :icon-size="''"
+      :icon-style="''"
+      :is-only-icon="false"
+      :font-size="'text justify-between flex w-full items-center'"
+      :font-padding="'!px-0'"
+      :router-name="'cartConfirmInformation'"
+    >
+      <template #left-icon>
+        <span
+          class="bet inline-flex h-4 w-4 flex-col items-center justify-center rounded border border-white text-sm"
+          ><span class="pb-0.5">1</span></span
         >
-          <span
-            class="bet inline-flex h-4 w-4 flex-col items-center justify-center rounded border border-white text-sm"
-            ><span>1</span></span
-          >
-          <span>送出訂單</span> <span>$100</span>
-        </UiButton>
-      </RouterLink>
-    </div>
+      </template>
+
+      <span>送出訂單</span>
+
+      <template #right-icon>
+        <span>$100</span>
+      </template>
+    </UiButton>
   </div>
 </template>
 <style scoped></style>

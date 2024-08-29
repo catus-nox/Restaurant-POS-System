@@ -2,10 +2,8 @@
 import { ref } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiCounter from '@/components/ui/UiCounter.vue'
-import IconMoney from '@/components/icons/IconMoney.vue'
-import IconPlus from '@/components/icons/IconPlus.vue'
-import IconTicket from '@/components/icons/IconTicket.vue'
-import IconShoppingCartSimple from '@/components/icons/IconShoppingCartSimple.vue'
+import UiInputOption from '@/components/ui/UiInputOption.vue'
+import UiBadge from '@/components/ui/UiBadge.vue'
 
 const picked = ref('One')
 const pickedData = {
@@ -36,120 +34,119 @@ const textareaText = ref('')
         <img src="../../src/assets/img/1002930.jpg" alt="" class="h-full w-full object-cover" />
       </div>
     </div>
-    <div class="mx-3 flex flex-col gap-3">
-      <div class="flex justify-between">
-        <h3 class="text-h6 font-bold text-black">經典美式咖啡</h3>
-        <div class="flex">
-          <IconMoney class="h-6 w-6" /> <span class="text font-bold"> 120</span>
-        </div>
-      </div>
-      <div
-        class="flex w-fit items-center justify-center gap-1 rounded-full bg-tickets-primary-200 px-2.5 py-0.5"
-      >
-        <IconTicket class="h-3 w-3 stroke-[#314225]" />
-        <span class="text-xs text-[#314225]">特價商品不集點</span>
-      </div>
-      <div class="text-xs text-[#767676]">
+    <div class="mx-3 flex flex-col gap-2">
+      <h3 class="text-h6 font-bold text-black">經典美式咖啡</h3>
+      <span class="text font-bold"> $120</span>
+      <UiBadge :style="'textBadge'" :is-icon="true">特價商品不集點</UiBadge>
+      <div class="text-xs text-neutral-500">
         無糖 | 嚴選義式配方豆，使用中烘焙的咖啡豆，口感溫潤豐厚。
       </div>
     </div>
-    <!-- ---- -->
+
     <div class="mx-3 flex flex-col gap-3">
       <div class="flex flex-col gap-3">
         <div class="flex items-center justify-between">
           <div class="text-h6 text-black">{{ pickedData.name }}</div>
-          <span class="rounded bg-tickets-primary-200 p-1 text-xs">必填</span>
+          <UiBadge :style="'radioBadge'" />
         </div>
 
         <div class="flex flex-col gap-2">
-          <div
-            class="flex items-center gap-2"
+          <UiInputOption
             v-for="(option, index) in pickedData.options"
             :key="index"
+            :id="option"
+            :value="option"
+            :type="'radio'"
           >
-            <input
-              class="h-4 w-4 border-[10px] border-black bg-white accent-black"
-              type="radio"
-              :id="option"
-              :value="option"
-              v-model="picked"
-            />
-            <label class="cursor-pointer" :for="option">{{ option }}</label>
-          </div>
+            {{ option }}
+          </UiInputOption>
         </div>
       </div>
 
       <div class="flex flex-col gap-3">
         <div class="flex items-center justify-between">
           <div class="text-h6 text-black">{{ checkedData.name }}</div>
-          <span class="rounded bg-tickets-primary-200 p-1 text-xs">選填</span>
+          <UiBadge :style="'checkboxBadge'" />
         </div>
 
         <div class="flex flex-col gap-2">
-          <div
-            class="flex items-center gap-2"
+          <UiInputOption
             v-for="(option, index) in checkedData.options"
             :key="index"
+            :id="option.item"
+            :value="option.item"
+            :type="'radio'"
+            :border-radius="'rounded'"
           >
-            <input
-              class="h-4 w-4 border-[10px] border-black bg-white accent-black"
-              type="checkbox"
-              :id="option.item"
-              :value="option.item"
-              v-model="checked"
-            />
-            <label
-              class="flex w-full cursor-pointer items-center justify-between"
-              :for="option.item"
-            >
-              <span>{{ option.item }}</span>
-              <span class="flex items-center gap-1">
-                <IconPlus class="tickets-netural-600 h-3 w-3" />
-                <span class="text-xs text-tickets-netural-600"> {{ option.price }}</span>
-              </span>
-            </label>
-          </div>
+            {{ option.item }}
+
+            <template #noteIcon>
+              <svg
+                class="h-2 w-2 text-neutral-600"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 12h14m-7 7V5"
+                />
+              </svg>
+            </template>
+            <template #note> {{ option.price }}</template>
+          </UiInputOption>
         </div>
       </div>
 
       <div class="flex flex-col gap-3">
         <div class="flex items-center justify-between">
           <div class="text-h6 text-black">餐點備註</div>
-          <span class="rounded bg-tickets-primary-200 p-1 text-xs">選填</span>
+          <UiBadge :style="'checkboxBadge'" />
         </div>
 
         <div class="flex flex-col gap-2">
           <textarea
             class="rounded-lg border border-black px-2 py-1"
             v-model="textareaText"
+            rows="3"
             placeholder="新增備註"
           ></textarea>
-          <span class="self-end text-tickets-netural-600">0/100</span>
+          <span class="self-end text-netural-600">0/100</span>
         </div>
       </div>
 
       <div class="flex justify-center">
-        <UiCounter :font-size="'text-lg'" :btn-size="'w-7 h-7'" :icon-size="'w-3 h-3'" />
+        <UiCounter :class="['gap-8']">1</UiCounter>
       </div>
       <div class="flex justify-center">
-        <RouterLink to="/menu" class="w-full">
-          <UiButton
-            :btn-style="'style1'"
-            :btn-width="'w-full '"
-            :btn-padding="'px-6 py-2'"
-            :icon-size="''"
-            :icon-style="''"
-            :is-only-icon="false"
-            :font-size="'text justify-between flex w-full items-center'"
-            :font-padding="'px-0'"
-          >
+        <UiButton
+          :btn-style="'style1'"
+          :btn-width="'w-full '"
+          :is-only-icon="false"
+          :font-size="'text justify-between flex w-full items-center'"
+          :font-padding="'px-0'"
+          :router-name="'menu'"
+          :icon-size="'w-auto'"
+        >
+          <template #left-icon>
             <span
               class="bet inline-flex h-4 w-4 flex-col items-center justify-center rounded border border-white text-sm"
-              ><span>1</span></span
+              ><span class="pb-0.5">1</span></span
             >
-            <span>加入購物車</span> <span>$100</span>
-          </UiButton>
-        </RouterLink>
+          </template>
+
+          <span>查看已選餐點</span>
+
+          <template #right-icon>
+            <span>$100</span>
+          </template>
+        </UiButton>
       </div>
       <div></div>
     </div>

@@ -1,27 +1,35 @@
 <script setup lang="ts">
+import UiInput from '@/components/ui/UiInput.vue'
 import UiShopInformation from '@/components/ui/UiShopInformation.vue'
 import UiCustomerMenuNavbar from '@/components/ui/UiCustomerMenuNavbar.vue'
 import UiProductItem from '@/components/ui/UiProductItem.vue'
-import IconSearch from '@/components/icons/IconSearch.vue'
+
+import { ref } from 'vue'
+const name = ref('')
 </script>
 
 <template>
   <div class="m-3 flex flex-col gap-3">
     <UiShopInformation />
 
-    <!-- input -->
-    <div class="border-tickets-netural-900 w-full rounded-full border bg-white px-3 py-2 pl-4">
-      <!-- <label for="Search">Name</label> -->
-      <div class="flex flex-row gap-2">
-        <IconSearch class="fill-tickets-netural-900 h-6 w-6" />
-        <input
-          type="text"
-          id="Search"
-          placeholder="Search"
-          class="text-gray-500 placeholder:text-gray-500 focus-visible:outline-none"
-        />
-      </div>
-    </div>
+    <UiInput v-model="name" :placeholder="'Search'" :is-icon="true">
+      <template #prefix>
+        <svg
+          class="h-6 w-6 text-neutral-900"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="2"
+            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+          />
+        </svg>
+      </template>
+    </UiInput>
 
     <UiCustomerMenuNavbar />
 
