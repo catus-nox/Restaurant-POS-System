@@ -5,7 +5,7 @@ import UiCounter from '@/components/ui/UiCounter.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
 
-const picked = ref('One')
+const picked = ref('')
 const pickedData = {
   name: '冰塊',
   options: ['少冰', '微冰', '去冰', '熱飲']
@@ -57,6 +57,7 @@ const textareaText = ref('')
             :id="option"
             :value="option"
             :type="'radio'"
+            v-model="picked"
           >
             {{ option }}
           </UiInputOption>
@@ -75,8 +76,8 @@ const textareaText = ref('')
             :key="index"
             :id="option.item"
             :value="option.item"
-            :type="'radio'"
             :border-radius="'rounded'"
+            v-model="checked"
           >
             {{ option.item }}
 

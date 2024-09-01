@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
   type: {
@@ -11,9 +11,9 @@ const props = defineProps({
   },
   borderRadius: {
     type: String,
-    default: '',
+    default: 'rounded-full',
     validator: (value: any): boolean => {
-      return ['', 'rounded', 'rounded-full'].includes(value)
+      return ['rounded', 'rounded-full'].includes(value)
     }
   },
   id: {
@@ -25,28 +25,32 @@ const props = defineProps({
     default: ''
   }
 })
+
+const model = defineModel()
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
-    <input
-      class="rou h-4 w-4 border-2 border-black bg-white checked:bg-black focus:ring-0"
-      :type="props.type"
-      :id="props.id"
-      :class="[props.borderRadius]"
-    />
-    <label class="flex w-full cursor-pointer items-center justify-between" :for="props.id">
+  <label class="flex w-full cursor-pointer justify-between" :for="props.id">
+    <div class="flex flex-row items-center gap-2">
+      <input
+        class="rou h-4 w-4 border-2 border-black bg-white checked:bg-black focus:ring-0"
+        :type="props.type"
+        :id="props.id"
+        :class="[props.borderRadius]"
+        :value="props.value"
+        v-model="model"
+      />
       <span>
         <slot name="default"></slot>
       </span>
-      <span class="flex items-center gap-1">
-        <slot name="noteIcon"></slot>
-        <span class="text-xs text-netural-600">
-          <slot name="note"> </slot>
-        </span>
+    </div>
+    <span class="flex items-center gap-1 place-self-end self-end justify-self-end">
+      <slot name="noteIcon"></slot>
+      <span class="text-xs text-netural-600">
+        <slot name="note"> </slot>
       </span>
-    </label>
-  </div>
+    </span>
+  </label>
 </template>
 
 <style scoped>
