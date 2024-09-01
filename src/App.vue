@@ -5,13 +5,11 @@ import UiFooter from '@/components/ui/UiFooter.vue'
 </script>
 
 <template>
-  <body class="m-auto min-h-screen w-full max-w-[414px] bg-primary-50 font-Noto-Sans-TC">
-    <UiMenubar />
-    <main>
-      <RouterView />
-    </main>
-    <UiFooter />
-  </body>
+  <UiMenubar />
+  <main class="min-h-[calc(100vh-2.5rem-16.75rem)]">
+    <RouterView />
+  </main>
+  <UiFooter />
 </template>
 
 <style scoped></style>
