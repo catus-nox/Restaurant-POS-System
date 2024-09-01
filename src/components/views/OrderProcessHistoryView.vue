@@ -4,7 +4,7 @@ import UiInput from '@/components/ui/UiInput.vue'
 </script>
 
 <template>
-  <div class="flex min-h-[60vh] flex-col gap-6 px-3 py-6">
+  <div class="flex flex-col gap-6 px-3 py-6">
     <div class="flex flex-col justify-end gap-3">
       <div class="flex items-center justify-between">
         <div class="text-xl font-semibold text-black">進度查詢</div>
