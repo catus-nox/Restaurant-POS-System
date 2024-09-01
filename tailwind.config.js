@@ -3,7 +3,7 @@
 // eslint-disable-next-line no-undef
 module.exports = {
   content: [
-    './public/**/*.html',
+    '*.html',
     './src/**/*.{vue,js,ts,jsx,tsx}',
     './node_modules/flowbite/**/*..{js,jsx,ts,tsx}',
     'node_modules/flowbite-vue/**/*.{js,jsx,ts,tsx}'
