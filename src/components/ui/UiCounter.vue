@@ -1,13 +1,7 @@
 <script setup lang="ts">
 import UiButton from '@/components/ui/UiButton.vue'
-import IconPlus from '@/components/icons/IconPlus.vue'
-import IconMinus from '@/components/icons/IconMinus.vue'
 
 const counterProps = defineProps({
-  btnGroupP: {
-    type: String,
-    default: 'gap-8'
-  },
   btnSize: {
     type: String,
     default: 'w-7 h-7'
@@ -24,30 +18,48 @@ const counterProps = defineProps({
 </script>
 
 <template>
-  <div class="flex w-fit" :class="[counterProps.btnGroupP]">
-    <UiButton
-      :btn-style="'style4'"
-      :btn-width="counterProps.btnSize"
-      :btn-padding="'p-2'"
-      :left-icon="IconMinus"
-      :icon-size="counterProps.iconSize"
-      :icon-style="'fill-tickets-netural-950 '"
-      :is-only-icon="true"
-      :font-size="''"
-      :font-padding="''"
-    />
-    <span class="text-tickets-netural-950" :class="[counterProps.fontSize]"> 1 </span>
-    <UiButton
-      :btn-style="'style4'"
-      :btn-width="counterProps.btnSize"
-      :btn-padding="'p-2'"
-      :left-icon="IconPlus"
-      :icon-size="counterProps.iconSize"
-      :icon-style="'fill-tickets-netural-950 '"
-      :is-only-icon="true"
-      :font-size="''"
-      :font-padding="''"
-    />
+  <div class="flex gap-4">
+    <UiButton :btn-style="'style4'" :is-only-icon="true" :btn-padding="'p-2'">
+      <template #only-icon>
+        <svg
+          class="h-3 w-3 text-neutral-950"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 12h14"
+          />
+        </svg> </template
+    ></UiButton>
+    <span class="text-tickets-netural-950 text"><slot></slot></span>
+    <UiButton :btn-style="'style4'" :is-only-icon="true" :btn-padding="'p-2'">
+      <template #only-icon>
+        <svg
+          class="h-3 w-3 text-neutral-950"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 12h14m-7 7V5"
+          />
+        </svg> </template
+    ></UiButton>
   </div>
 </template>
 
