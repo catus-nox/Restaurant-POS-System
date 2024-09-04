@@ -5,6 +5,7 @@ import UiCounter from '@/components/ui/UiCounter.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
 import UiInput from '@/components/ui/UiInput.vue'
+import imgUrl from '@/assets/img/1002928.jpg'
 
 const nowClick = ref<number>(0)
 function toggleMenu(index: number) {
@@ -134,7 +135,7 @@ const customerStatus = [{ name: '預約自取' }, { name: '現場外帶' }, { na
         <div class="flex items-center gap-4">
           <img
             class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
-            src="../../assets/img/1002930.jpg"
+            src="../../assets/img/1002928.jpg"
           />
           <div class="flex w-[118px] flex-col gap-1">
             <div class="text-base font-bold text-black">經典美式咖啡</div>
