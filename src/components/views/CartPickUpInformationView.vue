@@ -134,7 +134,7 @@ const customerStatus = [{ name: '預約自取' }, { name: '現場外帶' }, { na
         <div class="flex items-center gap-4">
           <img
             class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
-            src="../assets/img/1002930.jpg"
+            src="../../assets/img/1002930.jpg"
           />
           <div class="flex w-[118px] flex-col gap-1">
             <div class="text-base font-bold text-black">經典美式咖啡</div>
