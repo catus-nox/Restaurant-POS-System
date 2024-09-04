@@ -1,10 +1,10 @@
 import axios from 'axios'
 const baseURL = import.meta.env.VITE_APP_API_URL
-const apiName = import.meta.env.VITE_APP_API_NAME
+// const apiName = import.meta.env.VITE_APP_API_NAME
 
 const instance = axios.create({
   // baseURL: import.meta.env.DEV ? "/api" : `${baseURL}/v2/api/${apiName}`,
-  baseURL: `${baseURL}/v2/api/${apiName}`,
+  baseURL: `${baseURL}/api`,
   // baseURL,
   headers: { 'Content-Type': 'application/json' },
   // timeout: 50000,
@@ -30,7 +30,7 @@ instance.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 400:
-          console.log('something wrong')
+          console.log('something wrong 其他異常')
           break
         case 404:
           console.log('你要找的頁面不存在')
