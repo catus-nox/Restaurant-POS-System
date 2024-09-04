@@ -22,9 +22,10 @@ const router = createRouter({
       component: CustomerMenuView
     },
     {
-      path: '/productOrder',
+      path: '/productOrder/:id',
       name: 'productOrder',
-      component: ProductOrderView
+      component: ProductOrderView,
+      props: (route) => ({ id: Number(route.params.id) })
     },
     {
       path: '/cartPickUpInformation',

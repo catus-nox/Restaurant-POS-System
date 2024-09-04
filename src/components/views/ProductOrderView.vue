@@ -1,9 +1,30 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useCustomerStore } from '@/stores/productsStore'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiCounter from '@/components/ui/UiCounter.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
+
+interface CategoryProduct {
+  name: string
+  productImagePath: string
+  isPoint: boolean
+  description: string
+  price: number
+  customization: number[] // An array of numbers
+}
+const route = useRoute()
+const productId: number = Number(route.params.id)
+
+const customerStore = useCustomerStore()
+const product = computed<CategoryProduct>(() => customerStore.GetProductData)
+
+onMounted(async () => {
+  await customerStore.fetchCustomerGetProduct(productId)
+  console.log(product.value)
+})
 
 const picked = ref('')
 const pickedData = {
@@ -31,15 +52,16 @@ const textareaText = ref('')
   <div class="flex flex-col gap-6">
     <div>
       <div class="relative h-[200px] overflow-hidden">
-        <img src="../../src/assets/img/1002930.jpg" alt="" class="h-full w-full object-cover" />
+        <img src="../../assets/img/1002930.jpg" alt="" class="h-full w-full object-cover" />
+        <!-- <img :src="product.productImagePath" alt="" class="h-full w-full object-cover" /> -->
       </div>
     </div>
     <div class="mx-3 flex flex-col gap-2">
-      <h3 class="text-h6 font-bold text-black">經典美式咖啡</h3>
-      <span class="text font-bold"> $120</span>
-      <UiBadge :style="'textBadge'" :is-icon="true">特價商品不集點</UiBadge>
+      <h3 class="text-h6 font-bold text-black">{{ product.name }}</h3>
+      <span class="text font-bold"> ${{ product.price }}</span>
+      <UiBadge v-if="product.isPoint" :style="'textBadge'" :is-icon="true">特價商品不集點</UiBadge>
       <div class="text-xs text-neutral-500">
-        無糖 | 嚴選義式配方豆，使用中烘焙的咖啡豆，口感溫潤豐厚。
+        {{ product.description }}
       </div>
     </div>
 
@@ -142,10 +164,10 @@ const textareaText = ref('')
             >
           </template>
 
-          <span>查看已選餐點</span>
+          <span>加入購物車</span>
 
           <template #right-icon>
-            <span>$100</span>
+            <span>${{ product.price }}</span>
           </template>
         </UiButton>
       </div>
