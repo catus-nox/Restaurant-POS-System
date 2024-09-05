@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, nextTick, onUnmounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useCustomerStore } from '@/stores/productsStore'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiShopInformation from '@/components/ui/UiShopInformation.vue'
