@@ -96,6 +96,7 @@ onMounted(async () => {
 //-----
 
 const textareaText = ref('')
+const count = ref(1)
 </script>
 
 <template>
@@ -171,7 +172,7 @@ const textareaText = ref('')
                 v-for="(option, index) in pickedOptions[customizationItem]?.options"
                 :key="index"
                 :id="String(index)"
-                :value="index"
+                :value="option"
                 :type="'radio'"
                 v-model="pickedOptions[customizationItem].selected"
               >
@@ -200,7 +201,7 @@ const textareaText = ref('')
       </div>
 
       <div class="flex justify-center">
-        <UiCounter :class="['gap-8']">1</UiCounter>
+        <UiCounter :class="['gap-8']" v-model="count">1</UiCounter>
       </div>
 
       <div class="flex justify-center">
@@ -215,15 +216,15 @@ const textareaText = ref('')
         >
           <template #left-icon>
             <span
-              class="bet inline-flex h-4 w-4 flex-col items-center justify-center rounded border border-white text-sm"
-              ><span class="pb-0.5">1</span></span
+              class="bet inline-flex h-4 min-w-4 flex-col items-center justify-center rounded border border-white text-sm"
+              ><span class="p-0.5">{{ count }}</span></span
             >
           </template>
 
           <span>加入購物車</span>
 
           <template #right-icon>
-            <span>${{ totalPrice }}</span>
+            <span>${{ totalPrice * count }}</span>
           </template>
         </UiButton>
       </div>
