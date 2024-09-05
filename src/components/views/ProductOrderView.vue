@@ -169,9 +169,9 @@ const count = ref(1)
             </div>
             <div class="flex flex-col gap-2">
               <UiInputOption
-                v-for="(option, index) in pickedOptions[customizationItem]?.options"
-                :key="index"
-                :id="String(index)"
+                v-for="option in pickedOptions[customizationItem]?.options"
+                :key="option"
+                :id="option"
                 :value="option"
                 :type="'radio'"
                 v-model="pickedOptions[customizationItem].selected"
