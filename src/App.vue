@@ -83,7 +83,7 @@ function toggleMenu() {
   />
   <div
     ref="menuNavbar"
-    class="absolute left-0 top-14 z-40 h-[calc(100vh-3.5rem)] w-full max-w-[305px] -translate-x-full bg-netural-0 transition-all"
+    class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-netural-0 opacity-100 transition-all"
     aria-hidden="false"
   >
     <UiMenuNavbar />
@@ -95,4 +95,8 @@ function toggleMenu() {
 </template>
 <!-- pinia function -->
 
-<style scoped></style>
+<style scoped>
+[aria-hidden='true'] {
+  @apply left-[calc((100%-414px-305px)/2)] -translate-x-1/2 opacity-0;
+}
+</style>
