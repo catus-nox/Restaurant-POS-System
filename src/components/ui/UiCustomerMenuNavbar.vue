@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 
 interface MenuCategoryItem {
   categoryId?: any // Id
@@ -47,7 +47,7 @@ defineEmits(['changeCategoryId'])
 
 <style scoped>
 .menu-navbar-btn {
-  @apply block min-w-16 cursor-pointer pb-2 text-center text-base text-netural-600 hover:border-b-0 hover:border-primary-700 hover:text-primary-700;
+  @apply block min-w-[4.5rem] cursor-pointer pb-2 text-center text-base text-netural-600 hover:border-b-0 hover:border-primary-700 hover:text-primary-700;
 }
 .press-menu-navbar-btn {
   @apply border-b border-primary-700 text-primary-700;
