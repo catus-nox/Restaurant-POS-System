@@ -97,6 +97,7 @@ function toggleMenu() {
 
 <style scoped>
 [aria-hidden='true'] {
-  @apply left-[calc((100%-414px-305px)/2)] -translate-x-1/2 opacity-0 transition-all;
+  left: calc((100% - 414px - 305px) / 2);
+  @apply -translate-x-1/2 opacity-0 transition-all;
 }
 </style>
