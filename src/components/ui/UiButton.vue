@@ -91,8 +91,6 @@ const props = defineProps({
 
 const router = useRouter()
 function toRouterName(routeName: string) {
-  console.log(router)
-
   if (routeName) {
     router.push({ name: routeName })
   }
