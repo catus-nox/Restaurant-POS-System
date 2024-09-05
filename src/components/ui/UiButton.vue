@@ -1,112 +1,143 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { defineProps } from 'vue'
+import 'flowbite'
+
+interface ButtonStyle {
+  style: string
+  class: string
+}
+const btnStyleG: ButtonStyle[] = [
+  {
+    style: 'style1',
+    class: `
+    bg-primary-700 text-netural-0 
+    hover:bg-primary-600 hover:shadow-[0_0_0_1px] hover:shadow-secondary-200 
+    focus:bg-primary-500 focus:shadow-[0_0_0_3px] focus:shadow-secondary-300 
+    disabled:bg-neutral-300`
+  },
+  {
+    style: 'style2',
+    class: `
+    bg-primary-50 text-primary-700 shadow-[0_0_0_1px] shadow-primary-200 
+    hover:bg-primary-100  
+    focus:text-primary-900 focus:shadow-[0_0_0_3px] focus:shadow-primary-900 
+    disabled:bg-neutral-300 disabled:text-netural-0  disabled:shadow-none`
+  },
+  {
+    style: 'style3',
+    class: `
+    bg-netural-950 text-netural-0 
+    hover:bg-primary-700 hover:shadow-[0_0_0_1px] hover:shadow-secondary-200 
+    focus:bg-primary-600 focus:shadow-[0_0_0_3px] focus:shadow-secondary-300
+    `
+  },
+  {
+    style: 'style4',
+    class: `
+    bg-netural-0 text-netural-950 shadow-[0_0_0_1px] shadow-netural-200 hover:shadow-netural-200 
+    hover:bg-primary-100 hover:text-primary-700 
+    focus:bg-primary-100 focus:text-primary-800 focus:shadow-[0_0_0_3px] focus:shadow-primary-800
+    disabled:bg-neutral-100 disabled:text-netural-300  disabled:shadow-[0_0_0_1px]  disabled:shadow-netural-300 `
+  }
+]
 
 const props = defineProps({
-  btnStyle: String || 'style1' || 'style2' || 'style3' || 'style4',
-  isOnlyIcon: Boolean,
-  leftIcon: Object,
-  rightIcon: Object,
-  fontSize: String,
-  fontPadding: String,
-  iconSize: String,
-  btnWidth: String,
-  btnPadding: String
+  btnStyle: {
+    type: String,
+    default: 'style1',
+    validator: (value: string): boolean => {
+      return ['style1', 'style2', 'style3', 'style4'].includes(value)
+    }
+  },
+  isOnlyIcon: {
+    type: Boolean,
+    default: false
+  },
+  fontSize: {
+    type: String,
+    default: 'text'
+  },
+  iconSize: {
+    type: String,
+    default: 'w-6 h-6'
+  },
+  btnWidth: {
+    type: String,
+    default: 'w-fit'
+  },
+  btnGap: {
+    type: String,
+    default: 'gap-1'
+  },
+  btnPadding: {
+    type: String,
+    default: 'px-5 py-2.5'
+  },
+  btnJustify: {
+    type: String,
+    default: 'justify-center'
+  },
+  btnPress: {
+    type: String,
+    default: '',
+    validator: (value: string) => ['press2', 'press4'].includes(value)
+  },
+  routerName: {
+    type: String,
+    default: null
+  }
 })
+
+const router = useRouter()
+function toRouterName(routeName: string) {
+  console.log(router)
+
+  if (routeName) {
+    router.push({ name: routeName })
+  }
+}
 </script>
 
 <template>
-  <template v-if="props.btnStyle === 'style1'">
-    <button
-      class="bg-tickets-primary-700 font-Noto-Sans-TC hover:bg-tickets-primary-600 focus:bg-tickets-primary-500 disabled:bg-color-neutral-300 hover:shadow-inner-custom1 focus:shadow-inner-custom2 flex items-center justify-center rounded-full disabled:hover:shadow-none"
-      :class="[props.btnWidth, props.btnPadding]"
-    >
-      <component class="stroke-white" :class="props.iconSize" :is="props.leftIcon" />
-      <span
-        class="px-5 font-normal text-white"
-        :class="[props.fontSize, props.fontPadding]"
-        v-if="!props.isOnlyIcon"
+  <template v-for="(btnStyle, index) in btnStyleG" :key="index">
+    <template v-if="props.btnStyle === btnStyle.style">
+      <button
+        @click="toRouterName(props.routerName)"
+        type="button"
+        class="flex items-center rounded-full"
+        :class="[
+          btnStyle.class,
+          props.fontSize,
+          props.btnWidth,
+          props.btnPadding,
+          props.btnGap,
+          props.btnJustify,
+          props.btnPress
+        ]"
       >
-        <slot></slot>
-      </span>
-      <component class="stroke-white" :class="props.iconSize" :is="props.rightIcon" />
-    </button>
-  </template>
-
-  <template v-if="props.btnStyle === 'style2'">
-    <!-- press2 -->
-    <button
-      class="bg-tickets-primary-50 font-Noto-Sans-TC hover:bg-tickets-primary-100 focus:bg-tickets-primary-100 disabled:bg-color-neutral-300 hover:shadow-inner-custom3 focus:shadow-inner-custom4 shadow-inner-custom3 group flex items-center justify-center rounded-full disabled:shadow-none disabled:hover:shadow-none disabled:focus:shadow-none"
-      :class="[props.btnWidth, props.btnPadding]"
-    >
-      <component
-        class="stroke-tickets-primary-700 group-focus:stroke-tickets-primary-900 group-disabled:stroke-white group-[.press2]:stroke-white"
-        :class="props.iconSize"
-        :is="props.leftIcon"
-      />
-      <span
-        class="text-tickets-primary-700 group-focus:text-tickets-primary-900 px-5 font-normal group-disabled:text-white group-[.press2]:text-white"
-        :class="[props.fontSize, props.fontPadding]"
-        v-if="!props.isOnlyIcon"
-      >
-        <slot></slot>
-      </span>
-      <component
-        class="stroke-tickets-primary-700 group-focus:stroke-tickets-primary-900 group-disabled:stroke-white group-[.press2]:stroke-white"
-        :class="props.iconSize"
-        :is="props.rightIcon"
-      />
-    </button>
-  </template>
-
-  <template v-if="props.btnStyle === 'style3'">
-    <button
-      class="bg-tickets-netural-950 shadow-inner-custom5 font-Noto-Sans-TC hover:bg-tickets-primary-700 focus:bg-tickets-primary-600 hover:shadow-inner-custom6 focus:shadow-inner-custom2 flex items-center justify-center rounded-full"
-      :class="[props.btnWidth, props.btnPadding]"
-    >
-      <component class="stroke-white" :class="props.iconSize" :is="props.leftIcon" />
-      <span
-        class="px-5 font-normal text-white"
-        :class="[props.fontSize, props.fontPadding]"
-        v-if="!props.isOnlyIcon"
-      >
-        <slot></slot>
-      </span>
-      <component class="stroke-white" :class="props.iconSize" :is="props.rightIcon" />
-    </button>
-  </template>
-
-  <template v-if="props.btnStyle === 'style4'">
-    <!-- press4 -->
-    <button
-      class="font-Noto-Sans-TC hover:bg-tickets-primary-100 focus:bg-tickets-primary-100 disabled:bg-color-neutral-100 hover:shadow-inner-custom7 focus:shadow-inner-custom8 shadow-inner-custom7 disabled:shadow-inner-custom10 group flex items-center justify-center rounded-full bg-white"
-      :class="[props.btnWidth, props.btnPadding]"
-    >
-      <component
-        class="stroke-tickets-netural-950 group-hover:stroke-tickets-primary-700 group-focus:stroke-tickets-primary-800 group-[.press4]:stroke-tickets-primary-700 group-disabled:stroke-tickets-netural-400"
-        :class="props.iconSize"
-        :is="props.leftIcon"
-      />
-      <span
-        class="text-tickets-netural-950 group-hover:text-tickets-primary-700 group-focus:text-tickets-primary-800 group-[.press4]:text-tickets-primary-700 group-disabled:text-tickets-netural-400 px-5 font-normal"
-        :class="[props.fontSize, props.fontPadding]"
-        v-if="!props.isOnlyIcon"
-      >
-        <slot></slot>
-      </span>
-      <component
-        class="stroke-tickets-netural-950 group-hover:stroke-tickets-primary-700 group-focus:stroke-tickets-primary-800 group-[.press4]:stroke-tickets-primary-700 group-disabled:stroke-tickets-netural-400"
-        :class="props.iconSize"
-        :is="props.rightIcon"
-      />
-    </button>
+        <template v-if="!props.isOnlyIcon">
+          <span :class="[props.iconSize]">
+            <slot name="left-icon"></slot>
+          </span>
+          <slot name="default"></slot>
+          <span :class="[props.iconSize]">
+            <slot name="right-icon"></slot>
+          </span>
+        </template>
+        <template v-else>
+          <slot name="only-icon"></slot>
+        </template>
+      </button>
+    </template>
   </template>
 </template>
 
 <style scoped>
 .press2 {
-  @apply bg-tickets-primary-800 shadow-none;
+  @apply bg-primary-800 text-netural-0 shadow-none;
 }
 .press4 {
-  @apply shadow-inner-custom9 bg-white;
+  @apply bg-white text-primary-700 shadow-[0_0_0_2px] shadow-primary-700;
 }
 </style>
