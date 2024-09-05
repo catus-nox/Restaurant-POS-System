@@ -2,7 +2,7 @@
 import { useRoute } from 'vue-router'
 import { ref, watch, onMounted, nextTick } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
-import UiMenuNavbar from './UiMenuNavbar.vue'
+import UiMenuNavbar from '@/components/ui/UiMenuNavbar.vue'
 import { Drawer } from 'flowbite'
 
 //判斷進入頁面是否顯示menu
@@ -25,7 +25,7 @@ const options = {
   bodyScrolling: false,
   edge: false,
   edgeOffset: '',
-  backdropClasses: 'absolute inset-0 z-30 bg-neutral-950/10 w-full top-14',
+  backdropClasses: 'absolute inset-0 z-30 w-full top-14',
   onHide: () => {
     // console.log('drawer is hidden')
   },
