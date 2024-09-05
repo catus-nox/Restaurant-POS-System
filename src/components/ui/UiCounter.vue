@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { defineProps } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
 
 const counterProps = defineProps({

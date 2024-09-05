@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { defineProps } from 'vue'
 
 interface MenuCategoryItem {
   categoryId?: any // Id
