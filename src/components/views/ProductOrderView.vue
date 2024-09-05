@@ -39,6 +39,7 @@ const productId: number = Number(route.params.id)
 //-----api
 const customerStore = useCustomerStore()
 const menuItemData: any = computed(() => customerStore.GetMenuItemData)
+const orderIdData: any = computed(() => customerStore.GetOrderIdData)
 //抓取加購項目
 const productAddOnListData = ref<CategoryItem[]>([])
 const productAddOnList = computed(() => productAddOnListData.value)
@@ -84,6 +85,21 @@ const totalPrice = computed(() => {
     .reduce((sum, option) => sum + option.price, product.value.price)
 })
 
+//-----
+
+const textareaText = ref('')
+const count = ref(1)
+//-----
+
+async function getOrderId() {
+  if (!localStorage.orderId) {
+    await customerStore.fetchCustomerGetOrderId()
+    localStorage.orderId = orderIdData.value.guid
+  } else {
+    return
+  }
+}
+//-----
 onMounted(async () => {
   await customerStore.fetchCustomerGetMenuItem()
   await customerStore.fetchCustomerGetProduct(productId)
@@ -93,10 +109,6 @@ onMounted(async () => {
   )
   productAddOnNumber.value = product.value.customization
 })
-//-----
-
-const textareaText = ref('')
-const count = ref(1)
 </script>
 
 <template>
@@ -213,6 +225,7 @@ const count = ref(1)
           :font-padding="'px-0'"
           :router-name="'menu'"
           :icon-size="'w-auto'"
+          @define-function="getOrderId"
         >
           <template #left-icon>
             <span
