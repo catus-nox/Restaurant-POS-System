@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import UiMenubar from '@/components/ui/UiMenubar.vue'
 import UiFooter from '@/components/ui/UiFooter.vue'
 </script>
@@ -11,5 +11,6 @@ import UiFooter from '@/components/ui/UiFooter.vue'
   </main>
   <UiFooter />
 </template>
+<!-- pinia function -->
 
 <style scoped></style>
