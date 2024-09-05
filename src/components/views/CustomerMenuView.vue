@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, nextTick } from 'vue'
+import { ref, onMounted, computed, nextTick, onUnmounted } from 'vue'
 import { useCustomerStore } from '@/stores/productsStore'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiShopInformation from '@/components/ui/UiShopInformation.vue'
@@ -9,25 +9,55 @@ const customerStore = useCustomerStore()
 const menuCategory: any = computed(() => customerStore.GetMenuCategoryData)
 const menuItemData: any = computed(() => customerStore.GetMenuItemData)
 
+const searchInput = ref('')
+//-----選單滑動+至頂滑動
 const chooseCategoryId = ref(menuCategory.value.length > 0 ? menuCategory.value[0].categoryId : '2')
 const chooseCategoryIdComputed = computed(() => chooseCategoryId.value)
 
-const searchInput = ref('')
+const topElement = ref<any>('')
+const scrollElement = ref<any>(null)
+const top: any = ref(window.scrollY)
+const fixElement = ref<any>('')
+const isFixed = ref(false)
+
+function changeCategoryId(id: any, index: any) {
+  chooseCategoryId.value = id
+  function getHeader() {
+    if (top.value > (fixElement.value.offsetTop || 0)) {
+      return (scrollElement.value[index].offsetTop || 0) - (14 + 14) * 4
+    } else {
+      return (
+        (scrollElement.value[index].offsetTop || 0) - (fixElement.value.offsetTop || 0) + 14 * 4
+      )
+    }
+  }
+  window.scrollTo({
+    top: getHeader(),
+    behavior: 'smooth'
+  })
+}
+
+function fixCustomerMenuNavbar() {
+  top.value = window.scrollY
+  if (!fixElement.value) return
+  if (top.value > fixElement.value.offsetTop) {
+    isFixed.value = true
+  } else {
+    isFixed.value = false
+  }
+}
+//-----
 
 onMounted(async () => {
   await customerStore.fetchCustomerGetMenuCategory()
   await customerStore.fetchCustomerGetMenuItem()
+  fixCustomerMenuNavbar()
+  document.addEventListener('scroll', fixCustomerMenuNavbar)
 })
-
-const scrollElement = ref<any>(null)
-function changeCategoryId(id: any, index: any) {
-  chooseCategoryId.value = id
-  scrollElement.value[index].scrollIntoView({ behavior: 'smooth' })
-}
 </script>
 
 <template>
-  <div class="m-3 flex flex-col gap-3">
+  <div ref="topElement" class="m-3 mb-0 flex flex-col gap-3 pb-3">
     <UiShopInformation />
 
     <UiInput v-model="searchInput" :placeholder="'Search'" :is-icon="true">
@@ -48,13 +78,19 @@ function changeCategoryId(id: any, index: any) {
         </svg>
       </template>
     </UiInput>
-
+  </div>
+  <div
+    ref="fixElement"
+    :class="{ fixed: isFixed }"
+    class="top-14 z-50 w-full max-w-[414px] overflow-x-auto bg-primary-50 p-3"
+  >
     <UiCustomerMenuNavbar
       :menu-category="menuCategory"
       :show-id="chooseCategoryIdComputed"
       @change-category-id="changeCategoryId"
     />
-
+  </div>
+  <div class="m-3 mt-0 flex flex-col gap-3">
     <template v-for="(menuItem, index) in menuItemData" :key="index">
       <h2 ref="scrollElement" class="pt-2 text-h5 font-bold text-black">
         {{ menuItem.categoryName }}
