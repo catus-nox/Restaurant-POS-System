@@ -10,7 +10,10 @@ defineEmits(['toggleMenu'])
 
 <template>
   <!-- <div v-if="menuState()" class="relative flex h-fit w-full justify-between bg-primary-700 p-3"> -->
-  <div v-if="props.menuState" class="relative flex h-fit w-full justify-between bg-primary-700 p-3">
+  <div
+    v-if="props.menuState"
+    class="fixed left-auto z-50 flex h-fit w-full max-w-[414px] justify-between bg-primary-700 p-3"
+  >
     <template v-if="!props.menuArrowState">
       <div @click="$emit('toggleMenu')">
         <UiButton

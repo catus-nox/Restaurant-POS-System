@@ -41,6 +41,12 @@ const options = {
 function menuState(): boolean {
   return ['menu', 'productOrder', 'orderProcessHistory'].includes(route.name as string)
 }
+function mainPadding() {
+  if (menuState()) {
+    return 'pt-14'
+  }
+  return
+}
 function menuArrowState(): boolean {
   return ['productOrder'].includes(route.name as string)
 }
@@ -82,7 +88,7 @@ function toggleMenu() {
   >
     <UiMenuNavbar />
   </div>
-  <main class="min-h-[calc(100vh-2.5rem-16.75rem)]">
+  <main class="min-h-[calc(100vh-2.5rem-16.75rem)]" :class="mainPadding()">
     <RouterView />
   </main>
   <UiFooter />
