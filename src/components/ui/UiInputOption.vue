@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits, defineModel } from 'vue'
 
 const props = defineProps({
   type: {
@@ -21,7 +21,7 @@ const props = defineProps({
     default: ''
   },
   value: {
-    type: String,
+    type: Number || String,
     default: ''
   }
 })
