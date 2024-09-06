@@ -1,75 +1,21 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { ref, watch, onMounted, nextTick } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
-import UiMenuNavbar from './UiMenuNavbar.vue'
-import { Drawer } from 'flowbite'
-
-//判斷進入頁面是否顯示menu
-const route = useRoute()
-const menuNavbar = ref<HTMLElement | null>(null)
-const drawer = ref<any>(null)
-watch(
-  () => route.path,
-  (newPath, oldPath) => {
-    console.log(`路由從 ${oldPath} 變化到 ${newPath}`)
-    // 確保選單關閉
-    if (menuNavbar.value) {
-      drawer.value.hide()
-    }
-  }
-)
-const options = {
-  placement: 'left',
-  backdrop: true,
-  bodyScrolling: false,
-  edge: false,
-  edgeOffset: '',
-  backdropClasses: 'absolute inset-0 z-30 bg-neutral-950/10 w-full top-14',
-  onHide: () => {
-    // console.log('drawer is hidden')
-  },
-  onShow: () => {
-    // console.log('drawer is shown')
-  },
-  onToggle: () => {
-    // console.log('drawer has been toggled')
-  }
-}
-function menuState(): boolean {
-  return ['menu', 'productOrder', 'orderProcessHistory'].includes(route.name as string)
-}
-function menuArrowState(): boolean {
-  return ['productOrder'].includes(route.name as string)
-}
-
-// 在页面挂载时初始化 Drawer
-onMounted(() => {
-  watch(
-    [menuState, menuArrowState],
-    async (newState) => {
-      if (newState) {
-        await nextTick()
-        if (menuNavbar.value) {
-          drawer.value = new Drawer(menuNavbar.value, options)
-          drawer.value.hide()
-        }
-      }
-    },
-    { immediate: true }
-  )
-})
-
-//選單開關
-function toggleMenu() {
-  drawer.value.toggle()
-}
+const props = defineProps<{
+  menuState?: boolean
+  menuArrowState?: boolean
+}>()
+defineEmits(['toggleMenu'])
 </script>
 
 <template>
-  <div v-if="menuState()" class="relative flex h-fit w-full justify-between bg-primary-700 p-3">
-    <template v-if="!menuArrowState()">
-      <div @click="toggleMenu">
+  <!-- <div v-if="menuState()" class="relative flex h-fit w-full justify-between bg-primary-700 p-3"> -->
+  <div
+    v-if="props.menuState"
+    class="fixed left-auto z-50 flex h-fit w-full max-w-[414px] justify-between bg-primary-700 p-3"
+  >
+    <template v-if="!props.menuArrowState">
+      <div @click="$emit('toggleMenu')">
         <UiButton
           :btn-style="'style4'"
           :btn-width="'w-8 h-8'"
@@ -94,17 +40,9 @@ function toggleMenu() {
           </template>
         </UiButton>
       </div>
-
-      <div
-        ref="menuNavbar"
-        class="absolute left-auto top-14 z-40 -ml-3 h-[calc(100vh-3.5rem)] w-full max-w-[305px] -translate-x-full bg-netural-0 transition-all"
-        aria-hidden="false"
-      >
-        <UiMenuNavbar />
-      </div>
     </template>
 
-    <template v-if="menuArrowState()">
+    <template v-if="props.menuArrowState">
       <div>
         <UiButton
           :btn-style="'style4'"

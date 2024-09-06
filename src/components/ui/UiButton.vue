@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { defineProps } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 import 'flowbite'
 
 interface ButtonStyle {
@@ -91,19 +91,18 @@ const props = defineProps({
 
 const router = useRouter()
 function toRouterName(routeName: string) {
-  console.log(router)
-
   if (routeName) {
     router.push({ name: routeName })
   }
 }
+defineEmits(['defineFunction'])
 </script>
 
 <template>
   <template v-for="(btnStyle, index) in btnStyleG" :key="index">
     <template v-if="props.btnStyle === btnStyle.style">
       <button
-        @click="toRouterName(props.routerName)"
+        @click="toRouterName(props.routerName), $emit('defineFunction')"
         type="button"
         class="flex items-center rounded-full"
         :class="[
