@@ -92,7 +92,6 @@ const count = ref(1)
 //-----
 
 async function getOrderId() {
-  console.log(String(productId))
   if (localStorage.guid == 'undefined' || !localStorage.guid) {
     await customerStore.fetchCustomerGetOrderId()
     localStorage.guid = orderIdData.value.guid
@@ -100,19 +99,6 @@ async function getOrderId() {
   if (localStorage.orderId == 'undefined' || !localStorage.orderId) {
     localStorage.orderId = orderIdData.value.orderId
   }
-
-  // const test = [
-  //   {
-  //     options: 'string',
-  //     extraPrice: 0
-  //   }
-  // ]
-  // console.log('guid', localStorage.guid)
-  // console.log('orderId', Number(localStorage.orderId))
-  // console.log('productId', productId)
-  // console.log('productId', test)
-  // console.log('customization', count.value)
-
   const data = {
     guid: localStorage.guid, //識別碼guid(抓cookie)
     orderId: Number(localStorage.orderId), //訂單編號(抓cookie)
