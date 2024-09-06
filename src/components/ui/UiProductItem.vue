@@ -18,8 +18,8 @@ const props = defineProps<{
 
 const router: any = useRouter()
 function toRouterName(id: any) {
-  console.log(router)
-  console.log(id)
+  // console.log(router)
+  // console.log(id)
 
   router.push({ name: 'productOrder', params: { id } })
 }

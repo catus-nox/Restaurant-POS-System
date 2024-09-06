@@ -5,8 +5,10 @@ const baseURL = import.meta.env.VITE_APP_API_URL
 const instance = axios.create({
   // baseURL: import.meta.env.DEV ? "/api" : `${baseURL}/v2/api/${apiName}`,
   baseURL: `${baseURL}/api`,
-  // baseURL,
-  headers: { 'Content-Type': 'application/json' },
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  },
   // timeout: 50000,
   timeout: 0
 })
@@ -24,6 +26,10 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     // Do something with response data
+
+    if (response.data.statusCode === 400) {
+      console.log(response.data.message)
+    }
     return response
   },
   (error) => {

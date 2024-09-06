@@ -36,3 +36,28 @@ export function GetOrderId(data?: any) {
     data
   })
 }
+
+//加入購物車
+export function PostAddItem(data: {
+  guid: string
+  orderId: number
+  productId: number
+  customization?: {
+    options?: string
+    extraPrice?: number
+  }[]
+  serving: number
+}) {
+  return request({
+    url: `/customer/addItem`,
+    // url: `/customer/addItem`,
+    method: 'POST',
+    data: {
+      guid: data.guid,
+      orderId: data.orderId,
+      productId: data.productId,
+      customization: data.customization,
+      serving: data.serving
+    }
+  })
+}
