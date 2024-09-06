@@ -26,10 +26,15 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     // Do something with response data
+    console.log(`----------------------`)
 
     if (response.data.statusCode === 400) {
       console.log(response.data.message)
+    } else {
+      console.log(response.data.message)
+      console.log(response.data.data)
     }
+
     return response
   },
   (error) => {
