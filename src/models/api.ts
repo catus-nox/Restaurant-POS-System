@@ -69,3 +69,12 @@ export function getOrderInfo(id: number, guid: string, data?: any) {
     data
   })
 }
+
+//取得購物車現有訂單
+export function getCart(id: number, guid: string, data?: any) {
+  return request({
+    url: `/customer/getCart/${id}/${guid}`,
+    method: 'get',
+    data
+  })
+}

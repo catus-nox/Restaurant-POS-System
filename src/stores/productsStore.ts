@@ -6,7 +6,8 @@ import {
   getCustomerGetProduct,
   getOrderId,
   addItem,
-  getOrderInfo
+  getOrderInfo,
+  getCart
 } from '@/models/api'
 
 export const useCustomerStore = defineStore('customer', () => {
@@ -25,6 +26,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const itemData: any = ref()
   //取得現在購物車的商品筆數跟總價
   const orderInfoData: any = ref()
+  //取得購物車現有訂單
+  const cartData: any = ref()
 
   //------
   //getter
@@ -41,6 +44,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const addItemData = computed(() => itemData.value)
   //取得現在購物車的商品筆數跟總價
   const getOrderInfoData = computed(() => orderInfoData.value)
+  //取得購物車現有訂單
+  const getCartData = computed(() => cartData.value)
 
   //------
   //action 異步請求
@@ -124,6 +129,18 @@ export const useCustomerStore = defineStore('customer', () => {
     }
   }
 
+  //取得購物車現有訂單
+  const fetchCustomerGetCart = async (id: number, guid: string) => {
+    try {
+      const response = await getCart(id, guid)
+      console.log(response)
+
+      cartData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getMenuCategoryData,
     fetchCustomerGetMenuCategory,
@@ -136,6 +153,8 @@ export const useCustomerStore = defineStore('customer', () => {
     addItemData,
     fetchCustomerAddItem,
     getOrderInfoData,
-    fetchCustomerGetOrderInfo
+    fetchCustomerGetOrderInfo,
+    getCartData,
+    fetchCustomerGetCart
   }
 })
