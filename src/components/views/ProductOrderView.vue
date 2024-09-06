@@ -244,7 +244,7 @@ onMounted(async () => {
         >
           <template #left-icon>
             <span
-              class="bet inline-flex h-4 min-w-4 flex-col items-center justify-center rounded border border-white text-sm"
+              class="inline-flex h-4 min-w-4 flex-col items-center justify-center rounded border border-white text-sm"
               ><span class="p-0.5">{{ count }}</span></span
             >
           </template>
