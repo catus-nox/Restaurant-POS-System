@@ -155,7 +155,9 @@ onMounted(async () => {
             /> -->
             <div class="flex w-[118px] flex-col gap-1">
               <div class="text-base font-bold text-black">{{ cart.name }}</div>
-              <div class="text-base font-medium text-netural-300">少冰</div>
+              <div class="text-xs font-medium text-netural-300">
+                {{ cart.customization.join(' | ') }}
+              </div>
               <div class="text-base font-medium text-black">{{ cart.price }}</div>
             </div>
           </div>
