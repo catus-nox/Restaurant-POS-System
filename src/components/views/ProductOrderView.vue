@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCustomerStore } from '@/stores/productsStore'
 import UiButton from '@/components/ui/UiButton.vue'
@@ -13,7 +13,7 @@ interface CategoryProduct {
   isPoint: boolean
   description: string
   price: number
-  customization: number[] // An array of numbers
+  customization: number[]
 }
 interface CategoryItem {
   category: number
@@ -29,74 +29,147 @@ interface Product {
   price: number
 }
 interface PickedOption {
+  id: number
   name: string
   selected: any
   options: string[]
 }
-//------
+//-----api
 const route = useRoute()
 const productId: number = Number(route.params.id)
-//-----api
 const customerStore = useCustomerStore()
-const menuItemData: any = computed(() => customerStore.GetMenuItemData)
-//抓取加購項目
-const productAddOnListData = ref<CategoryItem[]>([])
-const productAddOnList = computed(() => productAddOnListData.value)
+const menuItemData: any = computed(() => customerStore.getMenuItemData)
+const orderIdData: any = computed(() => customerStore.getOrderIdData)
 //抓取產品資料
-const product = computed<CategoryProduct>(() => customerStore.GetProductData)
-//定義加購項目
-const pickedOptions = ref<{ [key: number]: PickedOption }>({
-  1: {
+const product = computed<CategoryProduct>(() => customerStore.getProductData)
+//-----抓取加購項目
+//加購複選儲存
+const productAddOnListSelected = ref<number[]>([])
+//加購項目從商品篩出 category = 6
+const productAddOnListData = ref<CategoryItem[]>([])
+const productAddOnListDataComputed = computed(() => productAddOnListData.value)
+function productPickedOptionsAdd6() {
+  productAddOnListData.value = menuItemData.value.filter(
+    (item: { category: number }) => item.category === 6
+  )
+  console.log(productAddOnListData.value[0].categoryItem)
+}
+//-----
+//(前端)定義必選項目
+const pickedOptions: PickedOption[] = [
+  {
+    id: 1,
     name: '冰度',
     selected: '少冰',
     options: ['少冰', '微冰', '去冰', '熱飲']
   },
-  2: {
+  {
+    id: 2,
     name: '冰度(限冷飲)',
     selected: '少冰',
     options: ['少冰', '微冰', '去冰']
   },
-  3: {
+  {
+    id: 3,
     name: '甜度',
     selected: '無糖',
     options: ['無糖', '微糖', '少糖', '半糖', '全糖']
   },
-  4: {
+  {
+    id: 4,
     name: '更換燕麥奶',
     selected: '否',
     options: ['否', '是']
   },
-  5: {
+  {
+    id: 5,
     name: '要不要鮮奶油',
     selected: '否',
     options: ['否', '是']
   }
-})
-const checked = ref<number[]>([])
-computed
-//篩選加購項目
-const productAddOnNumber = ref<any[]>([])
-// 計算選中的總價格
+]
+//抓取包含的自訂義項目
+const productPickedOptions = ref()
+function productPickedOptionFunction() {
+  productPickedOptions.value = pickedOptions.filter((option) =>
+    product.value.customization.includes(option.id)
+  )
+  console.log(productPickedOptions.value)
+}
+//整理要給api的客製化項目
+function customizationApiData() {
+  let optionArray = productPickedOptions.value.map((option: any) => ({
+    options: option.selected
+  }))
+  let addArray = productAddOnListData.value[0].categoryItem
+    .filter((product) => productAddOnListSelected.value.includes(product.productId))
+    .map((product) => ({
+      options: product.name,
+      extraPrice: product.price
+    }))
 
+  let textareaArray = [
+    {
+      options: textareaText.value
+    }
+  ]
+  let allData = optionArray.concat(addArray).concat(textareaArray)
+
+  return allData
+}
+//-----
+// 計算選中的總價格
 const totalPrice = computed(() => {
-  return productAddOnList.value[0]?.categoryItem
-    .filter((option) => checked.value.includes(option.productId))
+  return productAddOnListDataComputed.value[0]?.categoryItem
+    .filter((option) => productAddOnListSelected.value.includes(option.productId))
     .reduce((sum, option) => sum + option.price, product.value.price)
 })
+//-----
+//備註文字
+const textareaText = ref('')
+//判斷最高字數，最高數入數量
+watch(textareaText, (newValue) => {
+  if (newValue.length > 100) {
+    textareaText.value = newValue.slice(0, 100) // 截斷文字
+  }
+})
+//-----
+//商品初始數量
+const count = ref(1)
+//-----
+//加入購物車按鈕
+async function getOrderId() {
+  //驗證碼判斷新增
+  if (localStorage.guid == 'undefined' || !localStorage.guid) {
+    await customerStore.fetchCustomerGetOrderId()
+    localStorage.guid = orderIdData.value.guid
+  }
+  if (localStorage.orderId == 'undefined' || !localStorage.orderId) {
+    localStorage.orderId = orderIdData.value.orderId
+  }
+  //購物車訂單送出
+  console.log(customizationApiData())
 
+  const data = {
+    guid: localStorage.guid, //識別碼guid(抓cookie)
+    orderId: Number(localStorage.orderId), //訂單編號(抓cookie)
+    productId: Number(productId), //商品編號
+    //客製化選項
+    customization: customizationApiData(),
+    serving: Number(count.value) //份數(int)
+  }
+  await customerStore.fetchCustomerAddItem(data)
+  //購物車數量變更
+  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  computed(() => customerStore.getOrderInfoData)
+}
+//-----
 onMounted(async () => {
   await customerStore.fetchCustomerGetMenuItem()
   await customerStore.fetchCustomerGetProduct(productId)
-
-  productAddOnListData.value = menuItemData.value.filter(
-    (item: { category: number }) => item.category === 6
-  )
-  productAddOnNumber.value = product.value.customization
+  productPickedOptionsAdd6()
+  productPickedOptionFunction()
 })
-//-----
-
-const textareaText = ref('')
-const count = ref(1)
 </script>
 
 <template>
@@ -117,86 +190,82 @@ const count = ref(1)
     </div>
 
     <div class="mx-3 flex flex-col gap-3">
-      <template v-for="(customizationItem, index) in product.customization" :key="index">
-        <div class="flex flex-col gap-3">
-          <template v-if="customizationItem == 6">
-            <div class="flex items-center justify-between">
-              <div class="text-h6 text-black">加購項目</div>
-              <UiBadge :style="'checkboxBadge'" />
-            </div>
-            <div class="flex flex-col gap-2">
-              <template
-                v-if="productAddOnListData.length > 0 && productAddOnListData[0].categoryItem"
-              >
-                <UiInputOption
-                  v-for="option in productAddOnListData[0].categoryItem"
-                  :key="String(option.productId)"
-                  :id="String(option.productId)"
-                  :value="option.productId"
-                  :type="'checkbox'"
-                  :border-radius="'rounded'"
-                  v-model="checked"
+      <div class="flex flex-col gap-3">
+        <template v-for="(productPickedOption, index) in productPickedOptions" :key="index">
+          <div class="flex items-center justify-between">
+            <div class="text-h6 text-black">{{ productPickedOption.name }}</div>
+            <UiBadge :style="'radioBadge'" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <UiInputOption
+              v-for="PickedOption in productPickedOption.options"
+              :key="PickedOption"
+              :id="PickedOption"
+              :value="PickedOption"
+              :type="'radio'"
+              v-model="productPickedOption.selected"
+            >
+              {{ PickedOption }}
+            </UiInputOption>
+          </div>
+        </template>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div class="text-h6 text-black">加購項目</div>
+          <UiBadge :style="'checkboxBadge'" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <template v-if="productAddOnListData.length > 0 && productAddOnListData[0].categoryItem">
+            <UiInputOption
+              v-for="productAddOn in productAddOnListData[0].categoryItem"
+              :key="String(productAddOn.productId)"
+              :id="String(productAddOn.productId)"
+              :value="productAddOn.productId"
+              :type="'checkbox'"
+              :border-radius="'rounded'"
+              v-model="productAddOnListSelected"
+            >
+              {{ productAddOn.name }}
+              <template #noteIcon>
+                <svg
+                  class="h-2 w-2 text-primary-800"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
                 >
-                  {{ option.name }}
-                  <template #noteIcon>
-                    <svg
-                      class="h-2 w-2 text-neutral-600"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M5 12h14m-7 7V5"
-                      />
-                    </svg>
-                  </template>
-                  <template #note> {{ option.price }}</template>
-                </UiInputOption>
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 12h14m-7 7V5"
+                  />
+                </svg>
               </template>
-            </div>
-          </template>
-          <template v-else>
-            <div class="flex items-center justify-between">
-              <div class="text-h6 text-black">{{ pickedOptions[customizationItem]?.name }}</div>
-              <UiBadge :style="'radioBadge'" />
-            </div>
-            <div class="flex flex-col gap-2">
-              <UiInputOption
-                v-for="option in pickedOptions[customizationItem]?.options"
-                :key="option"
-                :id="option"
-                :value="option"
-                :type="'radio'"
-                v-model="pickedOptions[customizationItem].selected"
-              >
-                {{ option }}
-              </UiInputOption>
-            </div>
+              <template #note> $ {{ productAddOn.price }}</template>
+            </UiInputOption>
           </template>
         </div>
-      </template>
+      </div>
 
       <div class="flex flex-col gap-3">
         <div class="flex items-center justify-between">
           <div class="text-h6 text-black">餐點備註</div>
           <UiBadge :style="'checkboxBadge'" />
         </div>
-
         <div class="flex flex-col gap-2">
           <textarea
-            class="rounded-lg border border-black px-2 py-1"
+            class="rounded-lg border border-black px-2 py-1 !outline-none focus:border-black focus:ring-0"
             v-model="textareaText"
             rows="3"
             placeholder="新增備註"
           ></textarea>
-          <span class="self-end text-netural-600">0/100</span>
+          <span class="self-end text-netural-600">{{ textareaText.length }}/100</span>
         </div>
       </div>
 
@@ -213,10 +282,11 @@ const count = ref(1)
           :font-padding="'px-0'"
           :router-name="'menu'"
           :icon-size="'w-auto'"
+          @define-function="getOrderId"
         >
           <template #left-icon>
             <span
-              class="bet inline-flex h-4 min-w-4 flex-col items-center justify-center rounded border border-white text-sm"
+              class="inline-flex h-4 min-w-4 flex-col items-center justify-center rounded border border-white text-sm"
               ><span class="p-0.5">{{ count }}</span></span
             >
           </template>

@@ -1,26 +1,30 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { useCustomerStore } from '@/stores/productsStore'
 import { Drawer } from 'flowbite'
 import { RouterView, useRoute } from 'vue-router'
 import UiMenubar from '@/components/ui/UiMenubar.vue'
 import UiMenuNavbar from '@/components/ui/UiMenuNavbar.vue'
 import UiFooter from '@/components/ui/UiFooter.vue'
 
-//---------------------------------------------------------
-//判斷進入頁面是否顯示menu
 const route = useRoute()
 const menuNavbar = ref<HTMLElement | null>(null)
 const drawer = ref<any>(null)
+
+//查看路由狀態
 watch(
   () => route.path,
-  (newPath, oldPath) => {
+  () => {
+    // (newPath, oldPath) => {
     // console.log(`路由從 ${oldPath} 變化到 ${newPath}`)
+
     // 確保選單關閉
     if (menuNavbar.value) {
       drawer.value.hide()
     }
   }
 )
+//選單樣式設定
 const options = {
   placement: 'left',
   backdrop: true,
@@ -38,20 +42,39 @@ const options = {
     // console.log('drawer has been toggled')
   }
 }
+//選單開關
+function toggleMenu() {
+  drawer.value.toggle()
+}
+//選單顯示判斷
 function menuState(): boolean {
   return ['menu', 'productOrder', 'orderProcessHistory'].includes(route.name as string)
 }
-function mainPadding() {
+//顯示判斷判斷anchor訂定pt高度
+function anchorMainPaddingTopChange() {
   if (menuState()) {
     return 'pt-14'
   }
   return
 }
+//選單箭頭顯示判斷
 function menuArrowState(): boolean {
   return ['productOrder'].includes(route.name as string)
 }
 
-// 在页面挂载时初始化 Drawer
+//判斷目前頁面
+function pageCustomerOrEmployeeState(): boolean {
+  return ['employeeLogin'].includes(route.name as string)
+}
+//api
+const customerStore = useCustomerStore()
+//-----
+onMounted(async () => {
+  if (localStorage.guid || localStorage.orderId) {
+    await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  }
+  computed(() => customerStore.getOrderInfoData)
+})
 onMounted(() => {
   watch(
     [menuState, menuArrowState],
@@ -67,33 +90,42 @@ onMounted(() => {
     { immediate: true }
   )
 })
-
-//選單開關
-function toggleMenu() {
-  drawer.value.toggle()
-}
-//---------------------------------------------------------
 </script>
 
 <template>
-  <UiMenubar
-    :menu-arrow-state="menuArrowState()"
-    :menu-state="menuState()"
-    @toggle-menu="toggleMenu()"
-  />
-  <div
-    ref="menuNavbar"
-    class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-netural-0 opacity-100 transition-all"
-    aria-hidden="false"
-  >
-    <UiMenuNavbar />
-  </div>
-  <main class="min-h-[calc(100vh-2.5rem-16.75rem)]" :class="mainPadding()">
-    <RouterView />
-  </main>
-  <UiFooter />
+  <template v-if="!pageCustomerOrEmployeeState()">
+    <div
+      class="top relative m-auto min-h-screen w-full max-w-screen-sm overflow-hidden bg-primary-50"
+    >
+      <UiMenubar
+        v-if="menuState()"
+        :menu-state="menuState()"
+        :menu-arrow-state="menuArrowState()"
+        @toggle-menu="toggleMenu()"
+      />
+      <div
+        ref="menuNavbar"
+        class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-netural-0 opacity-100 transition-all"
+        aria-hidden="false"
+      >
+        <UiMenuNavbar v-if="menuState()" />
+      </div>
+
+      <main class="min-h-[calc(100vh-15.75rem)]" :class="anchorMainPaddingTopChange()">
+        <RouterView />
+      </main>
+
+      <UiFooter />
+    </div>
+  </template>
+  <template v-else>
+    <div class="m-auto max-w-screen-xl">
+      <main class="">
+        <RouterView />
+      </main>
+    </div>
+  </template>
 </template>
-<!-- pinia function -->
 
 <style scoped>
 [aria-hidden='true'] {

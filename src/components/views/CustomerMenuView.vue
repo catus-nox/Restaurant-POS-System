@@ -6,8 +6,8 @@ import UiShopInformation from '@/components/ui/UiShopInformation.vue'
 import UiCustomerMenuNavbar from '@/components/ui/UiCustomerMenuNavbar.vue'
 import UiProductItem from '@/components/ui/UiProductItem.vue'
 const customerStore = useCustomerStore()
-const menuCategory: any = computed(() => customerStore.GetMenuCategoryData)
-const menuItemData: any = computed(() => customerStore.GetMenuItemData)
+const menuCategory: any = computed(() => customerStore.getMenuCategoryData)
+const menuItemData: any = computed(() => customerStore.getMenuItemData)
 
 const searchInput = ref('')
 //-----選單滑動+至頂滑動
@@ -82,7 +82,7 @@ onMounted(async () => {
   <div
     ref="fixElement"
     :class="{ fixed: isFixed }"
-    class="top-14 z-20 w-full max-w-[414px] overflow-x-auto bg-primary-50 p-3"
+    class="top-14 z-20 w-full max-w-screen-sm overflow-x-auto bg-primary-50 p-3"
   >
     <UiCustomerMenuNavbar
       :menu-category="menuCategory"

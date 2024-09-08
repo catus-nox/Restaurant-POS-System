@@ -102,7 +102,7 @@ defineEmits(['defineFunction'])
   <template v-for="(btnStyle, index) in btnStyleG" :key="index">
     <template v-if="props.btnStyle === btnStyle.style">
       <button
-        @click="toRouterName(props.routerName), $emit('defineFunction')"
+        @click="$emit('defineFunction'), toRouterName(props.routerName)"
         type="button"
         class="flex items-center rounded-full"
         :class="[

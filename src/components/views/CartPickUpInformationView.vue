@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useCustomerStore } from '@/stores/productsStore'
+import { computed, onMounted, ref } from 'vue'
 import UiCartProcess from '@/components/ui/UiCartProcess.vue'
 import UiCounter from '@/components/ui/UiCounter.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
 import UiInput from '@/components/ui/UiInput.vue'
-import imgUrl from '@/assets/img/1002928.jpg'
 
 const nowClick = ref<number>(0)
 function toggleMenu(index: number) {
@@ -15,8 +15,18 @@ function toggleMenu(index: number) {
 }
 
 const customerStatus = [{ name: '預約自取' }, { name: '現場外帶' }, { name: '內用' }]
+const serving = ref<[]>([])
+//api
+const customerStore = useCustomerStore()
+const cartData: any = computed(() => customerStore.getCartData)
+const orderInfoData: any = computed(() => customerStore.getOrderInfoData)
+//-----
+onMounted(async () => {
+  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  await customerStore.fetchCustomerGetCart(localStorage.orderId, localStorage.guid)
+  serving.value = cartData.value.map((cart: { serving: number }) => cart.serving)
+})
 </script>
-
 <template>
   <div>
     <UiCartProcess :status="'-translate-x-1/4'" />
@@ -128,23 +138,33 @@ const customerStatus = [{ name: '預約自取' }, { name: '現場外帶' }, { na
       <div class="flex items-center justify-between">
         <div class="text-xl font-semibold text-black">訂單內容</div>
       </div>
-
-      <div
-        class="flex items-center justify-between rounded-lg border border-netural-950 bg-white p-3"
-      >
-        <div class="flex items-center gap-4">
-          <img
-            class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
-            src="../../assets/img/1002928.jpg"
-          />
-          <div class="flex w-[118px] flex-col gap-1">
-            <div class="text-base font-bold text-black">經典美式咖啡</div>
-            <div class="text-base font-medium text-netural-300">少冰</div>
-            <div class="text-base font-medium text-black">$ 120</div>
+      <template v-if="orderInfoData">
+        <div
+          v-for="(cart, index) in cartData"
+          :key="index"
+          class="flex items-center justify-between rounded-lg border border-netural-950 bg-white p-3"
+        >
+          <div class="flex items-center gap-4">
+            <img
+              class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
+              src="../../assets/img/1002928.jpg"
+            />
+            <!-- <img
+              class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
+              :src="cart.imagePath"
+            /> -->
+            <div class="flex w-[118px] flex-col gap-1">
+              <div class="text-base font-bold text-black">{{ cart.name }}</div>
+              <div class="text-xs font-medium text-netural-300">
+                {{ cart.customization.join(' |') }}
+              </div>
+              <div class="text-base font-medium text-black">{{ cart.price }}</div>
+            </div>
           </div>
+          <UiCounter v-model="serving[index]"></UiCounter>
         </div>
-        <UiCounter>1</UiCounter>
-      </div>
+      </template>
+
       <div class="flex flex-col gap-1">
         <div class="flex flex-col gap-2">
           <div class="flex justify-between">
@@ -182,28 +202,27 @@ const customerStatus = [{ name: '預約自取' }, { name: '現場外帶' }, { na
     >
       繼續點餐
     </UiButton>
+
     <UiButton
       :btn-style="'style1'"
       :btn-width="'w-full '"
-      :btn-padding="'px-6 py-2'"
-      :icon-size="''"
-      :icon-style="''"
       :is-only-icon="false"
       :font-size="'text justify-between flex w-full items-center'"
-      :font-padding="'!px-0'"
+      :font-padding="'px-0'"
       :router-name="'cartPayInformation'"
+      :icon-size="'w-auto'"
     >
-      <template #left-icon>
+      <template #left-icon v-if="orderInfoData">
         <span
-          class="bet inline-flex h-4 w-4 flex-col items-center justify-center rounded border border-white text-sm"
-          ><span class="pb-0.5">1</span></span
+          class="inline-flex h-4 min-w-4 flex-col items-center justify-center rounded border border-white text-sm"
+          ><span class="p-0.5">{{ orderInfoData.count }}</span></span
         >
       </template>
 
       <span>前往結帳</span>
 
-      <template #right-icon>
-        <span>$100</span>
+      <template #right-icon v-if="orderInfoData">
+        <span>${{ orderInfoData.totalAmount }}</span>
       </template>
     </UiButton>
   </div>
