@@ -104,11 +104,12 @@ onMounted(() => {
         @toggle-menu="toggleMenu()"
       />
       <div
+        v-if="menuState()"
         ref="menuNavbar"
         class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-netural-0 opacity-100 transition-all"
         aria-hidden="false"
       >
-        <UiMenuNavbar v-if="menuState()" />
+        <UiMenuNavbar />
       </div>
 
       <main class="min-h-[calc(100vh-15.75rem)]" :class="anchorMainPaddingTopChange()">
@@ -119,10 +120,12 @@ onMounted(() => {
     </div>
   </template>
   <template v-else>
-    <div class="m-auto max-w-screen-xl">
-      <main class="">
-        <RouterView />
-      </main>
+    <div class="m-auto flex min-h-screen items-center justify-center overflow-hidden">
+      <div class="h-screen max-h-[834px] w-full max-w-screen-xl bg-secondary-50">
+        <main class="h-full w-full">
+          <RouterView />
+        </main>
+      </div>
     </div>
   </template>
 </template>
