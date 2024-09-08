@@ -92,12 +92,23 @@ const count = ref(1)
 //-----
 
 async function getOrderId() {
-  if (!localStorage.orderId) {
+  if (localStorage.guid == 'undefined' || !localStorage.guid) {
     await customerStore.fetchCustomerGetOrderId()
-    localStorage.orderId = orderIdData.value.guid
-  } else {
-    return
+    localStorage.guid = orderIdData.value.guid
   }
+  if (localStorage.orderId == 'undefined' || !localStorage.orderId) {
+    localStorage.orderId = orderIdData.value.orderId
+  }
+  const data = {
+    guid: localStorage.guid, //識別碼guid(抓cookie)
+    orderId: Number(localStorage.orderId), //訂單編號(抓cookie)
+    productId: Number(productId), //商品編號
+    //客製化選項
+    customization: [],
+    serving: Number(count.value) //份數(int)
+  }
+
+  await customerStore.fetchCustomerPostAddItem(data)
 }
 //-----
 onMounted(async () => {

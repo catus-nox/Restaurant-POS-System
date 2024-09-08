@@ -4,10 +4,12 @@ import {
   GetCustomerGetMenuCategory,
   GetCustomerGetMenuItem,
   GetCustomerGetProduct,
-  GetOrderId
+  GetOrderId,
+  PostAddItem
 } from '@/models/api'
 
 export const useCustomerStore = defineStore('customer', () => {
+  //------
   //state
 
   //菜單類別
@@ -18,6 +20,10 @@ export const useCustomerStore = defineStore('customer', () => {
   const productData: any = ref({})
   //取得OrderId跟Guid(唯一識別碼)(使用者第一次加入購物車時索取訂單資訊)
   const orderIdData: any = ref({})
+  //加入購物車
+  const addItemData: any = ref()
+
+  //------
   //getter
 
   //菜單類別
@@ -28,9 +34,11 @@ export const useCustomerStore = defineStore('customer', () => {
   const GetProductData = computed(() => productData.value)
   //取得OrderId跟Guid(唯一識別碼)(使用者第一次加入購物車時索取訂單資訊)
   const GetOrderIdData = computed(() => orderIdData.value)
+  //加入購物車
+  const PostAddItemData = computed(() => addItemData.value)
 
-  //action
-  // 異步請求
+  //------
+  //action 異步請求
 
   //菜單類別
   const fetchCustomerGetMenuCategory = async () => {
@@ -78,9 +86,36 @@ export const useCustomerStore = defineStore('customer', () => {
     try {
       const response = await GetOrderId()
       if (response.status === 200) {
-        console.log(response.data.data)
-
         orderIdData.value = response.data.data
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //加入購物車
+  const fetchCustomerPostAddItem = async (data: {
+    guid: string
+    orderId: number
+    productId: number
+    customization?: {
+      options?: string
+      extraPrice?: number
+    }[]
+    serving: number
+  }) => {
+    try {
+      const response = await PostAddItem({
+        guid: data.guid,
+        orderId: data.orderId,
+        productId: data.productId,
+        customization: data.customization,
+        serving: data.serving
+      })
+      if (response.status === 200) {
+        console.log(response)
+
+        // orderIdData.value = response.data.data
       }
     } catch (error) {
       console.log(error)
@@ -95,6 +130,8 @@ export const useCustomerStore = defineStore('customer', () => {
     GetProductData,
     fetchCustomerGetProduct,
     GetOrderIdData,
-    fetchCustomerGetOrderId
+    fetchCustomerGetOrderId,
+    PostAddItemData,
+    fetchCustomerPostAddItem
   }
 })
