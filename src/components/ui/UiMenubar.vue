@@ -1,15 +1,30 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
+import { useCustomerStore } from '@/stores/productsStore'
+import { defineProps, defineEmits, computed, onMounted, ref } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
 const props = defineProps<{
   menuState?: boolean
   menuArrowState?: boolean
 }>()
 defineEmits(['toggleMenu'])
+
+//api
+const customerStore = useCustomerStore()
+//購物車數量抓取儲存
+const orderInfoStorage = ref(0)
+//計算顯示的數量，若超過 99，顯示 "99+"
+const displayOrderQuantity = computed(() => {
+  return orderInfoStorage.value > 99 ? '99+' : orderInfoStorage.value
+})
+
+onMounted(async () => {
+  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  const orderInfo: any = computed(() => customerStore.getOrderInfoData)
+  orderInfoStorage.value = orderInfo.value.count
+})
 </script>
 
 <template>
-  <!-- <div v-if="menuState()" class="relative flex h-fit w-full justify-between bg-primary-700 p-3"> -->
   <div
     v-if="props.menuState"
     class="fixed left-auto z-50 flex h-fit w-full max-w-[414px] justify-between bg-primary-700 p-3"
@@ -105,6 +120,11 @@ defineEmits(['toggleMenu'])
         :router-name="'cartPickUpInformation'"
       >
         <template #only-icon>
+          <span
+            v-if="customerStore.getOrderInfoData"
+            class="absolute right-1 top-1 h-fit min-h-4 w-fit min-w-4 rounded-full border border-secondary-50 bg-error-500 px-0.5 text-xs text-netural-0"
+            >{{ displayOrderQuantity }}</span
+          >
           <svg
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"

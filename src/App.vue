@@ -1,26 +1,30 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { useCustomerStore } from '@/stores/productsStore'
 import { Drawer } from 'flowbite'
 import { RouterView, useRoute } from 'vue-router'
 import UiMenubar from '@/components/ui/UiMenubar.vue'
 import UiMenuNavbar from '@/components/ui/UiMenuNavbar.vue'
 import UiFooter from '@/components/ui/UiFooter.vue'
 
-//---------------------------------------------------------
-//判斷進入頁面是否顯示menu
 const route = useRoute()
 const menuNavbar = ref<HTMLElement | null>(null)
 const drawer = ref<any>(null)
+
+//查看路由狀態
 watch(
   () => route.path,
-  (newPath, oldPath) => {
+  () => {
+    // (newPath, oldPath) => {
     // console.log(`路由從 ${oldPath} 變化到 ${newPath}`)
+
     // 確保選單關閉
     if (menuNavbar.value) {
       drawer.value.hide()
     }
   }
 )
+//選單樣式設定
 const options = {
   placement: 'left',
   backdrop: true,
@@ -38,20 +42,34 @@ const options = {
     // console.log('drawer has been toggled')
   }
 }
+//選單開關
+function toggleMenu() {
+  drawer.value.toggle()
+}
+//選單顯示判斷
 function menuState(): boolean {
   return ['menu', 'productOrder', 'orderProcessHistory'].includes(route.name as string)
 }
+//顯示判斷判斷anchor訂定pt高度
 function mainPadding() {
   if (menuState()) {
     return 'pt-14'
   }
   return
 }
+//選單箭頭顯示判斷
 function menuArrowState(): boolean {
   return ['productOrder'].includes(route.name as string)
 }
-
-// 在页面挂载时初始化 Drawer
+//api
+const customerStore = useCustomerStore()
+//-----
+onMounted(async () => {
+  if (localStorage.guid || localStorage.orderId) {
+    await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  }
+  computed(() => customerStore.getOrderInfoData)
+})
 onMounted(() => {
   watch(
     [menuState, menuArrowState],
@@ -67,12 +85,6 @@ onMounted(() => {
     { immediate: true }
   )
 })
-
-//選單開關
-function toggleMenu() {
-  drawer.value.toggle()
-}
-//---------------------------------------------------------
 </script>
 
 <template>

@@ -38,13 +38,13 @@ const route = useRoute()
 const productId: number = Number(route.params.id)
 //-----api
 const customerStore = useCustomerStore()
-const menuItemData: any = computed(() => customerStore.GetMenuItemData)
-const orderIdData: any = computed(() => customerStore.GetOrderIdData)
+const menuItemData: any = computed(() => customerStore.getMenuItemData)
+const orderIdData: any = computed(() => customerStore.getOrderIdData)
 //抓取加購項目
 const productAddOnListData = ref<CategoryItem[]>([])
 const productAddOnList = computed(() => productAddOnListData.value)
 //抓取產品資料
-const product = computed<CategoryProduct>(() => customerStore.GetProductData)
+const product = computed<CategoryProduct>(() => customerStore.getProductData)
 //定義加購項目
 const pickedOptions = ref<{ [key: number]: PickedOption }>({
   1: {
@@ -92,6 +92,7 @@ const count = ref(1)
 //-----
 
 async function getOrderId() {
+  //驗證碼判斷新增
   if (localStorage.guid == 'undefined' || !localStorage.guid) {
     await customerStore.fetchCustomerGetOrderId()
     localStorage.guid = orderIdData.value.guid
@@ -99,6 +100,7 @@ async function getOrderId() {
   if (localStorage.orderId == 'undefined' || !localStorage.orderId) {
     localStorage.orderId = orderIdData.value.orderId
   }
+  //購物車訂單送出
   const data = {
     guid: localStorage.guid, //識別碼guid(抓cookie)
     orderId: Number(localStorage.orderId), //訂單編號(抓cookie)
@@ -107,8 +109,10 @@ async function getOrderId() {
     customization: [],
     serving: Number(count.value) //份數(int)
   }
-
-  await customerStore.fetchCustomerPostAddItem(data)
+  await customerStore.fetchCustomerAddItem(data)
+  //購物車數量變更
+  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  computed(() => customerStore.getOrderInfoData)
 }
 //-----
 onMounted(async () => {
