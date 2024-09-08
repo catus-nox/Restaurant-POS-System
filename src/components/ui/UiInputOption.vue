@@ -46,7 +46,7 @@ const model = defineModel()
     </div>
     <span class="flex items-center gap-1 place-self-end self-end justify-self-end">
       <slot name="noteIcon"></slot>
-      <span class="text-xs text-netural-600">
+      <span class="text-xs font-medium text-primary-800">
         <slot name="note"> </slot>
       </span>
     </span>
