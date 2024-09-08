@@ -10,17 +10,14 @@ defineEmits(['toggleMenu'])
 
 //api
 const customerStore = useCustomerStore()
-//購物車數量抓取儲存
-const orderInfoStorage = ref(0)
+const orderInfo: any = computed(() => customerStore.getOrderInfoData)
 //計算顯示的數量，若超過 99，顯示 "99+"
 const displayOrderQuantity = computed(() => {
-  return orderInfoStorage.value > 99 ? '99+' : orderInfoStorage.value
+  return orderInfo.value.count > 99 ? '99+' : orderInfo.value.count
 })
 
 onMounted(async () => {
   await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
-  const orderInfo: any = computed(() => customerStore.getOrderInfoData)
-  orderInfoStorage.value = orderInfo.value.count
 })
 </script>
 
@@ -121,8 +118,8 @@ onMounted(async () => {
       >
         <template #only-icon>
           <span
-            v-if="customerStore.getOrderInfoData"
-            class="absolute right-1 top-1 h-fit min-h-4 w-fit min-w-4 rounded-full border border-secondary-50 bg-error-500 px-0.5 text-xs text-netural-0"
+            v-if="orderInfo"
+            class="absolute right-1 top-1 h-fit min-h-5 w-fit min-w-5 rounded-full border border-secondary-50 bg-error-500 px-0.5 text-xs text-netural-0"
             >{{ displayOrderQuantity }}</span
           >
           <svg
