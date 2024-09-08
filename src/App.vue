@@ -89,8 +89,9 @@ onMounted(() => {
 
 <template>
   <UiMenubar
-    :menu-arrow-state="menuArrowState()"
+    v-if="menuState()"
     :menu-state="menuState()"
+    :menu-arrow-state="menuArrowState()"
     @toggle-menu="toggleMenu()"
   />
   <div
@@ -98,14 +99,15 @@ onMounted(() => {
     class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-netural-0 opacity-100 transition-all"
     aria-hidden="false"
   >
-    <UiMenuNavbar />
+    <UiMenuNavbar v-if="menuState()" />
   </div>
+
   <main class="min-h-[calc(100vh-2.5rem-16.75rem)]" :class="mainPadding()">
     <RouterView />
   </main>
+
   <UiFooter />
 </template>
-<!-- pinia function -->
 
 <style scoped>
 [aria-hidden='true'] {

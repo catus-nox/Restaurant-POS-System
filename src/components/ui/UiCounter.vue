@@ -5,7 +5,6 @@ import UiButton from '@/components/ui/UiButton.vue'
 defineEmits(['counterPlus', 'counterMinus'])
 const model = defineModel()
 const increment = () => {
-  console.log(quantity.value)
   quantity.value++
 }
 const decrement = () => {
