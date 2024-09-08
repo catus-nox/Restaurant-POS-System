@@ -17,7 +17,7 @@ watch(
     <footer class="flex flex-col gap-4 bg-netural-700 px-4 py-8">
       <div>
         <RouterLink to="/menu">
-          <img src="../../assets/img/logo.png" alt="" srcset="" class="h-15" />
+          <img src="../../assets/img/logo/character-white.png" alt="" srcset="" class="h-16" />
         </RouterLink>
       </div>
       <span class="text-xs text-netural-300">© 2024 SmartSync. All rights reserved.</span>
