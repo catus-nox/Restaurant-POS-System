@@ -7,6 +7,7 @@ import CartPayInformationView from '@/components/views/CartPayInformationView.vu
 import CartConfirmInformationView from '@/components/views/CartConfirmInformationView.vue'
 import OrderProcessHistoryView from '@/components/views/OrderProcessHistoryView.vue'
 import OrderHistoryView from '@/components/views/OrderHistoryView.vue'
+import employeeLoginView from '@/components/views/employee/loginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +57,11 @@ const router = createRouter({
       path: '/orderHistory',
       name: 'orderHistory',
       component: OrderHistoryView
+    },
+    {
+      path: '/employeeLogin',
+      name: 'employeeLogin',
+      component: employeeLoginView
     }
     // {
     //   path: '/about',
