@@ -8,7 +8,7 @@ import UiInput from '@/components/ui/UiInput.vue'
     <div class="flex w-full max-w-[459px] flex-col items-center gap-4">
       <img src="../../../assets/img/logo/character-black.png" class="max-w-72" alt="" />
       <div
-        class="flex w-full max-w-[459px] flex-col items-center gap-4 gap-7 rounded-3xl border border-netural-950 bg-netural-0 p-5"
+        class="bg-neutral-0 flex w-full max-w-[459px] flex-col items-center gap-4 gap-7 rounded-3xl border border-neutral-950 p-5"
       >
         <div class="flex w-full flex-col gap-4">
           <UiInput

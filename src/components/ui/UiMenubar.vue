@@ -119,7 +119,7 @@ onMounted(async () => {
         <template #only-icon>
           <span
             v-if="orderInfo"
-            class="absolute right-1 top-1 h-fit min-h-5 w-fit min-w-5 rounded-full border border-secondary-50 bg-error-500 px-0.5 text-xs text-netural-0"
+            class="text-neutral-0 absolute right-1 top-1 h-fit min-h-5 w-fit min-w-5 rounded-full border border-secondary-50 bg-error-500 px-0.5 text-xs"
             >{{ displayOrderQuantity }}</span
           >
           <svg
