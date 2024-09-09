@@ -1,6 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import EmployeeUiSearchAndFilterBar from '@/components/ui/employee/UiSearchAndFilterBar.vue'
+</script>
 
 <template>
-  <div>123</div>
+  <EmployeeUiSearchAndFilterBar />
 </template>
 <style scoped></style>
