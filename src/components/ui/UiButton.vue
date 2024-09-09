@@ -54,6 +54,14 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  isLeftIcon: {
+    type: Boolean,
+    default: true
+  },
+  isRightIcon: {
+    type: Boolean,
+    default: true
+  },
   fontSize: {
     type: String,
     default: 'text'
@@ -116,11 +124,11 @@ defineEmits(['defineFunction'])
         ]"
       >
         <template v-if="!props.isOnlyIcon">
-          <span :class="[props.iconSize]">
+          <span :class="[props.iconSize]" v-if="props.isLeftIcon">
             <slot name="left-icon"></slot>
           </span>
           <slot name="default"></slot>
-          <span :class="[props.iconSize]">
+          <span :class="[props.iconSize]" v-if="props.isRightIcon">
             <slot name="right-icon"></slot>
           </span>
         </template>
