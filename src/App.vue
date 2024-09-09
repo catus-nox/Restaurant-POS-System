@@ -6,6 +6,7 @@ import { RouterView, useRoute } from 'vue-router'
 import UiMenubar from '@/components/ui/UiMenubar.vue'
 import UiMenuNavbar from '@/components/ui/UiMenuNavbar.vue'
 import UiFooter from '@/components/ui/UiFooter.vue'
+import EmployeeUiNavbar from '@/components/ui/employee/UiNavbar.vue'
 
 const route = useRoute()
 const menuNavbar = ref<HTMLElement | null>(null)
@@ -61,9 +62,14 @@ function anchorMainPaddingTopChange() {
 function menuArrowState(): boolean {
   return ['productOrder'].includes(route.name as string)
 }
-
+//-----
 //判斷目前頁面
 function pageCustomerOrEmployeeState(): boolean {
+  return ['employeeLogin', 'employeeFohOrderView'].includes(route.name as string)
+}
+//-----
+//員工選單顯示判斷
+function employeeMenuState(): boolean {
   return ['employeeLogin'].includes(route.name as string)
 }
 //api
@@ -106,7 +112,7 @@ onMounted(() => {
       <div
         v-if="menuState()"
         ref="menuNavbar"
-        class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-netural-0 opacity-100 transition-all"
+        class="bg-neutral-0 fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] opacity-100 transition-all"
         aria-hidden="false"
       >
         <UiMenuNavbar />
@@ -121,7 +127,11 @@ onMounted(() => {
   </template>
   <template v-else>
     <div class="m-auto flex min-h-screen items-center justify-center overflow-hidden">
-      <div class="h-screen max-h-[834px] w-full max-w-screen-xl bg-secondary-50">
+      <div
+        class="h-screen max-h-[834px] w-full max-w-screen-xl bg-secondary-50"
+        :class="{ ['flex']: !employeeMenuState() }"
+      >
+        <EmployeeUiNavbar v-if="!employeeMenuState()"></EmployeeUiNavbar>
         <main class="h-full w-full">
           <RouterView />
         </main>

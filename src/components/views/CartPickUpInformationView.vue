@@ -75,8 +75,8 @@ onMounted(async () => {
       <div class="flex flex-col gap-2">
         <div class="text-base font-medium text-black">門市資訊</div>
         <div class="flex flex-col rounded-lg bg-secondary-100 p-3">
-          <div class="text-base text-netural-950">BUY咖</div>
-          <div class="text-base text-netural-600">高雄市苓雅區四維三路217號</div>
+          <div class="text-base text-neutral-950">BUY咖</div>
+          <div class="text-base text-neutral-600">高雄市苓雅區四維三路217號</div>
         </div>
       </div>
 
@@ -142,7 +142,7 @@ onMounted(async () => {
         <div
           v-for="(cart, index) in cartData"
           :key="index"
-          class="flex items-center justify-between rounded-lg border border-netural-950 bg-white p-3"
+          class="flex items-center justify-between rounded-lg border border-neutral-950 bg-white p-3"
         >
           <div class="flex items-center gap-4">
             <img
@@ -155,7 +155,7 @@ onMounted(async () => {
             /> -->
             <div class="flex w-[118px] flex-col gap-1">
               <div class="text-base font-bold text-black">{{ cart.name }}</div>
-              <div class="text-xs font-medium text-netural-300">
+              <div class="text-xs font-medium text-neutral-300">
                 {{ cart.customization.join(' |') }}
               </div>
               <div class="text-base font-medium text-black">{{ cart.price }}</div>
@@ -168,26 +168,26 @@ onMounted(async () => {
       <div class="flex flex-col gap-1">
         <div class="flex flex-col gap-2">
           <div class="flex justify-between">
-            <div class="tickets-netural-950 text-base font-normal leading-snug">特殊需求</div>
+            <div class="tickets-neutral-950 text-base font-normal leading-snug">特殊需求</div>
             <UiBadge :style="'checkboxBadge'" />
           </div>
 
-          <div class="flex rounded-lg border border-netural-950 bg-white px-4 py-3">
+          <div class="flex rounded-lg border border-neutral-950 bg-white px-4 py-3">
             <textarea
               id="comment"
               name="comment"
               placeholder="新增備註"
               rows="3"
-              class="w-full border-none p-0 text-base font-normal leading-snug text-netural-950 placeholder:text-gray-500 focus:outline-none focus:ring-0 focus-visible:outline-none"
+              class="w-full border-none p-0 text-base font-normal leading-snug text-neutral-950 placeholder:text-gray-500 focus:outline-none focus:ring-0 focus-visible:outline-none"
             ></textarea>
           </div>
         </div>
-        <div class="text-right text-base font-normal leading-snug text-netural-500">0/100</div>
+        <div class="text-right text-base font-normal leading-snug text-neutral-500">0/100</div>
       </div>
     </div>
   </div>
 
-  <div class="flex items-center justify-center gap-3 border-t border-netural-500 p-3">
+  <div class="flex items-center justify-center gap-3 border-t border-neutral-500 p-3">
     <UiButton
       :btn-style="'style4'"
       :btn-width="'w-fit'"

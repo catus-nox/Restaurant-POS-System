@@ -54,17 +54,17 @@ import UiButton from '@/components/ui/UiButton.vue'
       <div class="flex flex-col gap-2">
         <div class="text-base font-medium leading-normal text-black">訂單明細</div>
         <table
-          class="flex w-full flex-col items-start justify-start rounded border border-netural-900 bg-white"
+          class="flex w-full flex-col items-start justify-start rounded border border-neutral-900 bg-white"
         >
-          <thead class="w-full border-b border-netural-900 bg-secondary-100">
+          <thead class="w-full border-b border-neutral-900 bg-secondary-100">
             <tr class="flex w-full">
-              <th class="w-full px-3 py-2.5 text-xs font-medium leading-none text-netural-900">
+              <th class="w-full px-3 py-2.5 text-xs font-medium leading-none text-neutral-900">
                 商品
               </th>
-              <th class="w-2/5 px-3 py-2.5 text-xs font-medium leading-none text-netural-900">
+              <th class="w-2/5 px-3 py-2.5 text-xs font-medium leading-none text-neutral-900">
                 數量
               </th>
-              <th class="w-2/5 px-3 py-2.5 text-xs font-medium leading-none text-netural-900">
+              <th class="w-2/5 px-3 py-2.5 text-xs font-medium leading-none text-neutral-900">
                 小計
               </th>
             </tr>
@@ -72,17 +72,17 @@ import UiButton from '@/components/ui/UiButton.vue'
           <tbody class="w-full">
             <tr class="flex items-center justify-center">
               <td
-                class="w-full px-3 py-2.5 text-center text-xs font-medium leading-none text-netural-900"
+                class="w-full px-3 py-2.5 text-center text-xs font-medium leading-none text-neutral-900"
               >
                 經典美式咖啡 (少冰)
               </td>
               <td
-                class="w-2/5 px-3 py-2.5 text-center text-xs font-medium leading-none text-netural-900"
+                class="w-2/5 px-3 py-2.5 text-center text-xs font-medium leading-none text-neutral-900"
               >
                 1
               </td>
               <td
-                class="w-2/5 px-3 py-2.5 text-center text-xs font-medium leading-none text-netural-900"
+                class="w-2/5 px-3 py-2.5 text-center text-xs font-medium leading-none text-neutral-900"
               >
                 $120
               </td>
@@ -98,7 +98,7 @@ import UiButton from '@/components/ui/UiButton.vue'
     </div>
   </div>
 
-  <div class="flex flex-col items-center justify-center gap-3 border-t border-netural-500 p-3">
+  <div class="flex flex-col items-center justify-center gap-3 border-t border-neutral-500 p-3">
     <UiButton
       :btn-style="'style1'"
       :btn-width="'w-full '"

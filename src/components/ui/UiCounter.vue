@@ -57,7 +57,7 @@ const updateQuantity = (target: HTMLInputElement) => {
       </template>
     </UiButton>
     <input
-      class="text-tickets-netural-950 block h-4 w-12 min-w-8 border-none bg-opacity-0 text-center text shadow-none outline-none checked:bg-black focus:ring-0 focus-visible:ring-0"
+      class="text-tickets-neutral-950 block h-4 w-12 min-w-8 border-none bg-opacity-0 text-center text shadow-none outline-none checked:bg-black focus:ring-0 focus-visible:ring-0"
       :value="quantity"
       @input="updateQuantity($event.target as HTMLInputElement)"
     />
