@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import UiButton from '@/components/ui/UiButton.vue'
+import EmployeeUiNavbarOptionButton from '@/components/ui/employee/UiNavbarOptionButton.vue'
 import { useCustomerStore } from '@/stores/productsStore'
 import { defineProps, defineEmits, computed, onMounted, ref } from 'vue'
 </script>
@@ -8,7 +9,7 @@ import { defineProps, defineEmits, computed, onMounted, ref } from 'vue'
   <div class="flex w-full max-w-32 flex-col justify-between bg-primary-700 px-4 py-6">
     <div class="flex flex-col items-center gap-4">
       <div class="flex flex-col items-center gap-2">
-        <div class="h-20 w-20 overflow-hidden rounded-full bg-netural-0">
+        <div class="bg-neutral-0 h-20 w-20 overflow-hidden rounded-full">
           <img
             class="-ml-[3px] w-[207%] max-w-none object-cover"
             src="../../../assets/img/logo/character-black.png"
@@ -49,7 +50,7 @@ import { defineProps, defineEmits, computed, onMounted, ref } from 'vue'
       </UiButton>
     </div>
 
-    <div>4564</div>
+    <div><EmployeeUiNavbarOptionButton></EmployeeUiNavbarOptionButton></div>
   </div>
 </template>
 

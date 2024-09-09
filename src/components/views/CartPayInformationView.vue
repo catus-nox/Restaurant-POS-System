@@ -124,7 +124,7 @@ const payData = {
       </div>
 
       <div
-        class="border-tickets-netural-950 flex items-center justify-between rounded-lg border bg-white p-3"
+        class="border-tickets-neutral-950 flex items-center justify-between rounded-lg border bg-white p-3"
       >
         <div class="flex items-center gap-4">
           <img
@@ -133,7 +133,7 @@ const payData = {
           />
           <div class="flex w-[118px] flex-col gap-1">
             <div class="text-base font-bold text-black">經典美式咖啡</div>
-            <div class="text-base font-medium text-netural-300">少冰</div>
+            <div class="text-base font-medium text-neutral-300">少冰</div>
             <div class="text-base font-medium text-black">$ 120</div>
           </div>
         </div>
@@ -141,7 +141,7 @@ const payData = {
     </div>
   </div>
 
-  <div class="border-tickets-netural-500 flex items-center justify-center gap-3 border-t p-3">
+  <div class="border-tickets-neutral-500 flex items-center justify-center gap-3 border-t p-3">
     <UiButton
       :btn-style="'style4'"
       :btn-width="'w-fit'"

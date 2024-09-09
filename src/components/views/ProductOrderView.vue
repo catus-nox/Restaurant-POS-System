@@ -265,7 +265,7 @@ onMounted(async () => {
             rows="3"
             placeholder="新增備註"
           ></textarea>
-          <span class="self-end text-netural-600">{{ textareaText.length }}/100</span>
+          <span class="self-end text-neutral-600">{{ textareaText.length }}/100</span>
         </div>
       </div>
 
