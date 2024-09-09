@@ -33,7 +33,13 @@ import UiInput from '@/components/ui/UiInput.vue'
           </UiInput>
         </div>
         <div class="flex w-full flex-col items-center gap-2">
-          <UiButton :btn-style="'style1'" :btn-width="'w-full'" :router-name="'menu'">
+          <UiButton
+            :btn-style="'style1'"
+            :btn-width="'w-full'"
+            :router-name="'employeeFohOrderView'"
+            :is-left-icon="false"
+            :is-right-icon="false"
+          >
             登入
           </UiButton>
           <RouterLink
