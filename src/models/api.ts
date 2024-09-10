@@ -78,3 +78,16 @@ export function getCart(id: number, guid: string, data?: any) {
     data
   })
 }
+
+//購物車訂單編輯(修改份數)
+export function postEditCart(data: { orderId: string; orderItemId: number; serving: number }) {
+  return request({
+    url: `/customer/editCart`,
+    method: 'POST',
+    data: {
+      orderId: data.orderId,
+      orderItemId: data.orderItemId,
+      serving: data.serving
+    }
+  })
+}

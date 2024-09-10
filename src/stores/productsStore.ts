@@ -7,7 +7,8 @@ import {
   getOrderId,
   addItem,
   getOrderInfo,
-  getCart
+  getCart,
+  postEditCart
 } from '@/models/api'
 
 export const useCustomerStore = defineStore('customer', () => {
@@ -28,6 +29,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const orderInfoData: any = ref()
   //取得購物車現有訂單
   const cartData: any = ref()
+  //購物車訂單編輯(修改份數)
+  const editCartData: any = ref()
 
   //------
   //getter
@@ -46,6 +49,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const getOrderInfoData = computed(() => orderInfoData.value)
   //取得購物車現有訂單
   const getCartData = computed(() => cartData.value)
+  //購物車訂單編輯(修改份數)
+  const postEditCartData = computed(() => editCartData.value)
 
   //------
   //action 異步請求
@@ -133,9 +138,26 @@ export const useCustomerStore = defineStore('customer', () => {
   const fetchCustomerGetCart = async (id: number, guid: string) => {
     try {
       const response = await getCart(id, guid)
-      console.log(response)
-
+      // console.log(response)
       cartData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //購物車訂單編輯(修改份數)
+  const fetchCustomerPostEditCart = async (data: {
+    orderId: string
+    orderItemId: number
+    serving: number
+  }) => {
+    try {
+      await postEditCart({
+        orderId: data.orderId,
+        orderItemId: data.orderItemId,
+        serving: data.serving
+      })
+      // itemData.value
     } catch (error) {
       console.log(error)
     }
@@ -155,6 +177,8 @@ export const useCustomerStore = defineStore('customer', () => {
     getOrderInfoData,
     fetchCustomerGetOrderInfo,
     getCartData,
-    fetchCustomerGetCart
+    fetchCustomerGetCart,
+    postEditCartData,
+    fetchCustomerPostEditCart
   }
 })
