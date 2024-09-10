@@ -139,30 +139,36 @@ onMounted(async () => {
         <div class="text-xl font-semibold text-black">訂單內容</div>
       </div>
       <template v-if="orderInfoData">
-        <div
-          v-for="(cart, index) in cartData"
-          :key="index"
-          class="flex items-center justify-between rounded-lg border border-neutral-950 bg-white p-3"
-        >
-          <div class="flex items-center gap-4">
-            <img
-              class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
-              src="../../assets/img/1002928.jpg"
-            />
-            <!-- <img
+        <template v-for="(cart, index) in cartData" :key="index">
+          <template v-if="serving[index] > 0">
+            <div
+              class="flex items-center justify-between rounded-lg border border-neutral-950 bg-white p-3"
+            >
+              <div class="flex items-center gap-4">
+                <img
+                  class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
+                  src="../../assets/img/1002928.jpg"
+                />
+                <!-- <img
               class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
               :src="cart.imagePath"
             /> -->
-            <div class="flex w-[118px] flex-col gap-1">
-              <div class="text-base font-bold text-black">{{ cart.name }}</div>
-              <div class="text-xs font-medium text-neutral-300">
-                {{ cart.customization.join(' |') }}
+                <div class="flex w-[118px] flex-col gap-1">
+                  <div class="text-base font-bold text-black">{{ cart.name }}</div>
+                  <div class="text-xs font-medium text-neutral-300">
+                    {{ cart.customization.join(' |') }}
+                  </div>
+                  <div class="text-base font-medium text-black">{{ cart.price }}</div>
+                </div>
               </div>
-              <div class="text-base font-medium text-black">{{ cart.price }}</div>
+              <UiCounter
+                v-model="serving[index]"
+                :order-item-id="cart.orderItemId"
+                :serving="serving[index]"
+              ></UiCounter>
             </div>
-          </div>
-          <UiCounter v-model="serving[index]"></UiCounter>
-        </div>
+          </template>
+        </template>
       </template>
 
       <div class="flex flex-col gap-1">
