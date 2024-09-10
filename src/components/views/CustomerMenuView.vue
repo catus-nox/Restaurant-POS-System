@@ -82,7 +82,7 @@ onMounted(async () => {
   <div
     ref="fixElement"
     :class="{ fixed: isFixed }"
-    class="top-14 z-20 w-full max-w-[414px] overflow-x-auto bg-primary-50 p-3"
+    class="top-14 z-20 w-full max-w-screen-sm overflow-x-auto bg-primary-50 p-3"
   >
     <UiCustomerMenuNavbar
       :menu-category="menuCategory"
