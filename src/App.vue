@@ -6,6 +6,7 @@ import { RouterView, useRoute } from 'vue-router'
 import UiMenubar from '@/components/ui/UiMenubar.vue'
 import UiMenuNavbar from '@/components/ui/UiMenuNavbar.vue'
 import UiFooter from '@/components/ui/UiFooter.vue'
+import EmployeeUiNavbar from '@/components/ui/employee/UiNavbar.vue'
 
 const route = useRoute()
 const menuNavbar = ref<HTMLElement | null>(null)
@@ -51,7 +52,7 @@ function menuState(): boolean {
   return ['menu', 'productOrder', 'orderProcessHistory'].includes(route.name as string)
 }
 //顯示判斷判斷anchor訂定pt高度
-function mainPadding() {
+function anchorMainPaddingTopChange() {
   if (menuState()) {
     return 'pt-14'
   }
@@ -60,6 +61,16 @@ function mainPadding() {
 //選單箭頭顯示判斷
 function menuArrowState(): boolean {
   return ['productOrder'].includes(route.name as string)
+}
+//-----
+//判斷目前頁面
+function pageCustomerOrEmployeeState(): boolean {
+  return ['employeeLogin', 'employeeFohOrderView'].includes(route.name as string)
+}
+//-----
+//員工選單顯示判斷
+function employeeMenuState(): boolean {
+  return ['employeeLogin'].includes(route.name as string)
 }
 //api
 const customerStore = useCustomerStore()
@@ -88,25 +99,45 @@ onMounted(() => {
 </script>
 
 <template>
-  <UiMenubar
-    v-if="menuState()"
-    :menu-state="menuState()"
-    :menu-arrow-state="menuArrowState()"
-    @toggle-menu="toggleMenu()"
-  />
-  <div
-    ref="menuNavbar"
-    class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-netural-0 opacity-100 transition-all"
-    aria-hidden="false"
-  >
-    <UiMenuNavbar v-if="menuState()" />
-  </div>
+  <template v-if="!pageCustomerOrEmployeeState()">
+    <div
+      class="top relative m-auto min-h-screen w-full max-w-screen-sm overflow-hidden bg-primary-50"
+    >
+      <UiMenubar
+        v-if="menuState()"
+        :menu-state="menuState()"
+        :menu-arrow-state="menuArrowState()"
+        @toggle-menu="toggleMenu()"
+      />
+      <div
+        v-if="menuState()"
+        ref="menuNavbar"
+        class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-neutral-0 opacity-100 transition-all"
+        aria-hidden="false"
+      >
+        <UiMenuNavbar />
+      </div>
 
-  <main class="min-h-[calc(100vh-2.5rem-16.75rem)]" :class="mainPadding()">
-    <RouterView />
-  </main>
+      <main class="min-h-[calc(100vh-15.75rem)]" :class="anchorMainPaddingTopChange()">
+        <RouterView />
+      </main>
 
-  <UiFooter />
+      <UiFooter />
+    </div>
+  </template>
+  <template v-else>
+    <div class="m-auto flex min-h-screen items-center justify-center overflow-hidden">
+      <div
+        class="h-screen max-h-[834px] w-full max-w-screen-xl bg-secondary-50"
+        :class="{ ['flex']: !employeeMenuState() }"
+      >
+        <EmployeeUiNavbar v-if="!employeeMenuState()"></EmployeeUiNavbar>
+        <main class="flex h-full w-full flex-row">
+          <RouterView />
+        </main>
+      </div>
+    </div>
+  </template>
 </template>
 
 <style scoped>
