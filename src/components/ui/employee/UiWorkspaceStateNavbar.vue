@@ -12,8 +12,8 @@ defineEmits(['changeCategoryId'])
 </script>
 
 <template>
-  <div class="">
-    <ul class="scrollbar flex overflow-x-auto shadow-[inset_0_-2px_0_-1px] shadow-neutral-300">
+  <div class="scrollbar overflow-x-auto">
+    <ul class="flex shadow-[inset_0_-2px_0_-1px] shadow-neutral-300">
       <template v-for="(state, index) in states" :key="index">
         <template v-if="index == 0">
           <li :id="state.text" class="state-navbar-btn press-state-navbar-btn">
@@ -36,8 +36,8 @@ defineEmits(['changeCategoryId'])
 
 <style scoped>
 .state-navbar-btn {
-  @apply inline-flex w-full max-w-56 items-center gap-2;
-  @apply cursor-pointer px-6 py-4 text-center text-h5;
+  @apply inline-flex grow items-center justify-center gap-2;
+  @apply cursor-pointer px-2.5 py-4 text-center text-h5;
   @apply font-normal text-neutral-300;
 }
 .state-navbar-btn span {
@@ -52,6 +52,6 @@ defineEmits(['changeCategoryId'])
   @apply font-bold text-neutral-950;
 }
 .scrollbar::-webkit-scrollbar {
-  @apply hidden;
+  /* @apply hidden; */
 }
 </style>
