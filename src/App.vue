@@ -112,7 +112,7 @@ onMounted(() => {
       <div
         v-if="menuState()"
         ref="menuNavbar"
-        class="bg-neutral-0 fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] opacity-100 transition-all"
+        class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-neutral-0 opacity-100 transition-all"
         aria-hidden="false"
       >
         <UiMenuNavbar />
@@ -132,7 +132,7 @@ onMounted(() => {
         :class="{ ['flex']: !employeeMenuState() }"
       >
         <EmployeeUiNavbar v-if="!employeeMenuState()"></EmployeeUiNavbar>
-        <main class="h-full w-full">
+        <main class="flex h-full w-full flex-row">
           <RouterView />
         </main>
       </div>

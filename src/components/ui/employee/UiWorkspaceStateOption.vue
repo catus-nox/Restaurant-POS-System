@@ -4,18 +4,16 @@ import { defineProps, defineModel } from 'vue'
 
 <template>
   <div
-    class="inline-flex items-center overflow-hidden rounded-xl bg-white shadow-[0_0_0_2px] shadow-neutral-900"
+    class="inline-flex overflow-hidden rounded-xl bg-white shadow-[0_0_0_2px] shadow-neutral-900"
   >
     <div class="inline-flex grow flex-col">
-      <div class="inline-flex items-center justify-between bg-primary-300 p-4">
-        <div class="text-2xl font-bold text-neutral-950">外帶 05</div>
+      <div class="inline-flex flex-wrap items-center justify-between bg-primary-300 p-4">
+        <div class="text-h4 font-bold text-neutral-950">外帶 05</div>
         <div class="text-base font-normal text-neutral-950">待結帳</div>
       </div>
 
-      <div
-        class="flex grow flex-col items-start justify-center gap-2 p-4 text-xl font-normal text-neutral-950"
-      >
-        <div class="inline-flex items-center gap-2">
+      <div class="flex grow flex-col gap-2 p-4 text-h5 font-normal text-neutral-950">
+        <div class="inline-flex flex-wrap items-center gap-2">
           <svg
             class="h-6 w-6"
             aria-hidden="true"
@@ -32,7 +30,7 @@ import { defineProps, defineModel } from 'vue'
 
           <div>0912345678</div>
         </div>
-        <div class="inline-flex items-center gap-2">
+        <div class="inline-flex flex-wrap items-center gap-2">
           <svg
             class="h-6 w-6"
             aria-hidden="true"
@@ -51,7 +49,7 @@ import { defineProps, defineModel } from 'vue'
 
           <div>00:00 取餐</div>
         </div>
-        <div class="inline-flex items-center gap-2">
+        <div class="inline-flex flex-wrap items-center gap-2">
           <svg
             class="h-6 w-6"
             aria-hidden="true"
