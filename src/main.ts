@@ -7,7 +7,8 @@ import App from './App.vue'
 import router from './router'
 
 //切換頁面後顯示最上方
-router.afterEach((to, from, failure) => {
+router.afterEach(() => {
+  // to, from, failure
   window.scrollTo(0, 0)
 })
 

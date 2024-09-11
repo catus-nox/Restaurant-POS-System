@@ -7,6 +7,8 @@ import CartPayInformationView from '@/components/views/CartPayInformationView.vu
 import CartConfirmInformationView from '@/components/views/CartConfirmInformationView.vue'
 import OrderProcessHistoryView from '@/components/views/OrderProcessHistoryView.vue'
 import OrderHistoryView from '@/components/views/OrderHistoryView.vue'
+import employeeLoginView from '@/components/views/employee/loginView.vue'
+import employeeFohOrderView from '@/components/views/employee/foh/orderView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,14 +40,10 @@ const router = createRouter({
       component: CartPayInformationView
     },
     {
-      path: '/cartConfirmInformation',
+      path: '/cartConfirmInformation/:guid',
       name: 'cartConfirmInformation',
-      component: CartConfirmInformationView
-    },
-    {
-      path: '/cartConfirmInformation',
-      name: 'cartConfirmInformation',
-      component: CartConfirmInformationView
+      component: CartConfirmInformationView,
+      props: (route) => ({ guid: String(route.params.guid) })
     },
     {
       path: '/orderProcessHistory',
@@ -56,6 +54,16 @@ const router = createRouter({
       path: '/orderHistory',
       name: 'orderHistory',
       component: OrderHistoryView
+    },
+    {
+      path: '/employeeLogin',
+      name: 'employeeLogin',
+      component: employeeLoginView
+    },
+    {
+      path: '/employeeFohOrderView',
+      name: 'employeeFohOrderView',
+      component: employeeFohOrderView
     }
     // {
     //   path: '/about',

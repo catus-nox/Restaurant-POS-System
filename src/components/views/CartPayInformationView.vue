@@ -1,25 +1,72 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import router from '@/router'
 import UiCartProcess from '@/components/ui/UiCartProcess.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
-
+import { useCustomerStore } from '@/stores/productsStore'
+//-----
+function toRouterName() {
+  router.push({ name: 'cartConfirmInformation', params: { guid: localStorage.guid } })
+}
+//-----
+//選單控制
 const nowClick = ref<number>(0)
 function toggleMenu(index: number) {
-  console.log(index)
-
   nowClick.value = index
 }
-
-const customerStatus = [{ name: '現金付款' }, { name: 'Line Pay' }]
-
-const pay = ref('One')
-const payData = {
+//api
+const customerStore = useCustomerStore()
+const cartData: any = computed(() => customerStore.getCartData)
+const orderInfoData: any = computed(() => customerStore.getOrderInfoData)
+//-----
+const customerStatus = [
+  { name: '現金付款', id: '現金付款' },
+  { name: 'Line Pay', id: 'linePay' }
+]
+const payData: {
+  name: string
+  options: {
+    name: string
+    id: '載具' | '統編' | '捐贈發票' | '紙本'
+  }[]
+} = {
   name: '發票資訊',
-  options: ['手機載具', '公司統一編號', '捐贈發票', '發票紙本證明聯']
+  options: [
+    { name: '手機載具', id: '載具' },
+    { name: '公司統一編號', id: '統編' },
+    { name: '捐贈發票', id: '捐贈發票' },
+    { name: '發票紙本證明聯', id: '紙本' }
+  ]
 }
+const pay = ref(payData.options[3].id)
+
+//
+async function confirmOrderCashData() {
+  let data: {
+    orderId: Number
+    guid: String
+    invoice: '載具' | '統編' | '捐贈發票' | '紙本' //發票類型 1"載具" 2"統編" 3"捐贈發票" 4"紙本"
+    invoiceCarrier?: String | null //發票載具號碼or統編
+  } = {
+    orderId: Number(localStorage.orderId),
+    guid: String(localStorage.guid),
+    invoice: pay.value,
+    invoiceCarrier: null
+  }
+  console.log(data)
+
+  await customerStore.fetchCustomerPostConfirmOrderCash(data)
+
+  toRouterName()
+}
+//-----
+onMounted(async () => {
+  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  await customerStore.fetchCustomerGetCart(localStorage.orderId, localStorage.guid)
+})
 </script>
 
 <template>
@@ -66,6 +113,7 @@ const payData = {
         </template>
       </div>
     </div>
+
     <template v-if="nowClick === 0">
       <div class="flex flex-col justify-end gap-2">
         <div class="flex flex-col gap-2" v-for="(option, index) in payData.options" :key="index">
@@ -74,8 +122,14 @@ const payData = {
             <UiBadge :style="'radioBadge'" />
           </div>
 
-          <UiInputOption :key="index" :id="option" :value="option" :type="'radio'">
-            {{ option }}
+          <UiInputOption
+            :key="index"
+            :id="option.name"
+            :value="option.id"
+            :type="'radio'"
+            v-model="pay"
+          >
+            {{ option.name }}
           </UiInputOption>
 
           <div class="flex flex-col gap-2" v-if="index === 0">
@@ -122,26 +176,37 @@ const payData = {
       <div class="flex items-center justify-between">
         <div class="text-xl font-semibold text-black">訂單內容</div>
       </div>
-
-      <div
-        class="border-tickets-netural-950 flex items-center justify-between rounded-lg border bg-white p-3"
-      >
-        <div class="flex items-center gap-4">
-          <img
-            class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
-            src="../../assets/img/1002930.jpg"
-          />
-          <div class="flex w-[118px] flex-col gap-1">
-            <div class="text-base font-bold text-black">經典美式咖啡</div>
-            <div class="text-base font-medium text-netural-300">少冰</div>
-            <div class="text-base font-medium text-black">$ 120</div>
+      <template v-if="orderInfoData">
+        <template v-for="(cart, index) in cartData" :key="index">
+          <div
+            class="flex items-center justify-between rounded-lg border border-neutral-950 bg-white p-3"
+          >
+            <div class="flex grow items-center gap-4">
+              <div
+                class="inline-flex h-9 min-w-9 flex-col items-center justify-center rounded bg-primary-100 px-1 py-2 font-bold text-black"
+              >
+                {{ cart.serving }}
+              </div>
+              <div class="flex grow flex-row items-center gap-3">
+                <div class="text-base font-bold text-black">{{ cart.name }}</div>
+                <div class="text-xs font-medium text-neutral-300">
+                  {{ cart.customization.join(' |') }}
+                </div>
+                <div class="self-end text-base font-bold text-black">$ {{ cart.price }}</div>
+              </div>
+            </div>
           </div>
-        </div>
+        </template>
+      </template>
+
+      <div class="inline-flex items-center justify-between p-3 text-base font-bold text-black">
+        <div>應付金額</div>
+        <div v-if="orderInfoData">$ {{ orderInfoData.totalAmount }}</div>
       </div>
     </div>
   </div>
 
-  <div class="border-tickets-netural-500 flex items-center justify-center gap-3 border-t p-3">
+  <div class="flex items-center justify-center gap-3 border-t border-neutral-500 p-3">
     <UiButton
       :btn-style="'style4'"
       :btn-width="'w-fit'"
@@ -156,28 +221,27 @@ const payData = {
     >
       繼續點餐
     </UiButton>
+
     <UiButton
       :btn-style="'style1'"
       :btn-width="'w-full '"
-      :btn-padding="'px-6 py-2'"
-      :icon-size="''"
-      :icon-style="''"
       :is-only-icon="false"
       :font-size="'text justify-between flex w-full items-center'"
-      :font-padding="'!px-0'"
-      :router-name="'cartConfirmInformation'"
+      :font-padding="'px-0'"
+      :icon-size="'w-auto'"
+      @define-function="confirmOrderCashData"
     >
-      <template #left-icon>
+      <template #left-icon v-if="orderInfoData">
         <span
-          class="bet inline-flex h-4 w-4 flex-col items-center justify-center rounded border border-white text-sm"
-          ><span class="pb-0.5">1</span></span
+          class="inline-flex h-4 min-w-4 flex-col items-center justify-center rounded border border-white text-sm"
+          ><span class="p-0.5">{{ orderInfoData.count }}</span></span
         >
       </template>
 
-      <span>送出訂單</span>
+      <span>前往結帳</span>
 
-      <template #right-icon>
-        <span>$100</span>
+      <template #right-icon v-if="orderInfoData">
+        <span>${{ orderInfoData.totalAmount }}</span>
       </template>
     </UiButton>
   </div>

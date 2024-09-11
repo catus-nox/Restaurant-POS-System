@@ -1,75 +1,33 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { ref, watch, onMounted, nextTick } from 'vue'
+import { useCustomerStore } from '@/stores/productsStore'
+import { defineProps, defineEmits, computed, onMounted, ref } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
-import UiMenuNavbar from './UiMenuNavbar.vue'
-import { Drawer } from 'flowbite'
+const props = defineProps<{
+  menuState?: boolean
+  menuArrowState?: boolean
+}>()
+defineEmits(['toggleMenu'])
 
-//判斷進入頁面是否顯示menu
-const route = useRoute()
-const menuNavbar = ref<HTMLElement | null>(null)
-const drawer = ref<any>(null)
-watch(
-  () => route.path,
-  (newPath, oldPath) => {
-    console.log(`路由從 ${oldPath} 變化到 ${newPath}`)
-    // 確保選單關閉
-    if (menuNavbar.value) {
-      drawer.value.hide()
-    }
-  }
-)
-const options = {
-  placement: 'left',
-  backdrop: true,
-  bodyScrolling: false,
-  edge: false,
-  edgeOffset: '',
-  backdropClasses: 'absolute inset-0 z-30 bg-neutral-950/10 w-full top-14',
-  onHide: () => {
-    // console.log('drawer is hidden')
-  },
-  onShow: () => {
-    // console.log('drawer is shown')
-  },
-  onToggle: () => {
-    // console.log('drawer has been toggled')
-  }
-}
-function menuState(): boolean {
-  return ['menu', 'productOrder', 'orderProcessHistory'].includes(route.name as string)
-}
-function menuArrowState(): boolean {
-  return ['productOrder'].includes(route.name as string)
-}
-
-// 在页面挂载时初始化 Drawer
-onMounted(() => {
-  watch(
-    [menuState, menuArrowState],
-    async (newState) => {
-      if (newState) {
-        await nextTick()
-        if (menuNavbar.value) {
-          drawer.value = new Drawer(menuNavbar.value, options)
-          drawer.value.hide()
-        }
-      }
-    },
-    { immediate: true }
-  )
+//api
+const customerStore = useCustomerStore()
+const orderInfo: any = computed(() => customerStore.getOrderInfoData)
+//計算顯示的數量，若超過 99，顯示 "99+"
+const displayOrderQuantity = computed(() => {
+  return orderInfo.value.count > 99 ? '99+' : orderInfo.value.count
 })
 
-//選單開關
-function toggleMenu() {
-  drawer.value.toggle()
-}
+onMounted(async () => {
+  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+})
 </script>
 
 <template>
-  <div v-if="menuState()" class="relative flex h-fit w-full justify-between bg-primary-700 p-3">
-    <template v-if="!menuArrowState()">
-      <div @click="toggleMenu">
+  <div
+    v-if="props.menuState"
+    class="fixed left-auto z-50 flex h-fit w-full max-w-screen-sm justify-between bg-primary-700 p-3"
+  >
+    <template v-if="!props.menuArrowState">
+      <div @click="$emit('toggleMenu')">
         <UiButton
           :btn-style="'style4'"
           :btn-width="'w-8 h-8'"
@@ -94,17 +52,9 @@ function toggleMenu() {
           </template>
         </UiButton>
       </div>
-
-      <div
-        ref="menuNavbar"
-        class="absolute left-auto top-14 z-40 -ml-3 h-[calc(100vh-3.5rem)] w-full max-w-[305px] -translate-x-full bg-netural-0 transition-all"
-        aria-hidden="false"
-      >
-        <UiMenuNavbar />
-      </div>
     </template>
 
-    <template v-if="menuArrowState()">
+    <template v-if="props.menuArrowState">
       <div>
         <UiButton
           :btn-style="'style4'"
@@ -167,6 +117,11 @@ function toggleMenu() {
         :router-name="'cartPickUpInformation'"
       >
         <template #only-icon>
+          <span
+            v-if="orderInfo"
+            class="text-neutral-0 absolute right-1 top-1 h-fit min-h-5 w-fit min-w-5 rounded-full border border-secondary-50 bg-error-500 px-0.5 text-xs"
+            >{{ displayOrderQuantity }}</span
+          >
           <svg
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
