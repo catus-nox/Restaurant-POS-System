@@ -140,11 +140,15 @@ const count = ref(1)
 //加入購物車按鈕
 async function getOrderId() {
   //驗證碼判斷新增
-  if (localStorage.guid == 'undefined' || !localStorage.guid) {
+  if (localStorage.guid == 'undefined' || localStorage.guid == 'null' || !localStorage.guid) {
     await customerStore.fetchCustomerGetOrderId()
     localStorage.guid = orderIdData.value.guid
   }
-  if (localStorage.orderId == 'undefined' || !localStorage.orderId) {
+  if (
+    localStorage.orderId == 'undefined' ||
+    localStorage.orderId == 'null' ||
+    !localStorage.orderId
+  ) {
     localStorage.orderId = orderIdData.value.orderId
   }
   //購物車訂單送出
