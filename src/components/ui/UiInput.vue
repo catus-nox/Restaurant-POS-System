@@ -42,6 +42,7 @@ const props = defineProps({
     }
   }
 })
+const model = defineModel()
 </script>
 
 <template>
@@ -58,8 +59,9 @@ const props = defineProps({
         <input
           :type="props.type"
           :placeholder="props.placeholder"
-          class="focus:placeholder:text-neutral-950focus:shadow-[0_0_0_2px] bg-neutral-0 absolute left-0 top-0 z-0 h-full w-full rounded-full border-none p-0 py-2 pl-12 pr-3 font-medium text-neutral-500 shadow-[0_0_0_1px] shadow-neutral-950 placeholder:text-neutral-500 hover:text-neutral-500 hover:shadow-[0_0_0_2px] hover:shadow-primary-600 hover:placeholder:text-neutral-500 focus:text-neutral-950 focus:shadow-neutral-950 focus:ring-0 disabled:text-neutral-950 disabled:shadow-[0_0_0_1px] disabled:shadow-neutral-400 disabled:placeholder:text-neutral-950"
+          class="focus:placeholder:text-neutral-950focus:shadow-[0_0_0_2px] absolute left-0 top-0 z-0 h-full w-full rounded-full border-none bg-neutral-0 p-0 py-2 pl-12 pr-3 font-medium text-neutral-500 shadow-[0_0_0_1px] shadow-neutral-950 placeholder:text-neutral-500 hover:text-neutral-500 hover:shadow-[0_0_0_2px] hover:shadow-primary-600 hover:placeholder:text-neutral-500 focus:text-neutral-950 focus:shadow-neutral-950 focus:ring-0 disabled:text-neutral-950 disabled:shadow-[0_0_0_1px] disabled:shadow-neutral-400 disabled:placeholder:text-neutral-950"
           :class="[props.error]"
+          v-model="model"
         />
         <span class="relative z-10">
           <slot name="suffix"></slot>
@@ -70,8 +72,9 @@ const props = defineProps({
         v-if="props.isIcon == false"
         :type="props.type"
         :placeholder="props.placeholder"
-        class="focus:placeholder:text-neutral-950focus:shadow-[0_0_0_2px] hover:3 bg-neutral-0 absolute left-0 top-0 z-0 h-full w-full rounded-full border-none p-0 py-2 pl-4 pr-3 font-medium text-neutral-500 shadow-[0_0_0_1px] shadow-neutral-950 placeholder:text-neutral-300 hover:text-neutral-500 hover:shadow-[0_0_0_2px] hover:shadow-primary-600 focus:text-neutral-950 focus:shadow-neutral-950 focus:ring-0 disabled:text-neutral-950 disabled:shadow-[0_0_0_1px] disabled:shadow-neutral-400 disabled:placeholder:text-neutral-950"
+        class="focus:placeholder:text-neutral-950focus:shadow-[0_0_0_2px] hover:3 absolute left-0 top-0 z-0 h-full w-full rounded-full border-none bg-neutral-0 p-0 py-2 pl-4 pr-3 font-medium text-neutral-500 shadow-[0_0_0_1px] shadow-neutral-950 placeholder:text-neutral-300 hover:text-neutral-500 hover:shadow-[0_0_0_2px] hover:shadow-primary-600 focus:text-neutral-950 focus:shadow-neutral-950 focus:ring-0 disabled:text-neutral-950 disabled:shadow-[0_0_0_1px] disabled:shadow-neutral-400 disabled:placeholder:text-neutral-950"
         :class="[props.error]"
+        v-model="model"
       />
     </div>
     <span v-if="props.isHelper" class="text-sm text-neutral-400">
