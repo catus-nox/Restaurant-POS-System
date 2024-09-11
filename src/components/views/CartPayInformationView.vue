@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import router from '@/router'
 import UiCartProcess from '@/components/ui/UiCartProcess.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
 import { useCustomerStore } from '@/stores/productsStore'
-
+//-----
+function toRouterName() {
+  router.push({ name: 'cartConfirmInformation', params: { guid: localStorage.guid } })
+}
 //-----
 //選單控制
 const nowClick = ref<number>(0)
@@ -55,6 +59,8 @@ async function confirmOrderCashData() {
   console.log(data)
 
   await customerStore.fetchCustomerPostConfirmOrderCash(data)
+
+  toRouterName()
 }
 //-----
 onMounted(async () => {
@@ -195,7 +201,7 @@ onMounted(async () => {
 
       <div class="inline-flex items-center justify-between p-3 text-base font-bold text-black">
         <div>應付金額</div>
-        <div>$ {{ orderInfoData.totalAmount }}</div>
+        <div v-if="orderInfoData">$ {{ orderInfoData.totalAmount }}</div>
       </div>
     </div>
   </div>
@@ -222,7 +228,6 @@ onMounted(async () => {
       :is-only-icon="false"
       :font-size="'text justify-between flex w-full items-center'"
       :font-padding="'px-0'"
-      :router-name="'cartConfirmInformation'"
       :icon-size="'w-auto'"
       @define-function="confirmOrderCashData"
     >
