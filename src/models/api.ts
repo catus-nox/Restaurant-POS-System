@@ -134,3 +134,12 @@ export function postConfirmOrderCash(data: {
     }
   })
 }
+
+//訂單完成畫面
+export function getOrder(guid: string, data?: any) {
+  return request({
+    url: `/customer/getOrder/${guid}`,
+    method: 'get',
+    data
+  })
+}

@@ -10,7 +10,8 @@ import {
   getCart,
   postEditCart,
   postGoCheckout,
-  postConfirmOrderCash
+  postConfirmOrderCash,
+  getOrder
 } from '@/models/api'
 
 export const useCustomerStore = defineStore('customer', () => {
@@ -37,6 +38,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const goCheckoutData: any = ref()
   //送出訂單(選擇結帳方式-現金)
   const confirmOrderCashData: any = ref()
+  //訂單完成畫面
+  const orderData: any = ref()
 
   //------
   //getter
@@ -61,6 +64,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const postGoCheckoutData = computed(() => goCheckoutData.value)
   //送出訂單(選擇結帳方式-現金)
   const postConfirmOrderCashData = computed(() => confirmOrderCashData.value)
+  //訂單完成畫面
+  const getOrderData = computed(() => orderData.value)
 
   //------
   //action 異步請求
@@ -214,6 +219,16 @@ export const useCustomerStore = defineStore('customer', () => {
     }
   }
 
+  //訂單完成畫面
+  const fetchCustomerGetOrder = async (guid: string) => {
+    try {
+      const response = await getOrder(guid)
+      orderData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getMenuCategoryData,
     fetchCustomerGetMenuCategory,
@@ -234,6 +249,8 @@ export const useCustomerStore = defineStore('customer', () => {
     postGoCheckoutData,
     fetchCustomerPostGoCheckout,
     postConfirmOrderCashData,
-    fetchCustomerPostConfirmOrderCash
+    fetchCustomerPostConfirmOrderCash,
+    getOrderData,
+    fetchCustomerGetOrder
   }
 })
