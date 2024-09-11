@@ -8,7 +8,8 @@ import {
   addItem,
   getOrderInfo,
   getCart,
-  postEditCart
+  postEditCart,
+  postGoCheckout
 } from '@/models/api'
 
 export const useCustomerStore = defineStore('customer', () => {
@@ -31,6 +32,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const cartData: any = ref()
   //購物車訂單編輯(修改份數)
   const editCartData: any = ref()
+  //前往結帳
+  const goCheckoutData: any = ref()
 
   //------
   //getter
@@ -51,6 +54,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const getCartData = computed(() => cartData.value)
   //購物車訂單編輯(修改份數)
   const postEditCartData = computed(() => editCartData.value)
+  //前往結帳
+  const postGoCheckoutData = computed(() => goCheckoutData.value)
 
   //------
   //action 異步請求
@@ -138,7 +143,6 @@ export const useCustomerStore = defineStore('customer', () => {
   const fetchCustomerGetCart = async (id: number, guid: string) => {
     try {
       const response = await getCart(id, guid)
-      // console.log(response)
       cartData.value = response.data.data
     } catch (error) {
       console.log(error)
@@ -157,7 +161,30 @@ export const useCustomerStore = defineStore('customer', () => {
         orderItemId: data.orderItemId,
         serving: data.serving
       })
-      // itemData.value
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  //前往結帳
+  const fetchCustomerPostGoCheckout = async (data: {
+    orderId: number // 訂單Id
+    guid: string // 唯一識別碼
+    phone: string // 顧客電話
+    type: '內用' | '外帶' | '預約自取' // 用餐類型，只能是"內用"、"外帶"或"預約自取"
+    table?: string | null // 桌號，非內用則可以是null或空字串
+    takeTime?: string | null // 外帶時間，可以是null或特定日期格式的字串
+    note?: string // 顧客的其他備註
+  }) => {
+    try {
+      await postGoCheckout({
+        orderId: data.orderId,
+        guid: data.guid,
+        phone: data.phone,
+        type: data.type,
+        table: data.table,
+        takeTime: data.takeTime,
+        note: data.note
+      })
     } catch (error) {
       console.log(error)
     }
@@ -179,6 +206,8 @@ export const useCustomerStore = defineStore('customer', () => {
     getCartData,
     fetchCustomerGetCart,
     postEditCartData,
-    fetchCustomerPostEditCart
+    fetchCustomerPostEditCart,
+    postGoCheckoutData,
+    fetchCustomerPostGoCheckout
   }
 })
