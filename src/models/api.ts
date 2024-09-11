@@ -78,3 +78,68 @@ export function getCart(id: number, guid: string, data?: any) {
     data
   })
 }
+
+//購物車訂單編輯(修改份數)
+export function postEditCart(data: { orderId: string; orderItemId: number; serving: number }) {
+  return request({
+    url: `/customer/editCart`,
+    method: 'POST',
+    data: {
+      orderId: data.orderId,
+      orderItemId: data.orderItemId,
+      serving: data.serving
+    }
+  })
+}
+
+//前往結帳
+export function postGoCheckout(data: {
+  orderId: number // 訂單Id
+  guid: string // 唯一識別碼
+  phone: string | null // 顧客電話
+  type: '內用' | '外帶' | '預約自取' // 用餐類型，只能是"內用"、"外帶"或"預約自取"
+  table?: string | null // 桌號，非內用則可以是null或空字串
+  takeTime?: string | null // 外帶時間，可以是null或特定日期格式的字串
+  note?: string // 顧客的其他備註
+}) {
+  return request({
+    url: `/customer/goCheckout`,
+    method: 'POST',
+    data: {
+      orderId: data.orderId,
+      guid: data.guid,
+      phone: data.phone,
+      type: data.type,
+      table: data.table,
+      takeTime: data.takeTime,
+      note: data.note
+    }
+  })
+}
+//送出訂單(選擇結帳方式-現金)
+export function postConfirmOrderCash(data: {
+  orderId: Number
+  guid: String
+  invoice: '載具' | '統編' | '捐贈發票' | '紙本' //發票類型 1"載具" 2"統編" 3"捐贈發票" 4"紙本"
+  invoiceCarrier?: String | null //發票載具號碼or統編
+}) {
+  return request({
+    url: `/customer/confirmOrderCash`,
+    method: 'POST',
+    data: {
+      orderId: data.orderId,
+      guid: data.guid,
+      invoice: data.invoice,
+      invoiceCarrier: data.invoiceCarrier
+    }
+  })
+}
+
+//訂單完成畫面
+export function getOrder(guid: string, data?: any) {
+  return request({
+    url: `/customer/getOrder/${guid}`,
+    method: 'get',
+    data
+  })
+}

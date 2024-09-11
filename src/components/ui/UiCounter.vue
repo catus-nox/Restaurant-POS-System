@@ -1,31 +1,67 @@
 <script setup lang="ts">
-import { defineEmits, defineModel, computed } from 'vue'
+import { defineEmits, defineModel, computed, ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useCustomerStore } from '@/stores/productsStore'
 import UiButton from '@/components/ui/UiButton.vue'
 
+//-----
+const route = useRoute()
+//-----api
+const customerStore = useCustomerStore()
+//-----
 defineEmits(['counterPlus', 'counterMinus'])
-const model = defineModel()
-const increment = () => {
-  quantity.value++
-}
-const decrement = () => {
-  if (quantity.value > 1) {
-    quantity.value--
+const props = defineProps({
+  orderItemId: {
+    type: Number,
+    default: 0
+  },
+  serving: {
+    type: Number,
+    default: 0
   }
-}
+})
+const model = defineModel()
+//-----
+let baseCountNumber: any = 1
 const quantity: any = computed({
   get: () => model.value,
   set: (value: any) => {
     const parsedValue = parseInt(value, 10)
-    if (!isNaN(parsedValue) && parsedValue >= 1) {
+    if (!isNaN(parsedValue) && parsedValue >= baseCountNumber) {
       model.value = parsedValue
     } else {
-      model.value = 1
+      model.value = baseCountNumber
     }
   }
 })
+const increment = () => {
+  quantity.value++
+  const serving = Number(model.value) + 1
+  incrementToCArtDataFunction(serving)
+}
+const decrement = () => {
+  baseCountNumber = ['cartPickUpInformation'].includes(route.name as string) ? 0 : 1
+  if (quantity.value > baseCountNumber) {
+    quantity.value--
+  }
+  const serving = Number(model.value) - 1 < 0 ? 0 : Number(model.value) - 1
+  incrementToCArtDataFunction(serving)
+}
 const updateQuantity = (target: HTMLInputElement) => {
   model.value = target.value
 }
+
+async function incrementToCArtDataFunction(serving: number) {
+  const data = {
+    orderId: String(localStorage.orderId),
+    orderItemId: props.orderItemId,
+    serving: serving
+  }
+  await customerStore.fetchCustomerPostEditCart(data)
+}
+
+//-----
+onMounted(() => {})
 </script>
 
 <template>

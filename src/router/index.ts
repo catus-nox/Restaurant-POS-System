@@ -40,14 +40,10 @@ const router = createRouter({
       component: CartPayInformationView
     },
     {
-      path: '/cartConfirmInformation',
+      path: '/cartConfirmInformation/:guid',
       name: 'cartConfirmInformation',
-      component: CartConfirmInformationView
-    },
-    {
-      path: '/cartConfirmInformation',
-      name: 'cartConfirmInformation',
-      component: CartConfirmInformationView
+      component: CartConfirmInformationView,
+      props: (route) => ({ guid: String(route.params.guid) })
     },
     {
       path: '/orderProcessHistory',
