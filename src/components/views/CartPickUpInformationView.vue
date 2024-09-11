@@ -50,7 +50,7 @@ async function goCheckout() {
   let data: {
     orderId: number
     guid: string
-    phone: string
+    phone: string | null
     type: '內用' | '外帶' | '預約自取' // 僅允許三種型別
     table?: string | null
     takeTime?: string | null
