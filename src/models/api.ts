@@ -116,3 +116,21 @@ export function postGoCheckout(data: {
     }
   })
 }
+//送出訂單(選擇結帳方式-現金)
+export function postConfirmOrderCash(data: {
+  orderId: Number
+  guid: String
+  invoice: '載具' | '統編' | '捐贈發票' | '紙本' //發票類型 1"載具" 2"統編" 3"捐贈發票" 4"紙本"
+  invoiceCarrier?: String | null //發票載具號碼or統編
+}) {
+  return request({
+    url: `/customer/confirmOrderCash`,
+    method: 'POST',
+    data: {
+      orderId: data.orderId,
+      guid: data.guid,
+      invoice: data.invoice,
+      invoiceCarrier: data.invoiceCarrier
+    }
+  })
+}

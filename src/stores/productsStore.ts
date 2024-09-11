@@ -9,7 +9,8 @@ import {
   getOrderInfo,
   getCart,
   postEditCart,
-  postGoCheckout
+  postGoCheckout,
+  postConfirmOrderCash
 } from '@/models/api'
 
 export const useCustomerStore = defineStore('customer', () => {
@@ -34,6 +35,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const editCartData: any = ref()
   //前往結帳
   const goCheckoutData: any = ref()
+  //送出訂單(選擇結帳方式-現金)
+  const confirmOrderCashData: any = ref()
 
   //------
   //getter
@@ -56,6 +59,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const postEditCartData = computed(() => editCartData.value)
   //前往結帳
   const postGoCheckoutData = computed(() => goCheckoutData.value)
+  //送出訂單(選擇結帳方式-現金)
+  const postConfirmOrderCashData = computed(() => confirmOrderCashData.value)
 
   //------
   //action 異步請求
@@ -190,6 +195,25 @@ export const useCustomerStore = defineStore('customer', () => {
     }
   }
 
+  //送出訂單(選擇結帳方式-現金)
+  const fetchCustomerPostConfirmOrderCash = async (data: {
+    orderId: Number
+    guid: String
+    invoice: '載具' | '統編' | '捐贈發票' | '紙本' //發票類型 1"載具" 2"統編" 3"捐贈發票" 4"紙本"
+    invoiceCarrier?: String | null //發票載具號碼or統編
+  }) => {
+    try {
+      await postConfirmOrderCash({
+        orderId: data.orderId,
+        guid: data.guid,
+        invoice: data.invoice,
+        invoiceCarrier: data.invoiceCarrier
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getMenuCategoryData,
     fetchCustomerGetMenuCategory,
@@ -208,6 +232,8 @@ export const useCustomerStore = defineStore('customer', () => {
     postEditCartData,
     fetchCustomerPostEditCart,
     postGoCheckoutData,
-    fetchCustomerPostGoCheckout
+    fetchCustomerPostGoCheckout,
+    postConfirmOrderCashData,
+    fetchCustomerPostConfirmOrderCash
   }
 })
