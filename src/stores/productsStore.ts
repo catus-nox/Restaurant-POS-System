@@ -7,7 +7,12 @@ import {
   getOrderId,
   addItem,
   getOrderInfo,
-  getCart
+  getCart,
+  postEditCart,
+  getTakeTime,
+  postGoCheckout,
+  postConfirmOrderCash,
+  getOrder
 } from '@/models/api'
 
 export const useCustomerStore = defineStore('customer', () => {
@@ -28,6 +33,16 @@ export const useCustomerStore = defineStore('customer', () => {
   const orderInfoData: any = ref()
   //取得購物車現有訂單
   const cartData: any = ref()
+  //購物車訂單編輯(修改份數)
+  const editCartData: any = ref()
+  //取得外帶自取時間選項
+  const takeTimeData: any = ref()
+  //前往結帳
+  const goCheckoutData: any = ref()
+  //送出訂單(選擇結帳方式-現金)
+  const confirmOrderCashData: any = ref()
+  //訂單完成畫面
+  const orderData: any = ref()
 
   //------
   //getter
@@ -46,6 +61,16 @@ export const useCustomerStore = defineStore('customer', () => {
   const getOrderInfoData = computed(() => orderInfoData.value)
   //取得購物車現有訂單
   const getCartData = computed(() => cartData.value)
+  //購物車訂單編輯(修改份數)
+  const postEditCartData = computed(() => editCartData.value)
+  //取得外帶自取時間選項
+  const getTakeTimeData = computed(() => takeTimeData.value)
+  //前往結帳
+  const postGoCheckoutData = computed(() => goCheckoutData.value)
+  //送出訂單(選擇結帳方式-現金)
+  const postConfirmOrderCashData = computed(() => confirmOrderCashData.value)
+  //訂單完成畫面
+  const getOrderData = computed(() => orderData.value)
 
   //------
   //action 異步請求
@@ -133,9 +158,88 @@ export const useCustomerStore = defineStore('customer', () => {
   const fetchCustomerGetCart = async (id: number, guid: string) => {
     try {
       const response = await getCart(id, guid)
-      console.log(response)
-
       cartData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //購物車訂單編輯(修改份數)
+  const fetchCustomerPostEditCart = async (data: {
+    orderId: string
+    orderItemId: number
+    serving: number
+  }) => {
+    try {
+      await postEditCart({
+        orderId: data.orderId,
+        orderItemId: data.orderItemId,
+        serving: data.serving
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //取得外帶自取時間選項
+  const fetchCustomerGetTakeTime = async () => {
+    try {
+      const response = await getTakeTime()
+      takeTimeData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //前往結帳
+  const fetchCustomerPostGoCheckout = async (data: {
+    orderId: number // 訂單Id
+    guid: string // 唯一識別碼
+    phone: string | null // 顧客電話
+    type: '內用' | '外帶' | '預約自取' // 用餐類型，只能是"內用"、"外帶"或"預約自取"
+    table?: string | null // 桌號，非內用則可以是null或空字串
+    takeTime?: string | null // 外帶時間，可以是null或特定日期格式的字串
+    note?: string // 顧客的其他備註
+  }) => {
+    try {
+      await postGoCheckout({
+        orderId: data.orderId,
+        guid: data.guid,
+        phone: data.phone,
+        type: data.type,
+        table: data.table,
+        takeTime: data.takeTime,
+        note: data.note
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //送出訂單(選擇結帳方式-現金)
+  const fetchCustomerPostConfirmOrderCash = async (data: {
+    orderId: Number
+    guid: String
+    invoice: '載具' | '統編' | '捐贈發票' | '紙本' //發票類型 1"載具" 2"統編" 3"捐贈發票" 4"紙本"
+    invoiceCarrier?: String | null //發票載具號碼or統編
+  }) => {
+    try {
+      await postConfirmOrderCash({
+        orderId: data.orderId,
+        guid: data.guid,
+        invoice: data.invoice,
+        invoiceCarrier: data.invoiceCarrier
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //訂單完成畫面
+  const fetchCustomerGetOrder = async (guid: string) => {
+    try {
+      const response = await getOrder(guid)
+      orderData.value = response.data.data
     } catch (error) {
       console.log(error)
     }
@@ -155,6 +259,16 @@ export const useCustomerStore = defineStore('customer', () => {
     getOrderInfoData,
     fetchCustomerGetOrderInfo,
     getCartData,
-    fetchCustomerGetCart
+    fetchCustomerGetCart,
+    postEditCartData,
+    fetchCustomerPostEditCart,
+    getTakeTimeData,
+    fetchCustomerGetTakeTime,
+    postGoCheckoutData,
+    fetchCustomerPostGoCheckout,
+    postConfirmOrderCashData,
+    fetchCustomerPostConfirmOrderCash,
+    getOrderData,
+    fetchCustomerGetOrder
   }
 })
