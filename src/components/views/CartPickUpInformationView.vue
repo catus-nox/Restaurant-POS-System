@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCustomerStore } from '@/stores/productsStore'
 import { computed, onMounted, ref, watch } from 'vue'
+import { validatePhoneNumber, phoneValidateData } from '@/models/validate'
 import UiCartProcess from '@/components/ui/UiCartProcess.vue'
 import UiCounter from '@/components/ui/UiCounter.vue'
 import UiButton from '@/components/ui/UiButton.vue'
@@ -29,32 +30,39 @@ const goCheckoutType = ref<'預約自取' | '外帶' | '內用'>(
 // 選單控制
 const customerStatusClick = ref<number>(0)
 function toggleMenu(index: number) {
+  isTouchPhoneNumber.value = false
+  phoneNumber.value = ''
   customerStatusClick.value = index
   goCheckoutType.value = customerStatus[index].id
 }
 //選單判斷
-function customerStatusApi() {
-  for (let i = 0; i < customerStatus.length; i++) {
-    if (customerStatusClick.value === 0) {
-      return
-    } else if (customerStatusClick.value === 1) {
-      return
-    } else if (customerStatusClick.value === 2) {
-      console.log(6666)
-    } else {
-      console.log('無設定此選單')
-      return
-    }
-  }
-}
+// function customerStatusApi() {
+//   for (let i = 0; i < customerStatus.length; i++) {
+//     if (customerStatusClick.value === 0) {
+//       return
+//     } else if (customerStatusClick.value === 1) {
+//       return
+//     } else if (customerStatusClick.value === 2) {
+//       console.log(6666)
+//     } else {
+//       console.log('無設定此選單')
+//       return
+//     }
+//   }
+// }
 //-----
 //取得購物車現有訂單
 const cart: any = computed(() => customerStore.getCartData)
 //取得現在購物車的商品筆數跟總價
 const orderInfo: any = computed(() => customerStore.getOrderInfoData)
 //-----
-//電話
-const goCheckoutPhone = ref('')
+//手機
+const phoneNumber = ref<any>('')
+//手機驗證結果
+const isValidPhoneNumber = ref<boolean>(false)
+//手機是否點擊過輸入框
+const isTouchPhoneNumber = ref<boolean>(false)
+//-----
 //預約日期
 const goCheckoutTakeDate = ref(takeTimeDateArray(0))
 //預約時間
@@ -91,14 +99,14 @@ function filterByDateFunction() {
     return data.filter((item) => {
       // 解析日期部分
       let itemDate = item.takeTime.split(' ')[1].split('(')[0] // 取得 '??/??' 移除(Mon)
-      console.log(goCheckoutTakeDate.value)
+      // console.log(goCheckoutTakeDate.value)
 
-      console.log(itemDate === goCheckoutTakeDate.value)
+      // console.log(itemDate === goCheckoutTakeDate.value)
 
       return itemDate === goCheckoutTakeDate.value
     })
   }
-  console.log(filterByDate(takeTime.value, goCheckoutTakeDate.value))
+  // console.log(filterByDate(takeTime.value, goCheckoutTakeDate.value))
 
   // 使用篩選函數
   // return filterByDate(takeTime.value, goCheckoutTakeDate.value)
@@ -133,7 +141,7 @@ async function goCheckout() {
   } = {
     orderId: Number(localStorage.orderId),
     guid: String(localStorage.guid),
-    phone: goCheckoutPhone.value,
+    phone: phoneNumber.value,
     type: goCheckoutType.value,
     table: goCheckoutTable.value,
     takeTime: goCheckoutTakeDate.value,
@@ -266,16 +274,21 @@ onMounted(async () => {
         <UiBadge :style="'checkboxBadge'" />
       </div>
       <UiInput
-        :id="'goCheckoutPhone'"
+        :id="'phoneNumber'"
         :is-label="true"
         :label="'請輸入手機號碼'"
-        :placeholder="'0912345678'"
+        :placeholder="phoneValidateData.placeholder"
         :is-important="false"
         :type="'text'"
-        v-model="goCheckoutPhone"
+        v-model="phoneNumber"
+        @define-focus-function="isTouchPhoneNumber = true"
+        @define-input-function="validatePhoneNumber(isValidPhoneNumber, phoneNumber)"
+        :is-validation-message="
+          validatePhoneNumber(isValidPhoneNumber, phoneNumber) !== isTouchPhoneNumber
+        "
       >
         <template #helper></template>
-        <template #validationMessage></template>
+        <template #validationMessage>{{ phoneValidateData.validationMessage }} </template>
       </UiInput>
     </div>
 
