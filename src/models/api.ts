@@ -92,6 +92,15 @@ export function postEditCart(data: { orderId: string; orderItemId: number; servi
   })
 }
 
+//取得外帶自取時間選項
+export function getTakeTime(data?: any) {
+  return request({
+    url: `/customer/getTakeTime`,
+    method: 'get',
+    data
+  })
+}
+
 //前往結帳
 export function postGoCheckout(data: {
   orderId: number // 訂單Id
@@ -116,6 +125,7 @@ export function postGoCheckout(data: {
     }
   })
 }
+
 //送出訂單(選擇結帳方式-現金)
 export function postConfirmOrderCash(data: {
   orderId: Number
