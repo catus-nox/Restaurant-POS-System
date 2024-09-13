@@ -108,6 +108,7 @@ export function postGoCheckout(data: {
   phone: string | null // 顧客電話
   type: '內用' | '外帶' | '預約自取' // 用餐類型，只能是"內用"、"外帶"或"預約自取"
   table?: string | null // 桌號，非內用則可以是null或空字串
+  takeDate?: string | null //外帶時間(null或是api(CC-4)給你放選項的日期)
   takeTime?: string | null // 外帶時間，可以是null或特定日期格式的字串
   note?: string // 顧客的其他備註
 }) {
@@ -120,6 +121,7 @@ export function postGoCheckout(data: {
       phone: data.phone,
       type: data.type,
       table: data.table,
+      takeDate: data.takeDate,
       takeTime: data.takeTime,
       note: data.note
     }
