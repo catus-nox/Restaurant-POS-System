@@ -9,6 +9,7 @@ import {
   getOrderInfo,
   getCart,
   postEditCart,
+  getTakeTime,
   postGoCheckout,
   postConfirmOrderCash,
   getOrder
@@ -34,6 +35,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const cartData: any = ref()
   //購物車訂單編輯(修改份數)
   const editCartData: any = ref()
+  //取得外帶自取時間選項
+  const takeTimeData: any = ref()
   //前往結帳
   const goCheckoutData: any = ref()
   //送出訂單(選擇結帳方式-現金)
@@ -60,6 +63,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const getCartData = computed(() => cartData.value)
   //購物車訂單編輯(修改份數)
   const postEditCartData = computed(() => editCartData.value)
+  //取得外帶自取時間選項
+  const getTakeTimeData = computed(() => takeTimeData.value)
   //前往結帳
   const postGoCheckoutData = computed(() => goCheckoutData.value)
   //送出訂單(選擇結帳方式-現金)
@@ -175,6 +180,17 @@ export const useCustomerStore = defineStore('customer', () => {
       console.log(error)
     }
   }
+
+  //取得外帶自取時間選項
+  const fetchCustomerGetTakeTime = async () => {
+    try {
+      const response = await getTakeTime()
+      takeTimeData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   //前往結帳
   const fetchCustomerPostGoCheckout = async (data: {
     orderId: number // 訂單Id
@@ -246,6 +262,8 @@ export const useCustomerStore = defineStore('customer', () => {
     fetchCustomerGetCart,
     postEditCartData,
     fetchCustomerPostEditCart,
+    getTakeTimeData,
+    fetchCustomerGetTakeTime,
     postGoCheckoutData,
     fetchCustomerPostGoCheckout,
     postConfirmOrderCashData,
