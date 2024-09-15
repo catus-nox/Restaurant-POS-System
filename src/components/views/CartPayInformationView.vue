@@ -113,15 +113,13 @@ async function confirmOrder() {
   //-----
   // 判斷付款資訊打api
   if (nowClick.value == 0) {
-    // await customerStore.fetchCustomerPostConfirmOrderCash(data)
-    // toRouterName'cartConfirmInformation')
+    await customerStore.fetchCustomerPostConfirmOrderCash(data)
+    toRouterName('cartConfirmInformation')
   } else if (nowClick.value == 1) {
     data.confirmUrl = 'http://localhost:5173/cartPayInformation'
     data.cancelUrl = 'http://localhost:5173/menu'
-    // await customerStore.fetchCustomerPostConfirmOrderCash(data)
+    await customerStore.fetchCustomerPostConfirmOrderLinePay(data)
   }
-  console.log(data)
-  // toRouterName'cartConfirmInformation')
 }
 
 //-----
