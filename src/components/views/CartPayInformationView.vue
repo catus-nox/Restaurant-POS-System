@@ -1,5 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import {
+  validateReceipt,
+  receiptValidateData,
+  validateTaxId,
+  taxIdValidateData
+} from '@/models/validate'
 import router from '@/router'
 import UiCartProcess from '@/components/ui/UiCartProcess.vue'
 import UiButton from '@/components/ui/UiButton.vue'
@@ -62,6 +68,20 @@ async function confirmOrderCashData() {
 
   toRouterName()
 }
+//-----
+//載具
+const receipt = ref<any>(undefined)
+//載具驗證結果
+const isValidReceipt = ref<boolean>(false)
+//載具是否點擊過輸入框
+const isTouchReceipt = ref<boolean>(false)
+//-----
+//統編
+const taxId = ref<any>(undefined)
+//統編驗證結果
+const isValidTaxId = ref<boolean>(false)
+//統編是否點擊過輸入框
+const isTouchTaxId = ref<boolean>(false)
 //-----
 onMounted(async () => {
   await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
@@ -132,41 +152,39 @@ onMounted(async () => {
             {{ option.name }}
           </UiInputOption>
 
-          <div class="flex flex-col gap-2" v-if="index === 0">
+          <div class="flex flex-col gap-2" v-if="index === 0 && pay === payData.options[0].id">
             <UiInput
+              :id="'receipt'"
               :is-label="false"
-              :label="'載具'"
-              :placeholder="'/ABC1234'"
+              :label="'請輸入載具'"
+              :placeholder="receiptValidateData.placeholder"
               :is-important="false"
               :type="'text'"
+              v-model="receipt"
+              @define-focus-function="isTouchReceipt = true"
+              @define-input-function="validateReceipt(isValidReceipt, receipt)"
+              :is-validation-message="validateReceipt(isValidReceipt, receipt) !== isTouchReceipt"
             >
               <template #helper></template>
-              <template #validationMessage></template>
+              <template #validationMessage>{{ receiptValidateData.validationMessage }} </template>
             </UiInput>
-            <div class="flex gap-2">
-              <UiButton
-                :btn-style="'style3'"
-                :btn-width="'w-fit'"
-                :btn-padding="'px-6 py-2'"
-                :icon-size="''"
-                :icon-style="''"
-                :is-only-icon="false"
-                :font-size="'text-xs font-medium'"
-              >
-                確認
-              </UiButton>
-              <UiButton
-                :btn-style="'style4'"
-                :btn-width="'w-fit'"
-                :btn-padding="'px-6 py-2'"
-                :icon-size="''"
-                :icon-style="''"
-                :is-only-icon="false"
-                :font-size="'text-xs  font-medium'"
-              >
-                取消
-              </UiButton>
-            </div>
+          </div>
+          <div class="flex flex-col gap-2" v-if="index === 1 && pay === payData.options[1].id">
+            <UiInput
+              :id="'taxId'"
+              :is-label="false"
+              :label="'請輸入統編'"
+              :placeholder="taxIdValidateData.placeholder"
+              :is-important="false"
+              :type="'text'"
+              v-model="taxId"
+              @define-focus-function="isTouchTaxId = true"
+              @define-input-function="validateTaxId(isValidTaxId, taxId)"
+              :is-validation-message="validateTaxId(isValidTaxId, taxId) !== isTouchTaxId"
+            >
+              <template #helper></template>
+              <template #validationMessage>{{ taxIdValidateData.validationMessage }} </template>
+            </UiInput>
           </div>
         </div>
       </div>
