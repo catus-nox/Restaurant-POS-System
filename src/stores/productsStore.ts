@@ -12,6 +12,7 @@ import {
   getTakeTime,
   postGoCheckout,
   postConfirmOrderCash,
+  postConfirmOrderLinePay,
   getOrder
 } from '@/models/api'
 
@@ -41,6 +42,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const goCheckoutData: any = ref()
   //送出訂單(選擇結帳方式-現金)
   const confirmOrderCashData: any = ref()
+  //送出訂單(選擇結帳方式-Line Pay)
+  const confirmOrderLinePayData: any = ref()
   //訂單完成畫面
   const orderData: any = ref()
 
@@ -69,6 +72,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const postGoCheckoutData = computed(() => goCheckoutData.value)
   //送出訂單(選擇結帳方式-現金)
   const postConfirmOrderCashData = computed(() => confirmOrderCashData.value)
+  //送出訂單(選擇結帳方式-Line Pay)
+  const postConfirmOrderLinePayData = computed(() => confirmOrderLinePayData.value)
   //訂單完成畫面
   const getOrderData = computed(() => orderData.value)
 
@@ -237,6 +242,37 @@ export const useCustomerStore = defineStore('customer', () => {
     }
   }
 
+  //送出訂單(選擇結帳方式-Line Pay)
+  const fetchCustomerPostConfirmOrderLinePay = async (data: {
+    orderId: Number
+    guid: String
+    invoice: '載具' | '統編' | '捐贈發票' | '紙本' //發票類型 1"載具" 2"統編" 3"捐贈發票" 4"紙本"
+    invoiceCarrier?: String | null //發票載具號碼or統編
+    confirmUrl?: String | null //LinePay付款成功後，Line會導向使用者去的網址
+    cancelUrl?: String | null //LinePay取消付款後，Line會導向使用者去的網址
+  }) => {
+    try {
+      const response = await postConfirmOrderLinePay({
+        orderId: data.orderId,
+        guid: data.guid,
+        invoice: data.invoice,
+        invoiceCarrier: data.invoiceCarrier,
+        confirmUrl: data.confirmUrl,
+        cancelUrl: data.cancelUrl
+      })
+
+      if (response.data.statusCode === 400) {
+        console.log(response.data.message)
+      } else {
+        //網址
+        console.log(response.data.data.paymentUrl)
+      }
+      return response
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   //訂單完成畫面
   const fetchCustomerGetOrder = async (guid: string) => {
     try {
@@ -270,6 +306,8 @@ export const useCustomerStore = defineStore('customer', () => {
     fetchCustomerPostGoCheckout,
     postConfirmOrderCashData,
     fetchCustomerPostConfirmOrderCash,
+    postConfirmOrderLinePayData,
+    fetchCustomerPostConfirmOrderLinePay,
     getOrderData,
     fetchCustomerGetOrder
   }

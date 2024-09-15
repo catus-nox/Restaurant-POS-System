@@ -147,6 +147,29 @@ export function postConfirmOrderCash(data: {
   })
 }
 
+//送出訂單(選擇結帳方式-Line Pay)
+export function postConfirmOrderLinePay(data: {
+  orderId: Number
+  guid: String
+  invoice: '載具' | '統編' | '捐贈發票' | '紙本' //發票類型 1"載具" 2"統編" 3"捐贈發票" 4"紙本"
+  invoiceCarrier?: String | null //發票載具號碼or統編
+  confirmUrl?: String | null //LinePay付款成功後，Line會導向使用者去的網址
+  cancelUrl?: String | null //LinePay取消付款後，Line會導向使用者去的網址
+}) {
+  return request({
+    url: `/customer/confirmOrderLinePay`,
+    method: 'POST',
+    data: {
+      orderId: data.orderId,
+      guid: data.guid,
+      invoice: data.invoice,
+      invoiceCarrier: data.invoiceCarrier,
+      confirmUrl: data.confirmUrl,
+      cancelUrl: data.cancelUrl
+    }
+  })
+}
+
 //訂單完成畫面
 export function getOrder(guid: string, data?: any) {
   return request({
