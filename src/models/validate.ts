@@ -36,9 +36,9 @@ export const taxIdValidateData: {
   helper?: string
   validationMessage?: string
 } = {
-  placeholder: '012345678',
+  placeholder: '12345678',
   helper: undefined,
-  validationMessage: '統編格式錯誤，需8位數字 ex:012345678'
+  validationMessage: '統編格式錯誤，需8位數字 ex:12345678'
 }
 export function validateTaxId(isValidateValue: boolean, validateValue: string) {
   const regex = /^[0-9]{8}$/
