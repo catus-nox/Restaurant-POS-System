@@ -13,17 +13,14 @@ watch(
 //-----
 //api
 const customerStore = useCustomerStore()
-const orderInfoData: any = computed(() => customerStore.getOrderInfoData)
+//訂單完成畫面
 const orderData: any = computed(() => customerStore.getOrderData)
-//-----
-function localStorageClear() {
-  localStorage.guid = null
-  localStorage.orderId = null
-}
+
 //-----
 onMounted(async () => {
-  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
-  await customerStore.fetchCustomerGetOrder(String(localStorage.guid))
+  const orderGuid: string = String(route.params.guid)
+  //訂單完成畫面
+  await customerStore.fetchCustomerGetOrder(orderGuid)
 })
 </script>
 
@@ -32,7 +29,7 @@ onMounted(async () => {
     <UiCartProcess :status="'-translate-x-0'" :done="2" />
   </div>
 
-  <div class="flex flex-col justify-start gap-6 px-3 py-6" v-if="orderData && orderInfoData">
+  <div class="flex flex-col justify-start gap-6 px-3 py-6" v-if="orderData">
     <div class="flex items-center justify-center gap-2">
       <svg
         class="h-7 w-7 text-primary-700"
@@ -126,7 +123,7 @@ onMounted(async () => {
 
       <div class="flex items-center justify-center bg-primary-200 p-2">
         <div class="text-base font-semibold leading-snug text-black">
-          總計 {{ orderInfoData.count }} 項 / 共 $ {{ orderInfoData.totalAmount }}
+          總計 {{ orderData.count }} 項 / 共 $ {{ orderData.totalAmount }}
         </div>
       </div>
       <div class="text-base font-medium leading-normal text-black">
@@ -150,7 +147,6 @@ onMounted(async () => {
       :font-size="'text '"
       :font-padding="'px-0'"
       :router-name="'menu'"
-      @define-function="localStorageClear"
     >
       會員登入
     </UiButton>
@@ -164,7 +160,6 @@ onMounted(async () => {
       :font-size="'text '"
       :font-padding="'px-0'"
       :router-name="'menu'"
-      @define-function="localStorageClear"
     >
       回到首頁
     </UiButton>
