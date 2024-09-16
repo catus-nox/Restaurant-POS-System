@@ -108,6 +108,15 @@ async function returnCustomerGetCart() {
 //-----
 //前往結帳
 async function goCheckout() {
+  function orderInfoCount() {
+    if (orderInfo.value == null || orderInfo.value == undefined || orderInfo.value.count <= 0) {
+      alert('購物車為空')
+      return false
+    }
+    return true
+  }
+  if (!orderInfoCount()) return
+
   let data: {
     orderId: number
     guid: string
@@ -164,7 +173,6 @@ onMounted(async () => {
     //購物車商品數量
     serving.value = cart.value.map((cartItem: { serving: number }) => cartItem.serving)
   }
-
   //取得外帶自取時間選項
   await customerStore.fetchCustomerGetTakeTime()
   //取得日期
