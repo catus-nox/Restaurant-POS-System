@@ -121,7 +121,7 @@ onMounted(async () => {
       >
         <template #only-icon>
           <span
-            v-if="orderInfo"
+            v-if="orderInfo && displayOrderQuantity > 0"
             class="absolute right-1 top-1 h-fit min-h-5 w-fit min-w-5 rounded-full border border-secondary-50 bg-error-500 px-0.5 text-xs text-neutral-0"
             >{{ displayOrderQuantity }}</span
           >
