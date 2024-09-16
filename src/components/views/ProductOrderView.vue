@@ -179,8 +179,11 @@ onMounted(async () => {
   <div class="flex flex-col gap-6">
     <div>
       <div class="relative h-[200px] overflow-hidden">
-        <img src="../../assets/img/1002930.jpg" alt="" class="h-full w-full object-cover" />
-        <!-- <img :src="product.productImagePath" alt="" class="h-full w-full object-cover" /> -->
+        <img
+          :src="product.productImagePath"
+          :alt="product.name"
+          class="h-full w-full object-cover"
+        />
       </div>
     </div>
     <div class="mx-3 flex flex-col gap-2">
