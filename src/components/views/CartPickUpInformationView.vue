@@ -158,10 +158,13 @@ async function goCheckout() {
 }
 //-----
 onMounted(async () => {
-  //取得購物車現有訂單
-  await customerStore.fetchCustomerGetCart(localStorage.orderId, localStorage.guid)
-  //購物車商品數量
-  serving.value = cart.value.map((cartItem: { serving: number }) => cartItem.serving)
+  if (localStorage.guid && localStorage.orderId) {
+    //取得購物車現有訂單
+    await customerStore.fetchCustomerGetCart(localStorage.orderId, localStorage.guid)
+    //購物車商品數量
+    serving.value = cart.value.map((cartItem: { serving: number }) => cartItem.serving)
+  }
+
   //取得外帶自取時間選項
   await customerStore.fetchCustomerGetTakeTime()
   //取得日期
