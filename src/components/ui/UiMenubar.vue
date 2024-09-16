@@ -112,7 +112,6 @@ onMounted(async () => {
           </svg>
         </template>
       </UiButton>
-      {{ orderInfo }}
       <UiButton
         :btn-style="'style4'"
         :btn-width="'w-8 h-8'"
