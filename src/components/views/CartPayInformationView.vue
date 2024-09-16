@@ -126,7 +126,16 @@ async function confirmOrder() {
 //換頁
 function toRouterName(name: string) {
   router.push({ name, params: { guid: localStorage.guid } })
+
+  localStorageClear()
 }
+
+//-----
+//清除 localStorage
+function localStorageClear() {
+  localStorage.clear()
+}
+
 //-----
 onMounted(async () => {
   //取得購物車現有訂單
