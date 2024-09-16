@@ -200,7 +200,7 @@ export const useCustomerStore = defineStore('customer', () => {
   const fetchCustomerPostGoCheckout = async (data: {
     orderId: number // 訂單Id
     guid: string // 唯一識別碼
-    phone: string | null // 顧客電話
+    phone?: string | null // 顧客電話
     type: '內用' | '外帶' | '預約自取' // 用餐類型，只能是"內用"、"外帶"或"預約自取"
     table?: string | null // 桌號，非內用則可以是null或空字串
     takeDate?: string | null //外帶時間(null或是api(CC-4)給你放選項的日期)
