@@ -34,6 +34,7 @@ const quantity: any = computed({
     }
   }
 })
+
 const increment = () => {
   quantity.value++
   const serving = Number(model.value) + 1
@@ -58,8 +59,13 @@ async function incrementToCArtDataFunction(serving: number) {
     serving: serving
   }
   await customerStore.fetchCustomerPostEditCart(data)
+  returnCustomerGetCart()
 }
-
+//-----
+//重新取得購物車商品數量
+async function returnCustomerGetCart() {
+  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+}
 //-----
 onMounted(() => {})
 </script>

@@ -9,8 +9,10 @@ import {
   getOrderInfo,
   getCart,
   postEditCart,
+  getTakeTime,
   postGoCheckout,
   postConfirmOrderCash,
+  postConfirmOrderLinePay,
   getOrder
 } from '@/models/api'
 
@@ -34,10 +36,14 @@ export const useCustomerStore = defineStore('customer', () => {
   const cartData: any = ref()
   //購物車訂單編輯(修改份數)
   const editCartData: any = ref()
+  //取得外帶自取時間選項
+  const takeTimeData: any = ref()
   //前往結帳
   const goCheckoutData: any = ref()
   //送出訂單(選擇結帳方式-現金)
   const confirmOrderCashData: any = ref()
+  //送出訂單(選擇結帳方式-Line Pay)
+  const confirmOrderLinePayData: any = ref()
   //訂單完成畫面
   const orderData: any = ref()
 
@@ -60,10 +66,14 @@ export const useCustomerStore = defineStore('customer', () => {
   const getCartData = computed(() => cartData.value)
   //購物車訂單編輯(修改份數)
   const postEditCartData = computed(() => editCartData.value)
+  //取得外帶自取時間選項
+  const getTakeTimeData = computed(() => takeTimeData.value)
   //前往結帳
   const postGoCheckoutData = computed(() => goCheckoutData.value)
   //送出訂單(選擇結帳方式-現金)
   const postConfirmOrderCashData = computed(() => confirmOrderCashData.value)
+  //送出訂單(選擇結帳方式-Line Pay)
+  const postConfirmOrderLinePayData = computed(() => confirmOrderLinePayData.value)
   //訂單完成畫面
   const getOrderData = computed(() => orderData.value)
 
@@ -175,13 +185,25 @@ export const useCustomerStore = defineStore('customer', () => {
       console.log(error)
     }
   }
+
+  //取得外帶自取時間選項
+  const fetchCustomerGetTakeTime = async () => {
+    try {
+      const response = await getTakeTime()
+      takeTimeData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   //前往結帳
   const fetchCustomerPostGoCheckout = async (data: {
     orderId: number // 訂單Id
     guid: string // 唯一識別碼
-    phone: string | null // 顧客電話
+    phone?: string | null // 顧客電話
     type: '內用' | '外帶' | '預約自取' // 用餐類型，只能是"內用"、"外帶"或"預約自取"
     table?: string | null // 桌號，非內用則可以是null或空字串
+    takeDate?: string | null //外帶時間(null或是api(CC-4)給你放選項的日期)
     takeTime?: string | null // 外帶時間，可以是null或特定日期格式的字串
     note?: string // 顧客的其他備註
   }) => {
@@ -192,6 +214,7 @@ export const useCustomerStore = defineStore('customer', () => {
         phone: data.phone,
         type: data.type,
         table: data.table,
+        takeDate: data.takeDate,
         takeTime: data.takeTime,
         note: data.note
       })
@@ -214,6 +237,37 @@ export const useCustomerStore = defineStore('customer', () => {
         invoice: data.invoice,
         invoiceCarrier: data.invoiceCarrier
       })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //送出訂單(選擇結帳方式-Line Pay)
+  const fetchCustomerPostConfirmOrderLinePay = async (data: {
+    orderId: Number
+    guid: String
+    invoice: '載具' | '統編' | '捐贈發票' | '紙本' //發票類型 1"載具" 2"統編" 3"捐贈發票" 4"紙本"
+    invoiceCarrier?: String | null //發票載具號碼or統編
+    confirmUrl?: String | null //LinePay付款成功後，Line會導向使用者去的網址
+    cancelUrl?: String | null //LinePay取消付款後，Line會導向使用者去的網址
+  }) => {
+    try {
+      const response = await postConfirmOrderLinePay({
+        orderId: data.orderId,
+        guid: data.guid,
+        invoice: data.invoice,
+        invoiceCarrier: data.invoiceCarrier,
+        confirmUrl: data.confirmUrl,
+        cancelUrl: data.cancelUrl
+      })
+
+      if (response.data.statusCode === 400) {
+        console.log(response.data.message)
+      } else {
+        //網址
+        console.log(response.data.data.paymentUrl)
+      }
+      return response
     } catch (error) {
       console.log(error)
     }
@@ -246,10 +300,14 @@ export const useCustomerStore = defineStore('customer', () => {
     fetchCustomerGetCart,
     postEditCartData,
     fetchCustomerPostEditCart,
+    getTakeTimeData,
+    fetchCustomerGetTakeTime,
     postGoCheckoutData,
     fetchCustomerPostGoCheckout,
     postConfirmOrderCashData,
     fetchCustomerPostConfirmOrderCash,
+    postConfirmOrderLinePayData,
+    fetchCustomerPostConfirmOrderLinePay,
     getOrderData,
     fetchCustomerGetOrder
   }
