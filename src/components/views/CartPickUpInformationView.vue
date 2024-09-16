@@ -144,7 +144,7 @@ async function goCheckout() {
       }
     }
     //電話判斷
-    if (phoneNumber.value && !isValidPhoneNumber.value) {
+    if (phoneNumber.value && !validatePhoneNumber(isValidPhoneNumber.value, phoneNumber.value)) {
       alert(phoneValidateData.validationMessage)
       return false
     }
