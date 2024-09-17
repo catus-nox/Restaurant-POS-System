@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import UiButton from '@/components/ui/UiButton.vue'
-import UiInput from '@/components/ui/UiInput.vue'
+import router from '@/router'
+import { useEmployeeStore } from '@/stores/employee/productsStore'
 import {
   accountValidateData,
   validateAccount,
   passwordValidateData,
   validatePassword
 } from '@/models/validate'
-
+import UiButton from '@/components/ui/UiButton.vue'
+import UiInput from '@/components/ui/UiInput.vue'
+//-----
+//api
+const employeeStore = useEmployeeStore()
 //-----
 //帳號
 const account = ref('')
@@ -23,6 +27,46 @@ const password = ref('')
 const isValidPassword = ref<boolean>(false)
 //密碼是否點擊過輸入框
 const isTouchPassword = ref<boolean>(false)
+//-----
+//前往結帳
+async function employeeLogin() {
+  function goCheckoutValidate(): boolean {
+    //帳號判斷
+    if (!validateAccount(isValidAccount.value, account.value)) {
+      alert(accountValidateData.validationMessage)
+      return false
+    }
+    //密碼編判斷
+    if (!validatePassword(isTouchPassword.value, password.value)) {
+      alert(passwordValidateData.validationMessage)
+      return false
+    }
+    return true
+  }
+
+  if (!goCheckoutValidate()) return
+
+  // //-----
+  // // 給api的data資訊
+  // let invoiceCarrierDate: any = null
+  // if (pay.value === payData.options[0].id) {
+  //   invoiceCarrierDate = receipt.value
+  // } else if (pay.value === payData.options[1].id) {
+  //   invoiceCarrierDate = taxId.value
+  // }
+
+  let data: {
+    account: string
+    password: string
+  } = {
+    account: account.value,
+    password: password.value
+  }
+
+  await employeeStore.fetchEmployeeLogin(data)
+
+  router.push({ name: 'employeeFohOrderView' })
+}
 </script>
 
 <template>
@@ -54,7 +98,7 @@ const isTouchPassword = ref<boolean>(false)
             :label="'密碼'"
             :placeholder="'請輸入密碼'"
             :is-important="true"
-            :type="'text'"
+            :type="'password'"
             v-model="password"
             @define-focus-function="isTouchPassword = true"
             @define-input-function="validatePassword(isValidPassword, password)"
@@ -70,9 +114,9 @@ const isTouchPassword = ref<boolean>(false)
           <UiButton
             :btn-style="'style1'"
             :btn-width="'w-full'"
-            :router-name="'employeeFohOrderView'"
             :is-left-icon="false"
             :is-right-icon="false"
+            @define-function="employeeLogin"
           >
             登入
           </UiButton>
