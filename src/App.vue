@@ -76,6 +76,8 @@ function employeeMenuState(): boolean {
 const customerStore = useCustomerStore()
 //-----
 onMounted(async () => {
+  //判斷是否為員工頁面
+  if (!pageCustomerOrEmployeeState()) return
   if (localStorage.guid && localStorage.orderId) {
     // 取得購物車商品數量
     await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
