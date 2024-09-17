@@ -169,6 +169,17 @@ export function postConfirmOrderLinePay(data: {
     }
   })
 }
+// Line Pay付款確認
+export function postConfirmLinePayRequest(data: { orderId: Number; guid: String }) {
+  return request({
+    url: `/customer/confirmLinePayRequest`,
+    method: 'POST',
+    data: {
+      orderId: data.orderId,
+      guid: data.guid
+    }
+  })
+}
 
 //訂單完成畫面
 export function getOrder(guid: string, data?: any) {
