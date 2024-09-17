@@ -15,6 +15,9 @@ import UiInputOption from '@/components/ui/UiInputOption.vue'
 import { useCustomerStore } from '@/stores/productsStore'
 
 //-----
+const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
+//-----
 //選單控制
 const nowClick = ref<number>(0)
 function toggleMenu(index: number) {
@@ -28,7 +31,10 @@ const customerStore = useCustomerStore()
 const cartData: any = computed(() => customerStore.getCartData)
 //取得現在購物車的商品筆數跟總價
 const orderInfoData: any = computed(() => customerStore.getOrderInfoData)
-
+//送出訂單(選擇結帳方式-Line Pay)-網址
+const confirmOrderLinePayPaymentUrlData: any = computed(
+  () => customerStore.getConfirmOrderLinePayPaymentUrlData
+)
 //-----
 //發票資訊
 const customerStatus = [
@@ -116,9 +122,13 @@ async function confirmOrder() {
     await customerStore.fetchCustomerPostConfirmOrderCash(data)
     toRouterName('cartConfirmInformation')
   } else if (nowClick.value == 1) {
-    data.confirmUrl = 'http://localhost:5173/cartPayInformation'
-    data.cancelUrl = 'http://localhost:5173/menu'
+    data.confirmUrl = `${baseUrl}/cartConfirmInformation/${localStorage.guid}`
+    data.cancelUrl = `${baseUrl}/cartPayInformation`
     await customerStore.fetchCustomerPostConfirmOrderLinePay(data)
+    //跳轉往指
+    window.location.href = confirmOrderLinePayPaymentUrlData.value
+
+    // localStorageClear()
   }
 }
 
@@ -126,7 +136,6 @@ async function confirmOrder() {
 //換頁
 function toRouterName(name: string) {
   router.push({ name, params: { guid: localStorage.guid } })
-
   localStorageClear()
 }
 
