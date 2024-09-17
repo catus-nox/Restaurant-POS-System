@@ -53,8 +53,8 @@ export const accountValidateData: {
   validationMessage?: string
 } = {
   placeholder: '請輸入帳號',
-  helper: '字母、數字、長度 6-12',
-  validationMessage: '字母、數字、長度 6-12'
+  helper: '英文字母、數字、長度 6-12',
+  validationMessage: '帳號格式錯誤，英文字母、數字、長度6-12'
 }
 export function validateAccount(isValidateValue: boolean, validateValue: string) {
   const regex = /^[a-zA-Z0-9]{6,12}$/
@@ -70,7 +70,7 @@ export const passwordValidateData: {
 } = {
   placeholder: '請輸入密碼',
   helper: '至少包含一個大寫字母、一個小寫字母、一個數字，且長度 8-16',
-  validationMessage: '至少包含一個大寫字母、一個小寫字母、一個數字，且長度 8-16'
+  validationMessage: '密碼格式錯誤，至少包含一個大寫字母、一個小寫字母、一個數字，且長度8-16'
 }
 export function validatePassword(isValidateValue: boolean, validateValue: string) {
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/
