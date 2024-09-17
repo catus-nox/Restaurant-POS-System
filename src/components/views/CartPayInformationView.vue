@@ -125,8 +125,8 @@ async function confirmOrder() {
     data.confirmUrl = `${baseUrl}/cartConfirmInformation/${localStorage.guid}`
     data.cancelUrl = `${baseUrl}/cartPayInformation`
     await customerStore.fetchCustomerPostConfirmOrderLinePay(data)
-    //跳轉往指
-    window.location.href = confirmOrderLinePayPaymentUrlData.value
+    //跳轉往址
+    window.open(confirmOrderLinePayPaymentUrlData.value, '_blank')
 
     // localStorageClear()
   }
