@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import {
   validateReceipt,
   receiptValidateData,
@@ -34,6 +34,10 @@ const orderInfoData: any = computed(() => customerStore.getOrderInfoData)
 //送出訂單(選擇結帳方式-Line Pay)-網址
 const confirmOrderLinePayPaymentUrlData: any = computed(
   () => customerStore.getConfirmOrderLinePayPaymentUrlData
+)
+//送出訂單(選擇結帳方式-Line Pay)-狀態
+const confirmLinePayRequestIsPayMent: any = computed(
+  () => customerStore.getConfirmLinePayRequestIsPayMent
 )
 //-----
 //發票資訊
@@ -122,7 +126,8 @@ async function confirmOrder() {
     await customerStore.fetchCustomerPostConfirmOrderCash(data)
     toRouterName('cartConfirmInformation')
   } else if (nowClick.value == 1) {
-    data.confirmUrl = `${baseUrl}/cartConfirmInformation/${localStorage.guid}`
+    // data.confirmUrl = `${baseUrl}/cartConfirmInformation/${localStorage.guid}`
+    data.confirmUrl = `${baseUrl}/cartPayInformation`
     data.cancelUrl = `${baseUrl}/cartPayInformation`
     await customerStore.fetchCustomerPostConfirmOrderLinePay(data)
     //跳轉往址
@@ -144,9 +149,26 @@ function toRouterName(name: string) {
 function localStorageClear() {
   localStorage.clear()
 }
-
+// Line Pay付款確認
+async function confirmLinePayRequestIsPayMentFunction() {
+  if (confirmLinePayRequestIsPayMent.value == undefined) {
+    let data: { orderId: Number; guid: String } = {
+      orderId: Number(localStorage.orderId),
+      guid: String(localStorage.guid)
+    }
+    await customerStore.fetchConfirmLinePayRequest(data)
+    if (confirmLinePayRequestIsPayMent.value) {
+      toRouterName('cartConfirmInformation')
+    }
+  }
+}
 //-----
 onMounted(async () => {
+  // Line Pay付款確認
+  confirmLinePayRequestIsPayMentFunction()
+  if (confirmLinePayRequestIsPayMent.value) return
+
+  //-----
   //取得購物車現有訂單
   await customerStore.fetchCustomerGetCart(localStorage.orderId, localStorage.guid)
   //取得現在購物車的商品筆數跟總價
