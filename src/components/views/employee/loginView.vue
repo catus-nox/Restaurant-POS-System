@@ -63,6 +63,9 @@ async function employeeLogin() {
   //-----
   if (loginData.value !== undefined) {
     router.push({ name: 'employeeFohOrderView' })
+    localStorage.identity = loginData.value.identity
+    localStorage.username = loginData.value.username
+    localStorage.token = loginData.value.token
   }
 }
 </script>
