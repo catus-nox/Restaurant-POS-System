@@ -44,6 +44,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const confirmOrderCashData: any = ref()
   //送出訂單(選擇結帳方式-Line Pay)
   const confirmOrderLinePayData: any = ref()
+  //送出訂單(選擇結帳方式-Line Pay)-網址
+  const confirmOrderLinePayPaymentUrlData: any = ref()
   //訂單完成畫面
   const orderData: any = ref()
 
@@ -74,6 +76,10 @@ export const useCustomerStore = defineStore('customer', () => {
   const postConfirmOrderCashData = computed(() => confirmOrderCashData.value)
   //送出訂單(選擇結帳方式-Line Pay)
   const postConfirmOrderLinePayData = computed(() => confirmOrderLinePayData.value)
+  //送出訂單(選擇結帳方式-Line Pay)-網址
+  const getConfirmOrderLinePayPaymentUrlData = computed(
+    () => confirmOrderLinePayPaymentUrlData.value
+  )
   //訂單完成畫面
   const getOrderData = computed(() => orderData.value)
 
@@ -265,6 +271,7 @@ export const useCustomerStore = defineStore('customer', () => {
         console.log(response.data.message)
       } else {
         //網址
+        confirmOrderLinePayPaymentUrlData.value = response.data.data.paymentUrl
         console.log(response.data.data.paymentUrl)
       }
       return response
@@ -307,6 +314,7 @@ export const useCustomerStore = defineStore('customer', () => {
     postConfirmOrderCashData,
     fetchCustomerPostConfirmOrderCash,
     postConfirmOrderLinePayData,
+    getConfirmOrderLinePayPaymentUrlData,
     fetchCustomerPostConfirmOrderLinePay,
     getOrderData,
     fetchCustomerGetOrder
