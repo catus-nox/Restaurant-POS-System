@@ -1,6 +1,14 @@
 <script setup lang="ts">
-// import { defineProps, defineEmits } from 'vue'
-
+const props = defineProps({
+  index: {
+    type: Number,
+    default: 0
+  },
+  count: {
+    type: Number,
+    default: 0
+  }
+})
 const states = [
   { text: '全部訂單', press: 'press-menu-navbar-btn' },
   { text: '待結帳', press: '' },
@@ -8,27 +16,21 @@ const states = [
   { text: '待取餐', press: '' },
   { text: '已完成', press: '' }
 ]
-defineEmits(['changeCategoryId'])
+defineEmits(['toggleMenu'])
 </script>
 
 <template>
   <div class="scrollbar overflow-x-auto">
     <ul class="flex shadow-[inset_0_-2px_0_-1px] shadow-neutral-300">
       <template v-for="(state, index) in states" :key="index">
-        <template v-if="index == 0">
-          <li :id="state.text" class="state-navbar-btn press-state-navbar-btn">
-            {{ state.text }} <span>99+</span>
-          </li>
-        </template>
-        <template v-else>
-          <li
-            :id="state.text"
-            @click="$emit('changeCategoryId', index, index)"
-            class="state-navbar-btn"
-          >
-            {{ state.text }}<span>1</span>
-          </li>
-        </template>
+        <li
+          :id="state.text"
+          class="state-navbar-btn"
+          :class="index === props.index ? 'press-state-navbar-btn' : ''"
+          @click="$emit('toggleMenu', index)"
+        >
+          {{ state.text }} <span>{{ props.count }}</span>
+        </li>
       </template>
     </ul>
   </div>
