@@ -52,7 +52,6 @@ function productPickedOptionsAdd6() {
   productAddOnListData.value = menuItemData.value.filter(
     (item: { category: number }) => item.category === 6
   )
-  console.log(productAddOnListData.value[0].categoryItem)
 }
 //-----
 //(前端)定義必選項目
@@ -94,7 +93,6 @@ function productPickedOptionFunction() {
   productPickedOptions.value = pickedOptions.filter((option) =>
     product.value.customization.includes(option.id)
   )
-  console.log(productPickedOptions.value)
 }
 //整理要給api的客製化項目
 function customizationApiData() {
@@ -166,6 +164,7 @@ async function getOrderId() {
   //購物車數量變更
   await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
   computed(() => customerStore.getOrderInfoData)
+  alert('加入購物車成功')
 }
 //-----
 onMounted(async () => {
@@ -180,8 +179,11 @@ onMounted(async () => {
   <div class="flex flex-col gap-6">
     <div>
       <div class="relative h-[200px] overflow-hidden">
-        <img src="../../assets/img/1002930.jpg" alt="" class="h-full w-full object-cover" />
-        <!-- <img :src="product.productImagePath" alt="" class="h-full w-full object-cover" /> -->
+        <img
+          :src="product.productImagePath"
+          :alt="product.name"
+          class="h-full w-full object-cover"
+        />
       </div>
     </div>
     <div class="mx-3 flex flex-col gap-2">

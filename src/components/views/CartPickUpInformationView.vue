@@ -108,10 +108,19 @@ async function returnCustomerGetCart() {
 //-----
 //前往結帳
 async function goCheckout() {
+  function orderInfoCount() {
+    if (orderInfo.value == null || orderInfo.value == undefined || orderInfo.value.count <= 0) {
+      alert('購物車為空')
+      return false
+    }
+    return true
+  }
+  if (!orderInfoCount()) return
+
   let data: {
     orderId: number
     guid: string
-    phone: string | null
+    phone?: string | null
     type: '內用' | '外帶' | '預約自取' // 僅允許三種型別
     table?: string | null
     takeDate?: string | null
@@ -144,7 +153,7 @@ async function goCheckout() {
       }
     }
     //電話判斷
-    if (phoneNumber.value && !isValidPhoneNumber.value) {
+    if (phoneNumber.value && !validatePhoneNumber(isValidPhoneNumber.value, phoneNumber.value)) {
       alert(phoneValidateData.validationMessage)
       return false
     }
@@ -158,10 +167,12 @@ async function goCheckout() {
 }
 //-----
 onMounted(async () => {
-  //取得購物車現有訂單
-  await customerStore.fetchCustomerGetCart(localStorage.orderId, localStorage.guid)
-  //購物車商品數量
-  serving.value = cart.value.map((cartItem: { serving: number }) => cartItem.serving)
+  if (localStorage.guid && localStorage.orderId) {
+    //取得購物車現有訂單
+    await customerStore.fetchCustomerGetCart(localStorage.orderId, localStorage.guid)
+    //購物車商品數量
+    serving.value = cart.value.map((cartItem: { serving: number }) => cartItem.serving)
+  }
   //取得外帶自取時間選項
   await customerStore.fetchCustomerGetTakeTime()
   //取得日期

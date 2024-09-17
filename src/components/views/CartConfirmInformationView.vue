@@ -137,7 +137,7 @@ onMounted(async () => {
   </div>
 
   <div class="flex flex-col items-center justify-center gap-3 border-t border-neutral-500 p-3">
-    <UiButton
+    <!-- <UiButton
       :btn-style="'style1'"
       :btn-width="'w-full '"
       :btn-padding="'px-6 py-2'"
@@ -149,7 +149,7 @@ onMounted(async () => {
       :router-name="'menu'"
     >
       會員登入
-    </UiButton>
+    </UiButton> -->
     <UiButton
       :btn-style="'style4'"
       :btn-width="'w-full'"

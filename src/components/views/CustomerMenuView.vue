@@ -49,8 +49,11 @@ function fixCustomerMenuNavbar() {
 //-----
 
 onMounted(async () => {
+  //菜單類別
   await customerStore.fetchCustomerGetMenuCategory()
+  //菜單品項
   await customerStore.fetchCustomerGetMenuItem()
+  //-----
   fixCustomerMenuNavbar()
   document.addEventListener('scroll', fixCustomerMenuNavbar)
 })

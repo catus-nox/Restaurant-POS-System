@@ -76,11 +76,12 @@ function employeeMenuState(): boolean {
 const customerStore = useCustomerStore()
 //-----
 onMounted(async () => {
-  if (localStorage.guid || localStorage.orderId) {
+  if (localStorage.guid && localStorage.orderId) {
+    // 取得購物車商品數量
     await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
   }
-  computed(() => customerStore.getOrderInfoData)
 })
+// 選單
 onMounted(() => {
   watch(
     [menuState, menuArrowState],
