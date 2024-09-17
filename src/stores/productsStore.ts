@@ -13,6 +13,7 @@ import {
   postGoCheckout,
   postConfirmOrderCash,
   postConfirmOrderLinePay,
+  postConfirmLinePayRequest,
   getOrder
 } from '@/models/api'
 
@@ -46,6 +47,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const confirmOrderLinePayData: any = ref()
   //送出訂單(選擇結帳方式-Line Pay)-網址
   const confirmOrderLinePayPaymentUrlData: any = ref()
+  //送出訂單(選擇結帳方式-Line Pay)-狀態
+  const confirmLinePayRequestIsPayMent: any = ref()
   //訂單完成畫面
   const orderData: any = ref()
 
@@ -80,6 +83,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const getConfirmOrderLinePayPaymentUrlData = computed(
     () => confirmOrderLinePayPaymentUrlData.value
   )
+  //送出訂單(選擇結帳方式-Line Pay)-狀態
+  const getConfirmLinePayRequestIsPayMent = computed(() => confirmLinePayRequestIsPayMent.value)
   //訂單完成畫面
   const getOrderData = computed(() => orderData.value)
 
@@ -280,6 +285,26 @@ export const useCustomerStore = defineStore('customer', () => {
     }
   }
 
+  // Line Pay付款確認
+  const fetchConfirmLinePayRequest = async (data: { orderId: Number; guid: String }) => {
+    try {
+      const response = await postConfirmLinePayRequest({
+        orderId: data.orderId,
+        guid: data.guid
+      })
+
+      if (response.data.statusCode === 400) {
+        console.log(response.data.message)
+      } else {
+        confirmLinePayRequestIsPayMent.value = response.data.data.isPayMent
+        console.log(response.data.message)
+      }
+      return response
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   //訂單完成畫面
   const fetchCustomerGetOrder = async (guid: string) => {
     try {
@@ -316,6 +341,8 @@ export const useCustomerStore = defineStore('customer', () => {
     postConfirmOrderLinePayData,
     getConfirmOrderLinePayPaymentUrlData,
     fetchCustomerPostConfirmOrderLinePay,
+    getConfirmLinePayRequestIsPayMent,
+    fetchConfirmLinePayRequest,
     getOrderData,
     fetchCustomerGetOrder
   }
