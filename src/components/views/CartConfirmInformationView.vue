@@ -28,7 +28,6 @@ onMounted(async () => {
   <div>
     <UiCartProcess :status="'-translate-x-0'" :done="2" />
   </div>
-
   <div class="flex flex-col justify-start gap-6 px-3 py-6" v-if="orderData">
     <div class="flex items-center justify-center gap-2">
       <svg
@@ -103,7 +102,6 @@ onMounted(async () => {
                   class="w-full px-3 py-2.5 text-center text-xs font-medium leading-none text-neutral-900"
                 >
                   {{ product.name }}
-                  {{ product.customization.join(' |') }}
                 </td>
                 <td
                   class="w-2/5 px-3 py-2.5 text-center text-xs font-medium leading-none text-neutral-900"
