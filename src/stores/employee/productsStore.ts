@@ -13,7 +13,7 @@ export const useEmployeeStore = defineStore('employee', () => {
   //getter
 
   //員工登入
-  const postLoginData = computed(() => loginData.value)
+  const getLoginData = computed(() => loginData.value)
 
   //------
   //action 異步請求
@@ -25,10 +25,8 @@ export const useEmployeeStore = defineStore('employee', () => {
         account: data.account,
         password: data.password
       })
-      console.log(response)
-
       if (response.data.statusCode === 400) {
-        alert(response.data.message)
+        alert(`${response.data.message}，去找老闆!`)
       } else {
         //員工資訊
         loginData.value = response.data.data
@@ -40,7 +38,7 @@ export const useEmployeeStore = defineStore('employee', () => {
   }
 
   return {
-    postLoginData,
+    getLoginData,
     fetchEmployeeLogin
   }
 })
