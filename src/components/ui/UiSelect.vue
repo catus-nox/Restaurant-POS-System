@@ -26,9 +26,14 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
+
   isImportant: {
     type: Boolean,
     default: false
+  },
+  isDefaultDisabled: {
+    type: Boolean,
+    default: true
   },
   isIcon: {
     type: Boolean,
@@ -65,7 +70,7 @@ const model = defineModel()
       v-model="model"
       :id="props.id"
     >
-      <option value="" disabled>{{ props.defaultOption }}</option>
+      <option v-if="isDefaultDisabled" value="" disabled>{{ props.defaultOption }}</option>
       <slot name="option" :value="props.value"></slot>
     </select>
 
