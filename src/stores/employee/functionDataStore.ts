@@ -69,8 +69,10 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
     const orderGetData: any = {
       orderStatus: getNowOrderStatusClick.value,
       type: getNowOrderTypeClick.value,
-      orderBy: getNowOrderBySelect.value
+      orderBy: getNowOrderBySelect.value,
+      search: nowSearch.value
     }
+
     //取得今日訂單數量與頁數
     await useEmployeeStore().fetchEmployeeFohGetAllOrderCount()
     //外場訂單總覽
