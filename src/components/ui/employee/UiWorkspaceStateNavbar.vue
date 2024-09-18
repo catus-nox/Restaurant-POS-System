@@ -1,34 +1,32 @@
 <script setup lang="ts">
-// import { defineProps, defineEmits } from 'vue'
+import type { PropType } from 'vue'
 
-const states = [
-  { text: '全部訂單', press: 'press-menu-navbar-btn' },
-  { text: '待結帳', press: '' },
-  { text: '準備中', press: '' },
-  { text: '待取餐', press: '' },
-  { text: '已完成', press: '' }
-]
-defineEmits(['changeCategoryId'])
+const props = defineProps({
+  nowOrderStatusClick: {
+    type: Number,
+    default: 0
+  },
+  orderAllCountData: {
+    type: Array as PropType<any>,
+    default: () => []
+  }
+})
+const states = ['全部訂單', '待結帳', '準備中', '待取餐', '已完成']
+defineEmits(['toggleMenu'])
 </script>
 
 <template>
   <div class="scrollbar overflow-x-auto">
     <ul class="flex shadow-[inset_0_-2px_0_-1px] shadow-neutral-300">
       <template v-for="(state, index) in states" :key="index">
-        <template v-if="index == 0">
-          <li :id="state.text" class="state-navbar-btn press-state-navbar-btn">
-            {{ state.text }} <span>99+</span>
-          </li>
-        </template>
-        <template v-else>
-          <li
-            :id="state.text"
-            @click="$emit('changeCategoryId', index, index)"
-            class="state-navbar-btn"
-          >
-            {{ state.text }}<span>1</span>
-          </li>
-        </template>
+        <li
+          :id="state"
+          class="state-navbar-btn"
+          :class="index === props.nowOrderStatusClick ? 'press-state-navbar-btn' : ''"
+          @click="$emit('toggleMenu', index)"
+        >
+          {{ state }} <span>{{ props.orderAllCountData[index].orderCount }}</span>
+        </li>
       </template>
     </ul>
   </div>

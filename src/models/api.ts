@@ -105,9 +105,10 @@ export function getTakeTime(data?: any) {
 export function postGoCheckout(data: {
   orderId: number // 訂單Id
   guid: string // 唯一識別碼
-  phone: string | null // 顧客電話
+  phone?: string | null // 顧客電話
   type: '內用' | '外帶' | '預約自取' // 用餐類型，只能是"內用"、"外帶"或"預約自取"
   table?: string | null // 桌號，非內用則可以是null或空字串
+  takeDate?: string | null //外帶時間(null或是api(CC-4)給你放選項的日期)
   takeTime?: string | null // 外帶時間，可以是null或特定日期格式的字串
   note?: string // 顧客的其他備註
 }) {
@@ -120,6 +121,7 @@ export function postGoCheckout(data: {
       phone: data.phone,
       type: data.type,
       table: data.table,
+      takeDate: data.takeDate,
       takeTime: data.takeTime,
       note: data.note
     }
@@ -141,6 +143,40 @@ export function postConfirmOrderCash(data: {
       guid: data.guid,
       invoice: data.invoice,
       invoiceCarrier: data.invoiceCarrier
+    }
+  })
+}
+
+//送出訂單(選擇結帳方式-Line Pay)
+export function postConfirmOrderLinePay(data: {
+  orderId: Number
+  guid: String
+  invoice: '載具' | '統編' | '捐贈發票' | '紙本' //發票類型 1"載具" 2"統編" 3"捐贈發票" 4"紙本"
+  invoiceCarrier?: String | null //發票載具號碼or統編
+  confirmUrl?: String | null //LinePay付款成功後，Line會導向使用者去的網址
+  cancelUrl?: String | null //LinePay取消付款後，Line會導向使用者去的網址
+}) {
+  return request({
+    url: `/customer/confirmOrderLinePay`,
+    method: 'POST',
+    data: {
+      orderId: data.orderId,
+      guid: data.guid,
+      invoice: data.invoice,
+      invoiceCarrier: data.invoiceCarrier,
+      confirmUrl: data.confirmUrl,
+      cancelUrl: data.cancelUrl
+    }
+  })
+}
+// Line Pay付款確認
+export function postConfirmLinePayRequest(data: { orderId: Number; guid: String }) {
+  return request({
+    url: `/customer/confirmLinePayRequest`,
+    method: 'POST',
+    data: {
+      orderId: data.orderId,
+      guid: data.guid
     }
   })
 }

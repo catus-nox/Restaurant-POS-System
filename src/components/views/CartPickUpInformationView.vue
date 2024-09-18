@@ -8,8 +8,10 @@ import UiButton from '@/components/ui/UiButton.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiSelect from '@/components/ui/UiSelect.vue'
+import { useRouter } from 'vue-router'
 
 //-----
+const router = useRouter()
 //api
 const customerStore = useCustomerStore()
 // 數量
@@ -35,21 +37,7 @@ function toggleMenu(index: number) {
   customerStatusClick.value = index
   goCheckoutType.value = customerStatus[index].id
 }
-//選單判斷
-// function customerStatusApi() {
-//   for (let i = 0; i < customerStatus.length; i++) {
-//     if (customerStatusClick.value === 0) {
-//       return
-//     } else if (customerStatusClick.value === 1) {
-//       return
-//     } else if (customerStatusClick.value === 2) {
-//       console.log(6666)
-//     } else {
-//       console.log('無設定此選單')
-//       return
-//     }
-//   }
-// }
+
 //-----
 //取得購物車現有訂單
 const cart: any = computed(() => customerStore.getCartData)
@@ -57,67 +45,52 @@ const cart: any = computed(() => customerStore.getCartData)
 const orderInfo: any = computed(() => customerStore.getOrderInfoData)
 //-----
 //手機
-const phoneNumber = ref<any>('')
+const phoneNumber = ref<any>(undefined)
 //手機驗證結果
 const isValidPhoneNumber = ref<boolean>(false)
 //手機是否點擊過輸入框
 const isTouchPhoneNumber = ref<boolean>(false)
 //-----
-//預約日期
-const goCheckoutTakeDate = ref(takeTimeDateArray(0))
-//預約時間
-const goCheckoutTakeTime = ref()
 //桌號
 const goCheckoutTable = ref('')
+
 //-----
 //取得外帶自取時間選項
 const takeTime: any = computed(() => customerStore.getTakeTimeData)
-//取得「今天、明天、後天」的日期
-function takeTimeDateArray(inputDate: 0 | 1 | 2) {
-  const today = new Date()
-  // 格式化日期為 YYYY-MM-DD
-  const formatDate = (date: Date) => {
-    const year = date.getFullYear() // 取得四位數的年份
-    const month = String(date.getMonth() + 1).padStart(2, '0') // 月份從 0 開始，所以加 1
-    const day = String(date.getDate()).padStart(2, '0') // 確保日期有兩位數
-    return `${year}-${month}-${day}`
-  }
-  // 今天、明天、後天 =3
-  // return Array.from({ length: 3 }, (_, i) => {
-  //   const date = new Date(today)
-  //   date.setDate(today.getDate() + i)
-  //   return formatDate(date)
-  // })
-  const date = new Date(today)
-  date.setDate(today.getDate() + inputDate)
-  return formatDate(date)
+//預約日期
+const goCheckoutTakeDay = ref('YYYY-MM-DD')
+watch(goCheckoutTakeDay, () => {
+  takeTimeNumber.value = takeTimeNumberArray(goCheckoutTakeDay.value)
+})
+//預約時間
+const goCheckoutTakeTime: any = ref('')
+//-----
+//日期
+const takeTimeDay = ref()
+const takeTimeDayComputed = computed(() => takeTimeDay.value)
+//取得日期
+function takeTimeDayArray() {
+  const dateCount: any = {}
+  takeTime.value.forEach((slot: any) => {
+    const { takeDate } = slot
+    if (!dateCount[takeDate]) {
+      dateCount[takeDate] = 0
+    }
+    dateCount[takeDate]++
+  })
+  const uniqueDates: any = Object.keys(dateCount).map((date) => date.split('(')[0])
+  return uniqueDates
+}
+//時間
+const takeTimeNumber = ref()
+const takeTimeNumberComputed = computed(() => takeTimeNumber.value)
+//取得時間
+function takeTimeNumberArray(day: string) {
+  return takeTime.value.filter((record: { takeDate: string | any[] }) =>
+    record.takeDate.includes(day)
+  )
 }
 
-function filterByDateFunction() {
-  // 定義篩選函數
-  const filterByDate = (data: any[], date: any) => {
-    return data.filter((item) => {
-      // 解析日期部分
-      let itemDate = item.takeTime.split(' ')[1].split('(')[0] // 取得 '??/??' 移除(Mon)
-      // console.log(goCheckoutTakeDate.value)
-
-      // console.log(itemDate === goCheckoutTakeDate.value)
-
-      return itemDate === goCheckoutTakeDate.value
-    })
-  }
-  // console.log(filterByDate(takeTime.value, goCheckoutTakeDate.value))
-
-  // 使用篩選函數
-  // return filterByDate(takeTime.value, goCheckoutTakeDate.value)
-}
-
-// 篩選符合當前日期的項目
-function confirmTodayDate() {
-  // return takeTime.value.filter((takeTimeItem: any) =>
-  //   takeTimeItem.takeTime.includes(takeTimeDateArray)
-  // )
-}
 //-----
 //備註文字
 const goCheckoutNote = ref('')
@@ -128,14 +101,29 @@ watch(goCheckoutNote, (newValue) => {
   }
 })
 //-----
+//重新取得購物車商品數量
+async function returnCustomerGetCart() {
+  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+}
+//-----
 //前往結帳
 async function goCheckout() {
+  function orderInfoCount() {
+    if (orderInfo.value == null || orderInfo.value == undefined || orderInfo.value.count <= 0) {
+      alert('購物車為空')
+      return false
+    }
+    return true
+  }
+  if (!orderInfoCount()) return
+
   let data: {
     orderId: number
     guid: string
-    phone: string | null
+    phone?: string | null
     type: '內用' | '外帶' | '預約自取' // 僅允許三種型別
     table?: string | null
+    takeDate?: string | null
     takeTime?: string | null
     note?: string
   } = {
@@ -143,22 +131,55 @@ async function goCheckout() {
     guid: String(localStorage.guid),
     phone: phoneNumber.value,
     type: goCheckoutType.value,
-    table: goCheckoutTable.value,
-    takeTime: goCheckoutTakeDate.value,
     note: goCheckoutNote.value
   }
+  function goCheckoutValidate(): boolean {
+    //選單判斷
+    if (customerStatusClick.value === 0) {
+      if (goCheckoutTakeTime.value === '') {
+        alert('請選擇自取時間')
+        return false
+      } else {
+        data.takeDate = takeTimeNumberComputed.value[goCheckoutTakeTime.value].takeDate
+        data.takeTime = takeTimeNumberComputed.value[goCheckoutTakeTime.value].takeTime
+      }
+    }
+    if (customerStatusClick.value === 2) {
+      if (goCheckoutTable.value === '') {
+        alert('請輸入桌號')
+        return false
+      } else {
+        data.table = goCheckoutTable.value
+      }
+    }
+    //電話判斷
+    if (phoneNumber.value && !validatePhoneNumber(isValidPhoneNumber.value, phoneNumber.value)) {
+      alert(phoneValidateData.validationMessage)
+      return false
+    }
+    return true
+  }
+
+  if (!goCheckoutValidate()) return
+
   await customerStore.fetchCustomerPostGoCheckout(data)
+  router.push({ name: 'cartPayInformation' })
 }
 //-----
 onMounted(async () => {
-  //取得購物車現有訂單
-  await customerStore.fetchCustomerGetCart(localStorage.orderId, localStorage.guid)
-  //購物車商品數量
-  serving.value = cart.value.map((cartItem: { serving: number }) => cartItem.serving)
+  if (localStorage.guid && localStorage.orderId) {
+    //取得購物車現有訂單
+    await customerStore.fetchCustomerGetCart(localStorage.orderId, localStorage.guid)
+    //購物車商品數量
+    serving.value = cart.value.map((cartItem: { serving: number }) => cartItem.serving)
+  }
   //取得外帶自取時間選項
   await customerStore.fetchCustomerGetTakeTime()
-
-  filterByDateFunction()
+  //取得日期
+  takeTimeDay.value = takeTimeDayArray()
+  goCheckoutTakeDay.value = takeTimeDay.value[0]
+  //取得時間
+  takeTimeNumber.value = takeTimeNumberArray(goCheckoutTakeDay.value)
 })
 </script>
 <template>
@@ -214,34 +235,34 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="flex flex-col justify-end gap-2">
+      <div v-if="takeTimeDayComputed" class="flex flex-col justify-end gap-2">
         <div class="flex items-center justify-between">
           <div class="text-xl font-semibold text-black">自取時間</div>
           <UiBadge :style="'radioBadge'" />
         </div>
-
         <UiInput
-          :id="'goCheckoutTakeDate'"
+          :id="'goCheckoutTakeDay'"
           :is-label="true"
           :label="'選擇日期'"
           :is-important="true"
           :type="'date'"
           :step="1"
-          :placeholder="goCheckoutTakeDate"
-          :value="goCheckoutTakeDate"
-          :min="takeTimeDateArray(0)"
-          :max="takeTimeDateArray(2)"
-          v-model="goCheckoutTakeDate"
+          :placeholder="takeTimeDayComputed[0]"
+          :value="goCheckoutTakeDay"
+          :min="takeTimeDayComputed[0]"
+          :max="takeTimeDayComputed[takeTimeDayComputed.length - 1]"
+          v-model="goCheckoutTakeDay"
         >
           <template #helper></template>
           <template #validationMessage></template>
         </UiInput>
-        {{ goCheckoutTakeTime }}
         <UiSelect :id="'goCheckoutTakeTime'" v-model="goCheckoutTakeTime">
           <template #option>
-            <!-- <template v-for="(index) in ">
-    <option value=""></option>
-   </template> -->
+            <template v-if="takeTimeNumberComputed">
+              <template v-for="(time, index) in takeTimeNumberComputed" :key="index">
+                <option :value="index">{{ time.takeTime }}</option>
+              </template>
+            </template>
           </template>
           <template #helper></template>
           <template #validationMessage></template>
@@ -305,12 +326,8 @@ onMounted(async () => {
               <div class="flex items-center gap-4">
                 <img
                   class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
-                  src="../../assets/img/1002928.jpg"
+                  :src="cartItem.imagePath"
                 />
-                <!-- <img
-              class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
-              :src="cartItem.imagePath"
-            /> -->
                 <div class="flex w-[118px] flex-col gap-1">
                   <div class="text-base font-bold text-black">{{ cartItem.name }}</div>
                   <div class="text-xs font-medium text-neutral-300">
@@ -323,6 +340,8 @@ onMounted(async () => {
                 v-model="serving[index]"
                 :order-item-id="cartItem.orderItemId"
                 :serving="serving[index]"
+                @counter-minus="returnCustomerGetCart"
+                @counter-plus="returnCustomerGetCart"
               ></UiCounter>
             </div>
           </template>
@@ -376,7 +395,6 @@ onMounted(async () => {
       :is-only-icon="false"
       :font-size="'text justify-between flex w-full items-center'"
       :font-padding="'px-0'"
-      :router-name="'cartPayInformation'"
       :icon-size="'w-auto'"
       @define-function="goCheckout"
     >

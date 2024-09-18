@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import {
+  validateReceipt,
+  receiptValidateData,
+  validateTaxId,
+  taxIdValidateData
+} from '@/models/validate'
 import router from '@/router'
 import UiCartProcess from '@/components/ui/UiCartProcess.vue'
 import UiButton from '@/components/ui/UiButton.vue'
@@ -7,21 +13,34 @@ import UiBadge from '@/components/ui/UiBadge.vue'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
 import { useCustomerStore } from '@/stores/productsStore'
+
 //-----
-function toRouterName() {
-  router.push({ name: 'cartConfirmInformation', params: { guid: localStorage.guid } })
-}
+const baseUrl = import.meta.env.VITE_APP_BASE_URL
+
 //-----
 //選單控制
 const nowClick = ref<number>(0)
 function toggleMenu(index: number) {
   nowClick.value = index
 }
+
+//-----
 //api
 const customerStore = useCustomerStore()
+//取得購物車現有訂單
 const cartData: any = computed(() => customerStore.getCartData)
+//取得現在購物車的商品筆數跟總價
 const orderInfoData: any = computed(() => customerStore.getOrderInfoData)
+//送出訂單(選擇結帳方式-Line Pay)-網址
+const confirmOrderLinePayPaymentUrlData: any = computed(
+  () => customerStore.getConfirmOrderLinePayPaymentUrlData
+)
+//送出訂單(選擇結帳方式-Line Pay)-狀態
+const confirmLinePayRequestIsPayMent: any = computed(
+  () => customerStore.getConfirmLinePayRequestIsPayMent
+)
 //-----
+//發票資訊
 const customerStatus = [
   { name: '現金付款', id: '現金付款' },
   { name: 'Line Pay', id: 'linePay' }
@@ -41,31 +60,119 @@ const payData: {
     { name: '發票紙本證明聯', id: '紙本' }
   ]
 }
+//預設紙本
 const pay = ref(payData.options[3].id)
 
-//
-async function confirmOrderCashData() {
+//-----
+//載具
+const receipt = ref<any>(undefined)
+//載具驗證結果
+const isValidReceipt = ref<boolean>(false)
+
+//-----
+//統編
+const taxId = ref<any>(undefined)
+//統編驗證結果
+const isValidTaxId = ref<boolean>(false)
+
+//-----
+//前往結帳
+async function confirmOrder() {
+  function goCheckoutValidate(): boolean {
+    //載具判斷
+    if (
+      pay.value == payData.options[0].id &&
+      !validateReceipt(isValidReceipt.value, receipt.value)
+    ) {
+      alert(receiptValidateData.validationMessage)
+      return false
+    }
+    //統編判斷
+    if (pay.value == payData.options[1].id && !validateTaxId(isValidTaxId.value, taxId.value)) {
+      alert(taxIdValidateData.validationMessage)
+      return false
+    }
+    return true
+  }
+
+  if (!goCheckoutValidate()) return
+
+  //-----
+  // 給api的data資訊
+  let invoiceCarrierDate: any = null
+  if (pay.value === payData.options[0].id) {
+    invoiceCarrierDate = receipt.value
+  } else if (pay.value === payData.options[1].id) {
+    invoiceCarrierDate = taxId.value
+  }
+
   let data: {
     orderId: Number
     guid: String
     invoice: '載具' | '統編' | '捐贈發票' | '紙本' //發票類型 1"載具" 2"統編" 3"捐贈發票" 4"紙本"
     invoiceCarrier?: String | null //發票載具號碼or統編
+    confirmUrl?: String | null //line pay
+    cancelUrl?: String | null //line pay
   } = {
     orderId: Number(localStorage.orderId),
     guid: String(localStorage.guid),
     invoice: pay.value,
-    invoiceCarrier: null
+    invoiceCarrier: invoiceCarrierDate
   }
-  console.log(data)
 
-  await customerStore.fetchCustomerPostConfirmOrderCash(data)
+  //-----
+  // 判斷付款資訊打api
+  if (nowClick.value == 0) {
+    await customerStore.fetchCustomerPostConfirmOrderCash(data)
+    toRouterName('cartConfirmInformation')
+  } else if (nowClick.value == 1) {
+    // data.confirmUrl = `${baseUrl}/cartConfirmInformation/${localStorage.guid}`
+    data.confirmUrl = `${baseUrl}/cartPayInformation`
+    data.cancelUrl = `${baseUrl}/cartPayInformation`
+    await customerStore.fetchCustomerPostConfirmOrderLinePay(data)
+    //跳轉往址
+    window.open(confirmOrderLinePayPaymentUrlData.value, '_blank')
 
-  toRouterName()
+    // localStorageClear()
+  }
+}
+
+//-----
+//換頁
+function toRouterName(name: string) {
+  router.push({ name, params: { guid: localStorage.guid } })
+  localStorageClear()
+}
+
+//-----
+//清除 localStorage
+function localStorageClear() {
+  localStorage.clear()
+}
+// Line Pay付款確認
+async function confirmLinePayRequestIsPayMentFunction() {
+  if (confirmLinePayRequestIsPayMent.value == undefined) {
+    let data: { orderId: Number; guid: String } = {
+      orderId: Number(localStorage.orderId),
+      guid: String(localStorage.guid)
+    }
+    await customerStore.fetchConfirmLinePayRequest(data)
+    if (confirmLinePayRequestIsPayMent.value) {
+      toRouterName('cartConfirmInformation')
+    }
+  }
 }
 //-----
 onMounted(async () => {
-  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  // Line Pay付款確認
+  confirmLinePayRequestIsPayMentFunction()
+  if (confirmLinePayRequestIsPayMent.value) return
+
+  //-----
+  //取得購物車現有訂單
   await customerStore.fetchCustomerGetCart(localStorage.orderId, localStorage.guid)
+  //取得現在購物車的商品筆數跟總價
+  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
 })
 </script>
 
@@ -73,7 +180,6 @@ onMounted(async () => {
   <div>
     <UiCartProcess :status="'-translate-x-[10%]'" :done="1" />
   </div>
-
   <div class="flex flex-col gap-6 px-3 py-6">
     <div class="flex flex-col gap-2">
       <div class="flex gap-2">
@@ -114,63 +220,55 @@ onMounted(async () => {
       </div>
     </div>
 
-    <template v-if="nowClick === 0">
-      <div class="flex flex-col justify-end gap-2">
-        <div class="flex flex-col gap-2" v-for="(option, index) in payData.options" :key="index">
-          <div class="flex items-center justify-between" v-if="index === 0">
-            <div class="text text-black">發票資訊</div>
-            <UiBadge :style="'radioBadge'" />
-          </div>
+    <div class="flex flex-col justify-end gap-2">
+      <div class="flex flex-col gap-2" v-for="(option, index) in payData.options" :key="index">
+        <div class="flex items-center justify-between" v-if="index === 0">
+          <div class="text text-black">發票資訊</div>
+          <UiBadge :style="'radioBadge'" />
+        </div>
 
-          <UiInputOption
-            :key="index"
-            :id="option.name"
-            :value="option.id"
-            :type="'radio'"
-            v-model="pay"
+        <UiInputOption
+          :key="index"
+          :id="option.name"
+          :value="option.id"
+          :type="'radio'"
+          v-model="pay"
+        >
+          {{ option.name }}
+        </UiInputOption>
+
+        <div class="flex flex-col gap-2" v-if="index === 0 && pay === payData.options[0].id">
+          <UiInput
+            :id="'receipt'"
+            :is-label="false"
+            :label="'請輸入載具'"
+            :placeholder="receiptValidateData.placeholder"
+            :is-important="false"
+            :type="'text'"
+            v-model="receipt"
+            :is-validation-message="!validateReceipt(isValidReceipt, receipt)"
           >
-            {{ option.name }}
-          </UiInputOption>
-
-          <div class="flex flex-col gap-2" v-if="index === 0">
-            <UiInput
-              :is-label="false"
-              :label="'載具'"
-              :placeholder="'/ABC1234'"
-              :is-important="false"
-              :type="'text'"
-            >
-              <template #helper></template>
-              <template #validationMessage></template>
-            </UiInput>
-            <div class="flex gap-2">
-              <UiButton
-                :btn-style="'style3'"
-                :btn-width="'w-fit'"
-                :btn-padding="'px-6 py-2'"
-                :icon-size="''"
-                :icon-style="''"
-                :is-only-icon="false"
-                :font-size="'text-xs font-medium'"
-              >
-                確認
-              </UiButton>
-              <UiButton
-                :btn-style="'style4'"
-                :btn-width="'w-fit'"
-                :btn-padding="'px-6 py-2'"
-                :icon-size="''"
-                :icon-style="''"
-                :is-only-icon="false"
-                :font-size="'text-xs  font-medium'"
-              >
-                取消
-              </UiButton>
-            </div>
-          </div>
+            <template #helper></template>
+            <template #validationMessage>{{ receiptValidateData.validationMessage }} </template>
+          </UiInput>
+        </div>
+        <div class="flex flex-col gap-2" v-if="index === 1 && pay === payData.options[1].id">
+          <UiInput
+            :id="'taxId'"
+            :is-label="false"
+            :label="'請輸入統編'"
+            :placeholder="taxIdValidateData.placeholder"
+            :is-important="false"
+            :type="'text'"
+            v-model="taxId"
+            :is-validation-message="!validateTaxId(isValidTaxId, taxId)"
+          >
+            <template #helper></template>
+            <template #validationMessage>{{ taxIdValidateData.validationMessage }} </template>
+          </UiInput>
         </div>
       </div>
-    </template>
+    </div>
 
     <div class="flex flex-col justify-end gap-2">
       <div class="flex items-center justify-between">
@@ -229,7 +327,7 @@ onMounted(async () => {
       :font-size="'text justify-between flex w-full items-center'"
       :font-padding="'px-0'"
       :icon-size="'w-auto'"
-      @define-function="confirmOrderCashData"
+      @define-function="confirmOrder"
     >
       <template #left-icon v-if="orderInfoData">
         <span

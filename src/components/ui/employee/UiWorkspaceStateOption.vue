@@ -1,5 +1,18 @@
 <script setup lang="ts">
-import { defineProps, defineModel } from 'vue'
+import { defineProps, defineModel, type PropType } from 'vue'
+const props = defineProps({
+  orderData: {
+    type: Object as PropType<any>,
+    default: () => ({
+      orderId: 88,
+      orderStatus: '待結帳',
+      phone: null,
+      time: '00:29點餐',
+      totalAmount: 200,
+      typeAndNumber: '外帶002'
+    })
+  }
+})
 </script>
 
 <template>
@@ -8,12 +21,12 @@ import { defineProps, defineModel } from 'vue'
   >
     <div class="inline-flex grow flex-col">
       <div class="inline-flex flex-wrap items-center justify-between bg-primary-300 p-4">
-        <div class="text-h4 font-bold text-neutral-950">外帶 05</div>
-        <div class="text-base font-normal text-neutral-950">待結帳</div>
+        <div class="text-h4 font-bold text-neutral-950">{{ props.orderData.typeAndNumber }}</div>
+        <div class="text-base font-normal text-neutral-950">{{ props.orderData.orderStatus }}</div>
       </div>
 
       <div class="flex grow flex-col gap-2 p-4 text-h5 font-normal text-neutral-950">
-        <div class="inline-flex flex-wrap items-center gap-2">
+        <div v-if="props.orderData.phone" class="inline-flex flex-wrap items-center gap-2">
           <svg
             class="h-6 w-6"
             aria-hidden="true"
@@ -28,7 +41,7 @@ import { defineProps, defineModel } from 'vue'
             />
           </svg>
 
-          <div>0912345678</div>
+          <div>{{ props.orderData.phone }}</div>
         </div>
         <div class="inline-flex flex-wrap items-center gap-2">
           <svg
@@ -47,7 +60,7 @@ import { defineProps, defineModel } from 'vue'
             />
           </svg>
 
-          <div>00:00 取餐</div>
+          <div>{{ props.orderData.time }}</div>
         </div>
         <div class="inline-flex flex-wrap items-center gap-2">
           <svg
@@ -68,7 +81,7 @@ import { defineProps, defineModel } from 'vue'
             />
           </svg>
 
-          <div>999</div>
+          <div>{{ props.orderData.totalAmount }}</div>
         </div>
       </div>
     </div>

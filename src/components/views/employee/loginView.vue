@@ -1,6 +1,73 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+import router from '@/router'
+import { useEmployeeStore } from '@/stores/employee/productsStore'
+import {
+  accountValidateData,
+  validateAccount,
+  passwordValidateData,
+  validatePassword
+} from '@/models/validate'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiInput from '@/components/ui/UiInput.vue'
+//-----
+//api
+const employeeStore = useEmployeeStore()
+//-----
+//帳號
+const account = ref('')
+//帳號驗證結果
+const isValidAccount = ref<boolean>(false)
+//帳號是否點擊過輸入框
+const isTouchAccount = ref<boolean>(false)
+//-----
+//密碼
+const password = ref('')
+//密碼驗證結果
+const isValidPassword = ref<boolean>(false)
+//密碼是否點擊過輸入框
+const isTouchPassword = ref<boolean>(false)
+//-----
+//員工登入資料
+const loginData: any = computed(() => employeeStore.getLoginData)
+
+//員工登入
+async function employeeLogin() {
+  function validate(): boolean {
+    //帳號判斷
+    if (!validateAccount(isValidAccount.value, account.value)) {
+      alert(accountValidateData.validationMessage)
+      return false
+    }
+    //密碼編判斷
+    if (!validatePassword(isTouchPassword.value, password.value)) {
+      alert(passwordValidateData.validationMessage)
+      return false
+    }
+    return true
+  }
+  if (!validate()) return
+
+  //-----
+  // 給api的data資訊
+  let data: {
+    account: string
+    password: string
+  } = {
+    account: account.value,
+    password: password.value
+  }
+  //員工登入
+  await employeeStore.fetchEmployeeLogin(data)
+
+  //-----
+  if (loginData.value !== undefined) {
+    router.push({ name: 'employeeFohOrderView' })
+    localStorage.identity = loginData.value.identity
+    localStorage.username = loginData.value.username
+    localStorage.token = loginData.value.token
+  }
+}
 </script>
 
 <template>
@@ -8,7 +75,7 @@ import UiInput from '@/components/ui/UiInput.vue'
     <div class="flex w-full max-w-[459px] flex-col items-center gap-4">
       <img src="../../../assets/img/logo/character-black.png" class="max-w-72" alt="" />
       <div
-        class="bg-neutral-0 flex w-full max-w-[459px] flex-col items-center gap-4 gap-7 rounded-3xl border border-neutral-950 p-5"
+        class="flex w-full max-w-[459px] flex-col items-center gap-4 gap-7 rounded-3xl border border-neutral-950 bg-neutral-0 p-5"
       >
         <div class="flex w-full flex-col gap-4">
           <UiInput
@@ -17,28 +84,40 @@ import UiInput from '@/components/ui/UiInput.vue'
             :placeholder="'請輸入手機號碼'"
             :is-important="true"
             :type="'text'"
+            v-model="account"
+            @define-focus-function="isTouchAccount = true"
+            @define-input-function="validateAccount(isValidAccount, account)"
+            :is-validation-message="validateAccount(isValidAccount, account) !== isTouchAccount"
           >
-            <template #helper></template>
-            <template #validationMessage></template>
+            <template #helper>{{ accountValidateData.helper }}</template>
+            <template #validationMessage>
+              {{ accountValidateData.validationMessage }}
+            </template>
           </UiInput>
           <UiInput
             :is-label="true"
             :label="'密碼'"
             :placeholder="'請輸入密碼'"
             :is-important="true"
-            :type="'text'"
+            :type="'password'"
+            v-model="password"
+            @define-focus-function="isTouchPassword = true"
+            @define-input-function="validatePassword(isValidPassword, password)"
+            :is-validation-message="validatePassword(isValidPassword, password) !== isTouchPassword"
           >
-            <template #helper></template>
-            <template #validationMessage></template>
+            <template #helper>{{ passwordValidateData.helper }}</template>
+            <template #validationMessage>
+              {{ passwordValidateData.validationMessage }}
+            </template>
           </UiInput>
         </div>
         <div class="flex w-full flex-col items-center gap-2">
           <UiButton
             :btn-style="'style1'"
             :btn-width="'w-full'"
-            :router-name="'employeeFohOrderView'"
             :is-left-icon="false"
             :is-right-icon="false"
+            @define-function="employeeLogin"
           >
             登入
           </UiButton>

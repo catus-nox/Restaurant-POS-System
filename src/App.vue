@@ -11,7 +11,8 @@ import EmployeeUiNavbar from '@/components/ui/employee/UiNavbar.vue'
 const route = useRoute()
 const menuNavbar = ref<HTMLElement | null>(null)
 const drawer = ref<any>(null)
-
+//api
+const customerStore = useCustomerStore()
 //查看路由狀態
 watch(
   () => route.path,
@@ -43,10 +44,12 @@ const options = {
     // console.log('drawer has been toggled')
   }
 }
+//-----
 //選單開關
 function toggleMenu() {
   drawer.value.toggle()
 }
+//-----
 //選單顯示判斷
 function menuState(): boolean {
   return ['menu', 'productOrder', 'orderProcessHistory'].includes(route.name as string)
@@ -63,24 +66,26 @@ function menuArrowState(): boolean {
   return ['productOrder'].includes(route.name as string)
 }
 //-----
-//判斷目前頁面
+//判斷目前頁面是否為員工
 function pageCustomerOrEmployeeState(): boolean {
   return ['employeeLogin', 'employeeFohOrderView'].includes(route.name as string)
 }
 //-----
-//員工選單顯示判斷
+//員工-選單顯示判斷
 function employeeMenuState(): boolean {
   return ['employeeLogin'].includes(route.name as string)
 }
-//api
-const customerStore = useCustomerStore()
+
 //-----
 onMounted(async () => {
-  if (localStorage.guid || localStorage.orderId) {
+  //判斷是否為員工頁面
+  if (!pageCustomerOrEmployeeState()) return
+  if (localStorage.guid && localStorage.orderId) {
+    // 取得購物車商品數量
     await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
   }
-  computed(() => customerStore.getOrderInfoData)
 })
+// 選單
 onMounted(() => {
   watch(
     [menuState, menuArrowState],
