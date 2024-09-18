@@ -1,31 +1,44 @@
 <script setup lang="ts">
+import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
+import { computed } from 'vue'
 import type { PropType } from 'vue'
 
+//-----
+//api
+const functionDataStore = useFunctionDataStore()
+//-----
+//Status選單
+const orderStates = computed(() => functionDataStore.orderStates)
+//Status選單選擇
+const nowOrderStatusClick = computed(() => functionDataStore.getNowOrderStatusClick)
+
+//-----
 const props = defineProps({
-  nowOrderStatusClick: {
-    type: Number,
-    default: 0
-  },
   orderAllCountData: {
     type: Array as PropType<any>,
     default: () => []
   }
 })
-const states = ['全部訂單', '待結帳', '準備中', '待取餐', '已完成']
-defineEmits(['toggleMenu'])
 </script>
 
 <template>
-  <div class="scrollbar overflow-x-auto">
+  <div class="scrollbar overflow-x-auto" v-if="functionDataStore">
     <ul class="flex shadow-[inset_0_-2px_0_-1px] shadow-neutral-300">
-      <template v-for="(state, index) in states" :key="index">
+      <template v-for="(state, index) in orderStates" :key="index">
         <li
           :id="state"
           class="state-navbar-btn"
-          :class="index === props.nowOrderStatusClick ? 'press-state-navbar-btn' : ''"
-          @click="$emit('toggleMenu', index)"
+          :class="index === nowOrderStatusClick ? 'press-state-navbar-btn' : ''"
+          @click="functionDataStore.getNowOrderStatusClickFunction(index)"
         >
-          {{ state }} <span>{{ props.orderAllCountData[index].orderCount }}</span>
+          {{ state }}
+          <span
+            v-text="
+              props.orderAllCountData[index].orderCount >= 99
+                ? '99+'
+                : props.orderAllCountData[index].orderCount
+            "
+          ></span>
         </li>
       </template>
     </ul>
