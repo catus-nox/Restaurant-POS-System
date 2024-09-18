@@ -16,7 +16,7 @@ export function postEmployeeLogin(data: { account: string; password: string }) {
 export function getEmployeeFohGetOrderCount(
   getData: {
     token?: string // 添加 token 參數
-    orderStatus?: string
+    orderStatus?: string | number
   },
   data?: any
 ) {
@@ -35,7 +35,7 @@ export function getEmployeeFohGetOrder(
   getData: {
     token?: string // 添加 token 參數
     page?: string // 抓該頁的1~9筆訂單  (為空或其他值會傳第一頁)
-    orderStatus?: string
+    orderStatus?: string | number
     type?: string
     orderBy?: string
     search?: any //依據值來搜尋

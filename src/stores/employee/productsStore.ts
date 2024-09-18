@@ -60,19 +60,26 @@ export const useEmployeeStore = defineStore('employee', () => {
       orderStatus?:
         | '全部訂單'
         | '0'
+        | 0
         | '待結帳'
         | '2'
+        | 2
         | '準備中'
         | '3'
+        | 3
         | '待取餐'
         | '4'
+        | 4
         | '已完成'
-        | '5' //(全部訂單不會抓"已完成"的)
+        | '5'
+        | 5 //(全部訂單不會抓"已完成"的)
     } = {}
   ) => {
     try {
-      const getDataStringOrderStatus = getData.orderStatus || '全部訂單'
-
+      let getDataStringOrderStatus = getData.orderStatus || '0'
+      if (Number(getDataStringOrderStatus) != 0) {
+        getDataStringOrderStatus = Number(getData.orderStatus) + 1
+      }
       const getDataString: any = {
         token: getData.token,
         orderStatus: getDataStringOrderStatus
@@ -93,19 +100,28 @@ export const useEmployeeStore = defineStore('employee', () => {
       orderStatus?:
         | '全部訂單'
         | '0'
+        | 0
         | '待結帳'
         | '2'
+        | 2
         | '準備中'
         | '3'
+        | 3
         | '待取餐'
         | '4'
+        | 4
         | '已完成'
-        | '5' //(全部訂單不會抓"已完成"的)
+        | '5'
+        | 5 //(全部訂單不會抓"已完成"的)
     } = {}
   ) => {
     try {
       const allResponse = []
-      const getDataStringOrderStatus = getData.orderStatus || '全部訂單'
+
+      let getDataStringOrderStatus = getData.orderStatus || '0'
+      if (Number(getDataStringOrderStatus) != 0) {
+        getDataStringOrderStatus = Number(getData.orderStatus) + 1
+      }
 
       const getDataString: any = {
         token: getData.token,
@@ -119,7 +135,6 @@ export const useEmployeeStore = defineStore('employee', () => {
           getDataString.orderStatus = index + 1
         }
         const response = await getEmployeeFohGetOrderCount(getDataString)
-        console.log(response)
         allResponse.push(response.data.data)
       }
       fohGetOrderAllCountData.value = allResponse
@@ -136,14 +151,19 @@ export const useEmployeeStore = defineStore('employee', () => {
       orderStatus?:
         | '全部訂單'
         | '0'
+        | 0
         | '待結帳'
         | '2'
+        | 2
         | '準備中'
         | '3'
+        | 3
         | '待取餐'
         | '4'
+        | 4
         | '已完成'
-        | '5' //(全部訂單不會抓"已完成"的)
+        | '5'
+        | 5 //(全部訂單不會抓"已完成"的)
       type?: '0' | '全部訂單' | '內用' | '1' | '外帶' | '2' | '預約自取' | '3' //用餐類型，為空的話也是傳所有類型的(外帶跟預約自取都算外帶)
       orderBy?: '時間越早優先' | '時間越晚優先' //依據排序，為空的話會以"時間越早優先"為主
       search?: any //依據值來搜尋
@@ -151,9 +171,12 @@ export const useEmployeeStore = defineStore('employee', () => {
   ) => {
     try {
       const getDataStringPage = getData.page != null ? getData.page : 1
-      const getDataStringOrderStatus =
-        getData.orderStatus != null ? getData.orderStatus : '全部訂單'
-      const getDataStringType = getData.type != null ? getData.type : '全部訂單'
+      let getDataStringOrderStatus = getData.orderStatus != null ? getData.orderStatus : '0'
+      if (Number(getDataStringOrderStatus) != 0) {
+        getDataStringOrderStatus = Number(getData.orderStatus) + 1
+      }
+
+      const getDataStringType = getData.type != null ? getData.type : '0'
       const getDataStringOrderBy = getData.orderBy != null ? getData.orderBy : '時間越早優先'
 
       const getDataString: any = {
