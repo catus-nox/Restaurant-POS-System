@@ -179,16 +179,21 @@ export const useEmployeeStore = defineStore('employee', () => {
       const getDataStringType = getData.type != null ? getData.type : '0'
       const getDataStringOrderBy = getData.orderBy != null ? getData.orderBy : '時間越早優先'
 
+      const getDataStringSearch = getData.search != null ? `&search=${getData.search}` : ''
+
       const getDataString: any = {
         token: getData.token,
         page: `?page=${getDataStringPage}`,
         orderStatus: `&orderStatus=${getDataStringOrderStatus}`,
         type: `&type=${getDataStringType}`,
         orderBy: `&orderBy=${getDataStringOrderBy}`,
-        search: `&search=${getData.search}`
+        search: getDataStringSearch
       }
+
+      console.log('////////////')
+      console.log(getDataStringOrderBy)
+
       getDataString.token = localStorage.token
-      getDataString.search = getData.search != null ? getDataString.search : null
 
       const response = await getEmployeeFohGetOrder(getDataString)
 
