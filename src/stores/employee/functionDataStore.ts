@@ -25,7 +25,7 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   //orderBy 選項選擇
   const nowOrderBySelect = ref('時間越早優先')
   //Search 搜尋
-  const nowSearch = ref()
+  const nowSearch = ref('')
 
   //------
   //getter
@@ -70,7 +70,7 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
       orderStatus: getNowOrderStatusClick.value,
       type: getNowOrderTypeClick.value,
       orderBy: getNowOrderBySelect.value,
-      search: nowSearch.value
+      search: getNowSearch.value
     }
 
     //取得今日訂單數量與頁數
