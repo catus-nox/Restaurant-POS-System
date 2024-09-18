@@ -40,7 +40,6 @@ const nowSearchFunction = computed({
         <template #validationMessage></template>
       </UiSelect>
     </div>
-    {{ functionDataStore.getNowSearch }}
     <UiInput
       :class="'grow !flex-row items-center gap-2 text-xl'"
       :is-label="true"
