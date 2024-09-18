@@ -26,7 +26,7 @@ const props = defineProps({
       </div>
 
       <div class="flex grow flex-col gap-2 p-4 text-h5 font-normal text-neutral-950">
-        <div v-if="props.orderData.phone" class="inline-flex flex-wrap items-center gap-2">
+        <div class="inline-flex flex-wrap items-center gap-2">
           <svg
             class="h-6 w-6"
             aria-hidden="true"
@@ -41,7 +41,7 @@ const props = defineProps({
             />
           </svg>
 
-          <div>{{ props.orderData.phone }}</div>
+          <div v-text="props.orderData.phone ? props.orderData.phone : '-'"></div>
         </div>
         <div class="inline-flex flex-wrap items-center gap-2">
           <svg
