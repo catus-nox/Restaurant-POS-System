@@ -1,34 +1,45 @@
 <script setup lang="ts">
-// import { defineProps, defineEmits } from 'vue'
+import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
+import { computed } from 'vue'
+import type { PropType } from 'vue'
 
-const states = [
-  { text: '全部訂單', press: 'press-menu-navbar-btn' },
-  { text: '待結帳', press: '' },
-  { text: '準備中', press: '' },
-  { text: '待取餐', press: '' },
-  { text: '已完成', press: '' }
-]
-defineEmits(['changeCategoryId'])
+//-----
+//api
+const functionDataStore = useFunctionDataStore()
+//-----
+//Status選單
+const orderStates = computed(() => functionDataStore.orderStates)
+//Status選單選擇
+const nowOrderStatusClick = computed(() => functionDataStore.getNowOrderStatusClick)
+
+//-----
+const props = defineProps({
+  orderAllCountData: {
+    type: Array as PropType<any>,
+    default: () => []
+  }
+})
 </script>
 
 <template>
-  <div class="scrollbar overflow-x-auto">
+  <div class="scrollbar overflow-x-auto" v-if="functionDataStore">
     <ul class="flex shadow-[inset_0_-2px_0_-1px] shadow-neutral-300">
-      <template v-for="(state, index) in states" :key="index">
-        <template v-if="index == 0">
-          <li :id="state.text" class="state-navbar-btn press-state-navbar-btn">
-            {{ state.text }} <span>99+</span>
-          </li>
-        </template>
-        <template v-else>
-          <li
-            :id="state.text"
-            @click="$emit('changeCategoryId', index, index)"
-            class="state-navbar-btn"
-          >
-            {{ state.text }}<span>1</span>
-          </li>
-        </template>
+      <template v-for="(state, index) in orderStates" :key="index">
+        <li
+          :id="state"
+          class="state-navbar-btn"
+          :class="index === nowOrderStatusClick ? 'press-state-navbar-btn' : ''"
+          @click="functionDataStore.getNowOrderStatusClickFunction(index)"
+        >
+          {{ state }}
+          <span
+            v-text="
+              props.orderAllCountData[index].orderCount >= 99
+                ? '99+'
+                : props.orderAllCountData[index].orderCount
+            "
+          ></span>
+        </li>
       </template>
     </ul>
   </div>
