@@ -106,3 +106,17 @@ export function postEmployeeCheckout(data: {
     }
   })
 }
+
+//完成訂單(送餐)
+export function postEmployeeFohOrderCompleted(orderId: number) {
+  return request({
+    url: `/foh/orderCompleted`,
+    method: 'post',
+    headers: {
+      Authorization: `Bearer ${localStorage.foh_token}`
+    },
+    data: {
+      orderId
+    }
+  })
+}
