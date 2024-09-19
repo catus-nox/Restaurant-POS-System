@@ -26,6 +26,8 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   const nowOrderBySelect = ref('時間越早優先')
   //Search 搜尋
   const nowSearch = ref('')
+  //取得單一訂單資訊 id
+  const nowOrderDetailId = ref(0)
 
   //------
   //getter
@@ -38,6 +40,8 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   const getNowOrderBySelect = computed(() => nowOrderBySelect.value)
   //Search 搜尋
   const getNowSearch = computed(() => nowSearch.value)
+  //取得單一訂單資訊 id
+  const getNowOrderDetailId = computed(() => nowOrderDetailId.value)
 
   //------
   //action 異步請求
@@ -61,6 +65,10 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   function getNowSearchFunction(value: any) {
     nowSearch.value = value
     orderShow()
+  }
+  //取得單一訂單資訊 id
+  function getNowOrderDetailIdFunction(value: number) {
+    nowOrderDetailId.value = value
   }
 
   //選單顯示
@@ -91,6 +99,8 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
     getNowOrderBySelect,
     getNowOrderBySelectFunction,
     getNowSearch,
-    getNowSearchFunction
+    getNowSearchFunction,
+    getNowOrderDetailId,
+    getNowOrderDetailIdFunction
   }
 })
