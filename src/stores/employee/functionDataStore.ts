@@ -29,6 +29,25 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   //取得單一訂單資訊 id
   const nowOrderDetailId = ref(0)
 
+  //取得客人現金
+  const nowCustomerCash = ref()
+  //取得客人備註
+  const nowCustomerNote = ref()
+  //取得客人發票選項
+  const nowCustomerPay = ref('紙本')
+  //取得客人載具
+  const nowCustomerReceipt = ref()
+  //取得客人載具驗證結果
+  const nowCustomerIsValidReceipt = ref(false)
+  //取得客人統編
+  const nowCustomerTaxId = ref()
+  //取得客人統編驗證結果
+  const nowCustomerIsValidTaxId = ref(false)
+  //取得客人手機
+  const nowCustomerPhoneNumber = ref()
+  //取得客人手機驗證結果
+  const nowCustomerIsValidPhoneNumber = ref(false)
+
   //------
   //getter
 
@@ -42,6 +61,25 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   const getNowSearch = computed(() => nowSearch.value)
   //取得單一訂單資訊 id
   const getNowOrderDetailId = computed(() => nowOrderDetailId.value)
+
+  //取得客人現金
+  const getNowCustomerCash = computed(() => nowCustomerCash.value)
+  //取得客人備註
+  const getNowCustomerNote = computed(() => nowCustomerNote.value)
+  //取得客人發票選項
+  const getNowCustomerPay = computed(() => nowCustomerPay.value)
+  //取得客人載具
+  const getNowCustomerReceipt = computed(() => nowCustomerReceipt.value)
+  //取得客人載具驗證結果
+  const getNowCustomerIsValidReceipt = computed(() => nowCustomerIsValidReceipt.value)
+  //取得客人統編
+  const getNowCustomerTaxId = computed(() => nowCustomerTaxId.value)
+  //取得客人統編驗證結果
+  const getNowCustomerIsValidTaxId = computed(() => nowCustomerIsValidTaxId.value)
+  //取得客人手機
+  const getNowCustomerPhoneNumber = computed(() => nowCustomerPhoneNumber.value)
+  //取得客人手機驗證結果
+  const getNowCustomerIsValidPhoneNumber = computed(() => nowCustomerIsValidPhoneNumber.value)
 
   //------
   //action 異步請求
@@ -69,6 +107,44 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   //取得單一訂單資訊 id
   function getNowOrderDetailIdFunction(value: number) {
     nowOrderDetailId.value = value
+  }
+  //取得客人現金
+  function getNowCustomerCashFunction(value: number) {
+    nowCustomerCash.value = value
+  }
+  //取得客人備註
+  function getNowCustomerNoteFunction(value: any) {
+    nowCustomerNote.value = value
+  }
+  //取得客人發票選項
+  function getNowCustomerPayFunction(value: string) {
+    nowCustomerPay.value = value
+  }
+
+  //取得客人載具
+  function getNowCustomerReceiptFunction(value: string) {
+    nowCustomerReceipt.value = value
+  }
+  //取得客人載具驗證結果
+  function getNowCustomerIsValidReceiptFunction(value: boolean) {
+    nowCustomerIsValidReceipt.value = value
+  }
+
+  //取得客人統編
+  function getNowCustomerTaxIdFunction(value: string) {
+    nowCustomerTaxId.value = value
+  }
+  //取得客人統編驗證結果
+  function getNowCustomerIsValidTaxIdFunction(value: boolean) {
+    nowCustomerIsValidTaxId.value = value
+  }
+  //取得客人手機
+  function getNowCustomerPhoneNumberFunction(value: any) {
+    nowCustomerPhoneNumber.value = value
+  }
+  //取得客人手機驗證結果
+  function getNowCustomerIsValidPhoneNumberFunction(value: any) {
+    nowCustomerIsValidPhoneNumber.value = value
   }
 
   //選單顯示
@@ -101,6 +177,24 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
     getNowSearch,
     getNowSearchFunction,
     getNowOrderDetailId,
-    getNowOrderDetailIdFunction
+    getNowOrderDetailIdFunction,
+    getNowCustomerCash,
+    getNowCustomerNote,
+    getNowCustomerPay,
+    getNowCustomerReceipt,
+    getNowCustomerTaxId,
+    getNowCustomerPhoneNumber,
+    getNowCustomerCashFunction,
+    getNowCustomerNoteFunction,
+    getNowCustomerPayFunction,
+    getNowCustomerReceiptFunction,
+    getNowCustomerTaxIdFunction,
+    getNowCustomerPhoneNumberFunction,
+    getNowCustomerIsValidReceipt,
+    getNowCustomerIsValidTaxId,
+    getNowCustomerIsValidReceiptFunction,
+    getNowCustomerIsValidTaxIdFunction,
+    getNowCustomerIsValidPhoneNumber,
+    getNowCustomerIsValidPhoneNumberFunction
   }
 })
