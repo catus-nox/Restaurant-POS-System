@@ -12,6 +12,23 @@ export function postEmployeeLogin(data: { account: string; password: string }) {
   })
 }
 
+//員工登出
+export function postEmployeeLogout(
+  getData: {
+    token: string
+  },
+  data?: any
+) {
+  return request({
+    url: `/employee/logout`,
+    method: 'post',
+    headers: {
+      Authorization: `Bearer ${getData.token}`
+    },
+    data
+  })
+}
+
 //取得今日訂單數量與頁數
 export function getEmployeeFohGetOrderCount(
   getData: {

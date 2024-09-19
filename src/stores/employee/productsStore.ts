@@ -2,9 +2,11 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import {
   postEmployeeLogin,
+  postEmployeeLogout,
   getEmployeeFohGetOrderCount,
   getEmployeeFohGetOrder
 } from '@/models/employee/api'
+import router from '@/router'
 
 export const useEmployeeStore = defineStore('employee', () => {
   //------
@@ -47,6 +49,29 @@ export const useEmployeeStore = defineStore('employee', () => {
         //員工資訊
         loginData.value = response.data.data
         alert(response.data.message)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //員工登入出
+  const fetchEmployeeLogout = async (getData?: { token: string }) => {
+    try {
+      const getDataString: any = {
+        token: getData?.token
+      }
+      getDataString.token = localStorage.foh_token
+      const response = await postEmployeeLogout(getDataString)
+
+      if (response.data.statusCode === 400) {
+        alert(response.data.message)
+      } else {
+        alert(response.data.message)
+        localStorage.foh_identity = null
+        localStorage.foh_username = null
+        localStorage.foh_token = null
+        router.push({ name: 'employeeLogin' })
       }
     } catch (error) {
       console.log(error)
@@ -206,6 +231,7 @@ export const useEmployeeStore = defineStore('employee', () => {
   return {
     getLoginData,
     fetchEmployeeLogin,
+    fetchEmployeeLogout,
     getFohGetOrderCountData,
     fetchEmployeeFohGetOrderCount,
     getFohGetOrderAllCountData,
