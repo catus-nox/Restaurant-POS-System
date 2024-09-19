@@ -68,3 +68,15 @@ export function getEmployeeFohGetOrder(
     data
   })
 }
+
+//取得單一訂單資訊
+export function getEmployeeFohFetOrderDetail(orderId: number, data?: any) {
+  return request({
+    url: `/foh/getOrderDetail/${orderId}`,
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${localStorage.foh_token}`
+    },
+    data
+  })
+}

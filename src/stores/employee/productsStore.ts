@@ -4,7 +4,8 @@ import {
   postEmployeeLogin,
   postEmployeeLogout,
   getEmployeeFohGetOrderCount,
-  getEmployeeFohGetOrder
+  getEmployeeFohGetOrder,
+  getEmployeeFohFetOrderDetail
 } from '@/models/employee/api'
 import router from '@/router'
 
@@ -20,6 +21,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   const fohGetOrderAllCountData = ref()
   //外場訂單總覽
   const fohGetOrderData = ref()
+  //取得單一訂單資訊
+  const fohFetOrderDetailData = ref()
 
   //------
   //getter
@@ -32,6 +35,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   const getFohGetOrderAllCountData = computed(() => fohGetOrderAllCountData.value)
   //外場訂單總覽
   const getFohGetOrderData = computed(() => fohGetOrderData.value)
+  //取得單一訂單資訊
+  const getFohFetOrderDetailData = computed(() => fohFetOrderDetailData.value)
 
   //------
   //action 異步請求
@@ -228,6 +233,16 @@ export const useEmployeeStore = defineStore('employee', () => {
     }
   }
 
+  //取得單一訂單資訊
+  const fetchEmployeeFohGetOrderDetail = async (orderId: number) => {
+    try {
+      const response = await getEmployeeFohFetOrderDetail(orderId)
+      fohFetOrderDetailData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getLoginData,
     fetchEmployeeLogin,
@@ -237,6 +252,8 @@ export const useEmployeeStore = defineStore('employee', () => {
     getFohGetOrderAllCountData,
     fetchEmployeeFohGetAllOrderCount,
     getFohGetOrderData,
-    fetchEmployeeFohGetOrder
+    fetchEmployeeFohGetOrder,
+    getFohFetOrderDetailData,
+    fetchEmployeeFohGetOrderDetail
   }
 })
