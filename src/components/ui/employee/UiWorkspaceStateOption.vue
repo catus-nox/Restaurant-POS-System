@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useEmployeeStore } from '@/stores/employee/productsStore'
+import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
 import { type PropType } from 'vue'
 
 //-----
 //api
 const employeeStore = useEmployeeStore()
+const functionDataStore = useFunctionDataStore()
 //-----
 const props = defineProps({
   orderData: {
@@ -19,9 +21,12 @@ const props = defineProps({
     })
   }
 })
-//取得單一訂單資訊
+//-----
 async function fohGetOrderDetailShow() {
+  //取得單一訂單資訊
   await employeeStore.fetchEmployeeFohGetOrderDetail(props.orderData.orderId)
+  //取得單一訂單資訊 id
+  await functionDataStore.getNowOrderDetailIdFunction(props.orderData.orderId)
 }
 </script>
 
