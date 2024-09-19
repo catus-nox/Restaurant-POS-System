@@ -6,7 +6,8 @@ import {
   getEmployeeFohGetOrderCount,
   getEmployeeFohGetOrder,
   getEmployeeFohFetOrderDetail,
-  postEmployeeCheckout
+  postEmployeeCheckout,
+  postEmployeeFohOrderCompleted
 } from '@/models/employee/api'
 import router from '@/router'
 
@@ -251,6 +252,15 @@ export const useEmployeeStore = defineStore('employee', () => {
   }) => {
     try {
       const response = await postEmployeeCheckout(data)
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  //完成訂單(送餐)
+  const fetchEmployeeFohOrderCompleted = async (orderId: number) => {
+    try {
+      const response = await postEmployeeFohOrderCompleted(orderId)
       console.log(response)
     } catch (error) {
       console.log(error)
