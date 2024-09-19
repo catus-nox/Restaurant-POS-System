@@ -84,7 +84,7 @@ export const useEmployeeStore = defineStore('employee', () => {
         token: getData.token,
         orderStatus: getDataStringOrderStatus
       }
-      getDataString.token = localStorage.token
+      getDataString.token = localStorage.foh_token
 
       const response = await getEmployeeFohGetOrderCount(getDataString)
       fohGetOrderCountData.value = response.data.data
@@ -128,7 +128,7 @@ export const useEmployeeStore = defineStore('employee', () => {
         orderStatus: getDataStringOrderStatus
       }
 
-      getDataString.token = localStorage.token
+      getDataString.token = localStorage.foh_token
       const states = ['全部訂單', '待結帳', '準備中', '待取餐', '已完成']
       for (let index = 0; index < states.length; index++) {
         if (index > 0) {
@@ -193,7 +193,7 @@ export const useEmployeeStore = defineStore('employee', () => {
       console.log('////////////')
       console.log(getDataStringOrderBy)
 
-      getDataString.token = localStorage.token
+      getDataString.token = localStorage.foh_token
 
       const response = await getEmployeeFohGetOrder(getDataString)
 

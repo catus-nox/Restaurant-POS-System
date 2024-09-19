@@ -103,7 +103,10 @@ watch(goCheckoutNote, (newValue) => {
 //-----
 //重新取得購物車商品數量
 async function returnCustomerGetCart() {
-  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  await customerStore.fetchCustomerGetOrderInfo(
+    localStorage.customer_orderId,
+    localStorage.customer_guid
+  )
 }
 //-----
 //前往結帳
@@ -127,8 +130,8 @@ async function goCheckout() {
     takeTime?: string | null
     note?: string
   } = {
-    orderId: Number(localStorage.orderId),
-    guid: String(localStorage.guid),
+    orderId: Number(localStorage.customer_orderId),
+    guid: String(localStorage.customer_guid),
     phone: phoneNumber.value,
     type: goCheckoutType.value,
     note: goCheckoutNote.value
@@ -167,9 +170,12 @@ async function goCheckout() {
 }
 //-----
 onMounted(async () => {
-  if (localStorage.guid && localStorage.orderId) {
+  if (localStorage.customer_guid && localStorage.customer_orderId) {
     //取得購物車現有訂單
-    await customerStore.fetchCustomerGetCart(localStorage.orderId, localStorage.guid)
+    await customerStore.fetchCustomerGetCart(
+      localStorage.customer_orderId,
+      localStorage.customer_guid
+    )
     //購物車商品數量
     serving.value = cart.value.map((cartItem: { serving: number }) => cartItem.serving)
   }

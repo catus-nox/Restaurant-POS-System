@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import UiButton from '@/components/ui/UiButton.vue'
 import EmployeeUiNavbarOptionButton from '@/components/ui/employee/UiNavbarOptionButton.vue'
-const identity = localStorage.identity
-const username = localStorage.username
-const token = localStorage.token
+const identity = localStorage.foh_identity
+const username = localStorage.foh_username
+const token = localStorage.foh_token
 </script>
 
 <template>

@@ -80,9 +80,12 @@ function employeeMenuState(): boolean {
 onMounted(async () => {
   //判斷是否為員工頁面
   if (!pageCustomerOrEmployeeState()) return
-  if (localStorage.guid && localStorage.orderId) {
+  if (localStorage.customer_guid && localStorage.customer_orderId) {
     // 取得購物車商品數量
-    await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+    await customerStore.fetchCustomerGetOrderInfo(
+      localStorage.customer_orderId,
+      localStorage.customer_guid
+    )
   }
 })
 // 選單

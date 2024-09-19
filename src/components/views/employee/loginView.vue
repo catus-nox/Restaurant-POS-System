@@ -33,6 +33,8 @@ const loginData: any = computed(() => employeeStore.getLoginData)
 
 //員工登入
 async function employeeLogin() {
+  //-----
+  //驗證
   function validate(): boolean {
     //帳號判斷
     if (!validateAccount(isValidAccount.value, account.value)) {
@@ -63,9 +65,9 @@ async function employeeLogin() {
   //-----
   if (loginData.value !== undefined) {
     router.push({ name: 'employeeFohOrderView' })
-    localStorage.identity = loginData.value.identity
-    localStorage.username = loginData.value.username
-    localStorage.token = loginData.value.token
+    localStorage.foh_identity = loginData.value.identity
+    localStorage.foh_username = loginData.value.username
+    localStorage.foh_token = loginData.value.token
   }
 }
 </script>
