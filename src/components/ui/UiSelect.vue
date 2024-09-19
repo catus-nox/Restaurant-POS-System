@@ -66,7 +66,7 @@ const model = defineModel()
     </div>
 
     <select
-      class="focus:placeholder:text-neutral-950focus:shadow-[0_0_0_2px] h-full w-full rounded-full border-none bg-neutral-0 py-2 pl-4 pr-3 font-medium text-neutral-500 shadow-[0_0_0_1px] shadow-neutral-950 placeholder:text-neutral-500 hover:text-neutral-500 hover:shadow-[0_0_0_2px] hover:shadow-primary-600 hover:placeholder:text-neutral-500 focus:text-neutral-950 focus:shadow-neutral-950 focus:ring-0 disabled:text-neutral-950 disabled:shadow-[0_0_0_1px] disabled:shadow-neutral-400 disabled:placeholder:text-neutral-950"
+      class="focus:placeholder:text-neutral-950focus:shadow-[0_0_0_2px] h-full w-full rounded-full border-none bg-white py-2 pl-4 pr-3 font-medium text-neutral-500 shadow-[0_0_0_1px] shadow-neutral-950 placeholder:text-neutral-500 hover:text-neutral-500 hover:shadow-[0_0_0_2px] hover:shadow-primary-600 hover:placeholder:text-neutral-500 focus:text-neutral-950 focus:shadow-neutral-950 focus:ring-0 disabled:text-neutral-950 disabled:shadow-[0_0_0_1px] disabled:shadow-neutral-400 disabled:placeholder:text-neutral-950"
       v-model="model"
       :id="props.id"
     >

@@ -222,7 +222,7 @@ const nowOrderTypeClick = computed(() => functionDataStore.getNowOrderTypeClick)
 
 <style scoped>
 .option {
-  @apply flex cursor-pointer flex-col items-center gap-1 rounded-3xl border border-black bg-neutral-0 px-2 py-3 text-center;
+  @apply flex cursor-pointer flex-col items-center gap-1 rounded-3xl border border-black bg-white px-2 py-3 text-center;
 }
 .option-text {
   @apply text-h5 font-bold text-neutral-950;
@@ -233,10 +233,10 @@ const nowOrderTypeClick = computed(() => functionDataStore.getNowOrderTypeClick)
 }
 .option:hover .option-text,
 .press .option-text {
-  @apply text-neutral-0;
+  @apply text-white;
 }
 .option:hover .black-and-white,
 .press .black-and-white {
-  @apply fill-neutral-0;
+  @apply fill-white;
 }
 </style>
