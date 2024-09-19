@@ -145,7 +145,7 @@ onMounted(() => {
         <EmployeeUiNavbar v-if="!employeeMenuState()"></EmployeeUiNavbar>
         <main class="flex h-full w-full flex-row">
           <RouterView />
-          <EmployeeUiOrderDetailsNavbar />
+          <EmployeeUiOrderDetailsNavbar v-if="!employeeMenuState()" />
         </main>
       </div>
     </div>
