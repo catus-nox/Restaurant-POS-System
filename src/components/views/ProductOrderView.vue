@@ -52,7 +52,6 @@ function productPickedOptionsAdd6() {
   productAddOnListData.value = menuItemData.value.filter(
     (item: { category: number }) => item.category === 6
   )
-  console.log(productAddOnListData.value[0].categoryItem)
 }
 //-----
 //(前端)定義必選項目
@@ -94,7 +93,6 @@ function productPickedOptionFunction() {
   productPickedOptions.value = pickedOptions.filter((option) =>
     product.value.customization.includes(option.id)
   )
-  console.log(productPickedOptions.value)
 }
 //整理要給api的客製化項目
 function customizationApiData() {
@@ -140,19 +138,27 @@ const count = ref(1)
 //加入購物車按鈕
 async function getOrderId() {
   //驗證碼判斷新增
-  if (localStorage.guid == 'undefined' || !localStorage.guid) {
+  if (
+    localStorage.customer_guid == 'undefined' ||
+    localStorage.customer_guid == 'null' ||
+    !localStorage.customer_guid
+  ) {
     await customerStore.fetchCustomerGetOrderId()
-    localStorage.guid = orderIdData.value.guid
+    localStorage.customer_guid = orderIdData.value.guid
   }
-  if (localStorage.orderId == 'undefined' || !localStorage.orderId) {
-    localStorage.orderId = orderIdData.value.orderId
+  if (
+    localStorage.customer_orderId == 'undefined' ||
+    localStorage.customer_orderId == 'null' ||
+    !localStorage.customer_orderId
+  ) {
+    localStorage.customer_orderId = orderIdData.value.orderId
   }
   //購物車訂單送出
   console.log(customizationApiData())
 
   const data = {
-    guid: localStorage.guid, //識別碼guid(抓cookie)
-    orderId: Number(localStorage.orderId), //訂單編號(抓cookie)
+    guid: localStorage.customer_guid, //識別碼guid(抓cookie)
+    orderId: Number(localStorage.customer_orderId), //訂單編號(抓cookie)
     productId: Number(productId), //商品編號
     //客製化選項
     customization: customizationApiData(),
@@ -160,8 +166,12 @@ async function getOrderId() {
   }
   await customerStore.fetchCustomerAddItem(data)
   //購物車數量變更
-  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  await customerStore.fetchCustomerGetOrderInfo(
+    localStorage.customer_orderId,
+    localStorage.customer_guid
+  )
   computed(() => customerStore.getOrderInfoData)
+  alert('加入購物車成功')
 }
 //-----
 onMounted(async () => {
@@ -176,8 +186,11 @@ onMounted(async () => {
   <div class="flex flex-col gap-6">
     <div>
       <div class="relative h-[200px] overflow-hidden">
-        <img src="../../assets/img/1002930.jpg" alt="" class="h-full w-full object-cover" />
-        <!-- <img :src="product.productImagePath" alt="" class="h-full w-full object-cover" /> -->
+        <img
+          :src="product.productImagePath"
+          :alt="product.name"
+          class="h-full w-full object-cover"
+        />
       </div>
     </div>
     <div class="mx-3 flex flex-col gap-2">
@@ -265,7 +278,7 @@ onMounted(async () => {
             rows="3"
             placeholder="新增備註"
           ></textarea>
-          <span class="self-end text-netural-600">{{ textareaText.length }}/100</span>
+          <span class="self-end text-neutral-600">{{ textareaText.length }}/100</span>
         </div>
       </div>
 

@@ -29,7 +29,7 @@ function toRouterName(id: any) {
   <div
     @click="toRouterName(props.categoryItem.productId)"
     :id="String(props.categoryItem.productId)"
-    class="flex flex-row items-center gap-4 rounded-xl border border-netural-900 bg-netural-0 p-4 py-3"
+    class="flex flex-row items-center gap-4 rounded-xl border border-neutral-900 bg-neutral-0 p-4 py-3"
   >
     <div class="b flex w-2/4 flex-col gap-3">
       <h3 class="text-h6 font-bold text-black">{{ props.categoryItem.name }}</h3>
@@ -62,13 +62,16 @@ function toRouterName(id: any) {
     </div>
     <div class="w-2/4">
       <div class="relative h-32 overflow-hidden rounded-xl">
-        <img src="../../assets/img/1002930.jpg" alt="" class="h-full w-full object-cover" />
-        <!-- <img :src="props.categoryItem.imagePath" alt="" class="h-full w-full object-cover" /> -->
+        <img
+          :src="props.categoryItem.imagePath"
+          :alt="props.categoryItem.name"
+          class="h-full w-full object-cover"
+        />
         <span
           class="absolute bottom-2 right-2 flex items-center justify-center rounded-lg bg-black p-1"
         >
           <svg
-            class="h-4 w-4 text-netural-0"
+            class="h-4 w-4 text-neutral-0"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"

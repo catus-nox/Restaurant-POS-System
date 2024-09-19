@@ -6,11 +6,14 @@ import { RouterView, useRoute } from 'vue-router'
 import UiMenubar from '@/components/ui/UiMenubar.vue'
 import UiMenuNavbar from '@/components/ui/UiMenuNavbar.vue'
 import UiFooter from '@/components/ui/UiFooter.vue'
+import EmployeeUiNavbar from '@/components/ui/employee/UiNavbar.vue'
+import EmployeeUiOrderDetailsNavbar from '@/components/ui/employee/UiOrderDetailsNavbar.vue'
 
 const route = useRoute()
 const menuNavbar = ref<HTMLElement | null>(null)
 const drawer = ref<any>(null)
-
+//api
+const customerStore = useCustomerStore()
 //查看路由狀態
 watch(
   () => route.path,
@@ -42,10 +45,12 @@ const options = {
     // console.log('drawer has been toggled')
   }
 }
+//-----
 //選單開關
 function toggleMenu() {
   drawer.value.toggle()
 }
+//-----
 //選單顯示判斷
 function menuState(): boolean {
   return ['menu', 'productOrder', 'orderProcessHistory'].includes(route.name as string)
@@ -61,20 +66,30 @@ function anchorMainPaddingTopChange() {
 function menuArrowState(): boolean {
   return ['productOrder'].includes(route.name as string)
 }
-
-//判斷目前頁面
+//-----
+//判斷目前頁面是否為員工
 function pageCustomerOrEmployeeState(): boolean {
+  return ['employeeLogin', 'employeeFohOrderView'].includes(route.name as string)
+}
+//-----
+//員工-選單顯示判斷
+function employeeMenuState(): boolean {
   return ['employeeLogin'].includes(route.name as string)
 }
-//api
-const customerStore = useCustomerStore()
+
 //-----
 onMounted(async () => {
-  if (localStorage.guid || localStorage.orderId) {
-    await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  //判斷是否為員工頁面
+  if (!pageCustomerOrEmployeeState()) return
+  if (localStorage.customer_guid && localStorage.customer_orderId) {
+    // 取得購物車商品數量
+    await customerStore.fetchCustomerGetOrderInfo(
+      localStorage.customer_orderId,
+      localStorage.customer_guid
+    )
   }
-  computed(() => customerStore.getOrderInfoData)
 })
+// 選單
 onMounted(() => {
   watch(
     [menuState, menuArrowState],
@@ -106,7 +121,7 @@ onMounted(() => {
       <div
         v-if="menuState()"
         ref="menuNavbar"
-        class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-netural-0 opacity-100 transition-all"
+        class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-neutral-0 opacity-100 transition-all"
         aria-hidden="false"
       >
         <UiMenuNavbar />
@@ -121,9 +136,14 @@ onMounted(() => {
   </template>
   <template v-else>
     <div class="m-auto flex min-h-screen items-center justify-center overflow-hidden">
-      <div class="h-screen max-h-[834px] w-full max-w-screen-xl bg-secondary-50">
-        <main class="h-full w-full">
+      <div
+        class="h-screen max-h-[834px] w-full max-w-screen-xl bg-secondary-50"
+        :class="{ ['flex']: !employeeMenuState() }"
+      >
+        <EmployeeUiNavbar v-if="!employeeMenuState()"></EmployeeUiNavbar>
+        <main class="flex h-full w-full flex-row">
           <RouterView />
+          <EmployeeUiOrderDetailsNavbar />
         </main>
       </div>
     </div>
@@ -132,7 +152,7 @@ onMounted(() => {
 
 <style scoped>
 [aria-hidden='true'] {
-  left: calc((100% - 414px - 305px) / 2);
+  left: calc((100% - 640px - 305px) / 2);
   @apply -translate-x-1/2 opacity-0 transition-all;
 }
 </style>
