@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { defineProps, defineModel, type PropType } from 'vue'
+import { useEmployeeStore } from '@/stores/employee/productsStore'
+import { type PropType } from 'vue'
+
+//-----
+//api
+const employeeStore = useEmployeeStore()
+//-----
 const props = defineProps({
   orderData: {
     type: Object as PropType<any>,
@@ -13,11 +19,16 @@ const props = defineProps({
     })
   }
 })
+//取得單一訂單資訊
+async function fohGetOrderDetailShow() {
+  await employeeStore.fetchEmployeeFohGetOrderDetail(props.orderData.orderId)
+}
 </script>
 
 <template>
   <div
-    class="inline-flex overflow-hidden rounded-xl bg-white shadow-[0_0_0_2px] shadow-neutral-900"
+    class="order inline-flex cursor-pointer overflow-hidden rounded-xl bg-white shadow-[0_0_0_2px] shadow-neutral-900"
+    @click="fohGetOrderDetailShow"
   >
     <div class="inline-flex grow flex-col">
       <div class="inline-flex flex-wrap items-center justify-between bg-primary-300 p-4">
@@ -88,4 +99,11 @@ const props = defineProps({
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.press {
+  @apply shadow-[0_0_0_4px] shadow-primary-700;
+}
+.order {
+  @apply hover:shadow-[0_0_0_4px] hover:shadow-primary-700;
+}
+</style>
