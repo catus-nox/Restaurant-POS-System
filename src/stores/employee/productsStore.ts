@@ -5,7 +5,8 @@ import {
   postEmployeeLogout,
   getEmployeeFohGetOrderCount,
   getEmployeeFohGetOrder,
-  getEmployeeFohFetOrderDetail
+  getEmployeeFohFetOrderDetail,
+  postEmployeeCheckout
 } from '@/models/employee/api'
 import router from '@/router'
 
@@ -219,10 +220,6 @@ export const useEmployeeStore = defineStore('employee', () => {
         orderBy: `&orderBy=${getDataStringOrderBy}`,
         search: getDataStringSearch
       }
-
-      console.log('////////////')
-      console.log(getDataStringOrderBy)
-
       getDataString.token = localStorage.foh_token
 
       const response = await getEmployeeFohGetOrder(getDataString)
@@ -243,6 +240,23 @@ export const useEmployeeStore = defineStore('employee', () => {
     }
   }
 
+  //外場結帳(外場結帳僅供現金)
+  const fetchEmployeeFohCheckout = async (data: {
+    orderId: number // 訂單編號，必須為數字
+    cash: number // 客人付的現金，必須為數字
+    note?: string // 付款備註，選填，類型為字串
+    invoice: '載具' | '統編' | '捐贈發票' | '紙本' // 發票類型，特定字串選項
+    invoiceCarrier?: string // 發票載具號碼或統編，選填，類型為字串
+    phone?: string // 顧客電話，選填，類型為字串
+  }) => {
+    try {
+      const response = await postEmployeeCheckout(data)
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getLoginData,
     fetchEmployeeLogin,
@@ -254,6 +268,7 @@ export const useEmployeeStore = defineStore('employee', () => {
     getFohGetOrderData,
     fetchEmployeeFohGetOrder,
     getFohFetOrderDetailData,
-    fetchEmployeeFohGetOrderDetail
+    fetchEmployeeFohGetOrderDetail,
+    fetchEmployeeFohCheckout
   }
 })

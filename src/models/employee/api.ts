@@ -80,3 +80,29 @@ export function getEmployeeFohFetOrderDetail(orderId: number, data?: any) {
     data
   })
 }
+
+//外場結帳(外場結帳僅供現金)
+export function postEmployeeCheckout(data: {
+  orderId: number // 訂單編號，必須為數字
+  cash: number // 客人付的現金，必須為數字
+  note?: string // 付款備註，選填，類型為字串
+  invoice: '載具' | '統編' | '捐贈發票' | '紙本' // 發票類型，特定字串選項
+  invoiceCarrier?: string // 發票載具號碼或統編，選填，類型為字串
+  phone?: string // 顧客電話，選填，類型為字串
+}) {
+  return request({
+    url: `/foh/checkout`,
+    method: 'post',
+    headers: {
+      Authorization: `Bearer ${localStorage.foh_token}`
+    },
+    data: {
+      orderId: data.orderId,
+      cash: data.cash,
+      note: data.note,
+      invoice: data.invoice,
+      invoiceCarrier: data.invoiceCarrier,
+      phone: data.phone
+    }
+  })
+}
