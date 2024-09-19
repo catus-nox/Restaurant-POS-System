@@ -30,6 +30,7 @@ const btnStyleG: ButtonStyle[] = [
     bg-neutral-950 text-neutral-0 
     hover:bg-primary-700 hover:shadow-[0_0_0_1px] hover:shadow-secondary-200 
     focus:bg-primary-600 focus:shadow-[0_0_0_3px] focus:shadow-secondary-300
+    disabled:bg-neutral-300 disabled:text-neutral-0  disabled:shadow-[0_0_0_0px]  disabled:shadow-none
     `
   },
   {
@@ -94,6 +95,10 @@ const props = defineProps({
   routerName: {
     type: String,
     default: null
+  },
+  isDisabled: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -122,6 +127,7 @@ defineEmits(['defineFunction'])
           props.btnJustify,
           props.btnPress
         ]"
+        :disabled="props.isDisabled"
       >
         <template v-if="!props.isOnlyIcon">
           <span :class="[props.iconSize]" v-if="props.isLeftIcon">
@@ -142,7 +148,7 @@ defineEmits(['defineFunction'])
 
 <style scoped>
 .press2 {
-  @apply text-neutral-0 bg-primary-800 shadow-none;
+  @apply bg-primary-800 text-neutral-0 shadow-none;
 }
 .press4 {
   @apply bg-white text-primary-700 shadow-[0_0_0_2px] shadow-primary-700;
