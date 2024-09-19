@@ -22,7 +22,11 @@ const functionDataStore = useFunctionDataStore()
 const productId: number = Number(useRoute().params.id)
 //-----
 //現金
-const cash = ref<number>()
+const cash = computed({
+  get: () => functionDataStore.getNowCustomerCash,
+  set: (value) => functionDataStore.getNowCustomerCashFunction(value)
+})
+// const cash = ref<number>()
 //備註
 const note = ref<any>()
 //-----
@@ -43,26 +47,53 @@ const payReceiptData: {
   ]
 }
 //預設紙本
-const pay = ref(payReceiptData.options[3].id)
+// const pay = ref(payReceiptData.options[3].id)
+const pay = computed({
+  get: () => functionDataStore.getNowCustomerPay,
+  set: (value) => functionDataStore.getNowCustomerPayFunction(value)
+})
 //-----
 //載具
-const receipt = ref<any>(undefined)
+const receipt = computed({
+  get: () => functionDataStore.getNowCustomerReceipt,
+  set: (value) => functionDataStore.getNowCustomerReceiptFunction(value)
+})
 //載具驗證結果
-const isValidReceipt = ref<boolean>(false)
+// const isValidReceipt = ref<boolean>(false)
+const isValidReceipt = computed({
+  get: () => functionDataStore.getNowCustomerIsValidReceipt,
+  set: (value) => functionDataStore.getNowCustomerIsValidReceiptFunction(value)
+})
 //是否點擊過載具
 const isTouchReceipt = ref<boolean>(false)
 //-----
 //統編
-const taxId = ref<any>(undefined)
+// const taxId = ref<any>(undefined)
+const taxId = computed({
+  get: () => functionDataStore.getNowCustomerTaxId,
+  set: (value) => functionDataStore.getNowCustomerTaxIdFunction(value)
+})
 //統編驗證結果
-const isValidTaxId = ref<boolean>(false)
+// const isValidTaxId = ref<boolean>(false)
+const isValidTaxId = computed({
+  get: () => functionDataStore.getNowCustomerIsValidTaxId,
+  set: (value) => functionDataStore.getNowCustomerIsValidTaxIdFunction(value)
+})
 //是否點擊過統編
 const isTouchTaxId = ref<boolean>(false)
 //-----
 //手機
-const phoneNumber = ref<any>(undefined)
+// const phoneNumber = ref<any>(undefined)
+const phoneNumber = computed({
+  get: () => functionDataStore.getNowCustomerPhoneNumber,
+  set: (value) => functionDataStore.getNowCustomerPhoneNumberFunction(value)
+})
 //手機驗證結果
-const isValidPhoneNumber = ref<boolean>(false)
+// const isValidPhoneNumber = ref<boolean>(false)
+const isValidPhoneNumber = computed({
+  get: () => functionDataStore.getNowCustomerIsValidPhoneNumber,
+  set: (value) => functionDataStore.getNowCustomerIsValidPhoneNumberFunction(value)
+})
 //手機是否點擊過輸入框
 const isTouchPhoneNumber = ref<boolean>(false)
 //
@@ -84,7 +115,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex h-full w-full grow flex-col text-2xl text-black">
+  <div v-if="functionDataStore" class="flex h-full w-full grow flex-col text-2xl text-black">
     <div class="inline-flex items-center gap-6 bg-primary-200 px-6 py-3 font-bold text-neutral-950">
       <svg
         @click="router.push({ name: 'employeeFohOrderView' })"
