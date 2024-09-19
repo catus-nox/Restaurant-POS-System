@@ -33,6 +33,8 @@ const loginData: any = computed(() => employeeStore.getLoginData)
 
 //員工登入
 async function employeeLogin() {
+  //-----
+  //驗證
   function validate(): boolean {
     //帳號判斷
     if (!validateAccount(isValidAccount.value, account.value)) {
@@ -63,9 +65,9 @@ async function employeeLogin() {
   //-----
   if (loginData.value !== undefined) {
     router.push({ name: 'employeeFohOrderView' })
-    localStorage.identity = loginData.value.identity
-    localStorage.username = loginData.value.username
-    localStorage.token = loginData.value.token
+    localStorage.foh_identity = loginData.value.identity
+    localStorage.foh_username = loginData.value.username
+    localStorage.foh_token = loginData.value.token
   }
 }
 </script>
@@ -75,7 +77,7 @@ async function employeeLogin() {
     <div class="flex w-full max-w-[459px] flex-col items-center gap-4">
       <img src="../../../assets/img/logo/character-black.png" class="max-w-72" alt="" />
       <div
-        class="flex w-full max-w-[459px] flex-col items-center gap-4 gap-7 rounded-3xl border border-neutral-950 bg-neutral-0 p-5"
+        class="flex w-full max-w-[459px] flex-col items-center gap-4 gap-7 rounded-3xl border border-neutral-950 bg-white p-5"
       >
         <div class="flex w-full flex-col gap-4">
           <UiInput

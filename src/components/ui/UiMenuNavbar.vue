@@ -12,7 +12,7 @@ const pages = [
 <template>
   <ul>
     <template v-for="(page, index) in pages" :key="index">
-      <li class="border-b border-neutral-300 text-h5">
+      <li class="border-b border-netural-300 text-h5">
         <RouterLink :to="page.pathName" class="block p-5">{{ page.text }}</RouterLink>
       </li>
     </template>

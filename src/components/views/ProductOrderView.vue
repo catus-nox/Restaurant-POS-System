@@ -138,23 +138,27 @@ const count = ref(1)
 //加入購物車按鈕
 async function getOrderId() {
   //驗證碼判斷新增
-  if (localStorage.guid == 'undefined' || localStorage.guid == 'null' || !localStorage.guid) {
+  if (
+    localStorage.customer_guid == 'undefined' ||
+    localStorage.customer_guid == 'null' ||
+    !localStorage.customer_guid
+  ) {
     await customerStore.fetchCustomerGetOrderId()
-    localStorage.guid = orderIdData.value.guid
+    localStorage.customer_guid = orderIdData.value.guid
   }
   if (
-    localStorage.orderId == 'undefined' ||
-    localStorage.orderId == 'null' ||
-    !localStorage.orderId
+    localStorage.customer_orderId == 'undefined' ||
+    localStorage.customer_orderId == 'null' ||
+    !localStorage.customer_orderId
   ) {
-    localStorage.orderId = orderIdData.value.orderId
+    localStorage.customer_orderId = orderIdData.value.orderId
   }
   //購物車訂單送出
   console.log(customizationApiData())
 
   const data = {
-    guid: localStorage.guid, //識別碼guid(抓cookie)
-    orderId: Number(localStorage.orderId), //訂單編號(抓cookie)
+    guid: localStorage.customer_guid, //識別碼guid(抓cookie)
+    orderId: Number(localStorage.customer_orderId), //訂單編號(抓cookie)
     productId: Number(productId), //商品編號
     //客製化選項
     customization: customizationApiData(),
@@ -162,7 +166,10 @@ async function getOrderId() {
   }
   await customerStore.fetchCustomerAddItem(data)
   //購物車數量變更
-  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  await customerStore.fetchCustomerGetOrderInfo(
+    localStorage.customer_orderId,
+    localStorage.customer_guid
+  )
   computed(() => customerStore.getOrderInfoData)
   alert('加入購物車成功')
 }
