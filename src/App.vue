@@ -7,6 +7,7 @@ import UiMenubar from '@/components/ui/UiMenubar.vue'
 import UiMenuNavbar from '@/components/ui/UiMenuNavbar.vue'
 import UiFooter from '@/components/ui/UiFooter.vue'
 import EmployeeUiNavbar from '@/components/ui/employee/UiNavbar.vue'
+import EmployeeUiOrderDetailsNavbar from '@/components/ui/employee/UiOrderDetailsNavbar.vue'
 
 const route = useRoute()
 const menuNavbar = ref<HTMLElement | null>(null)
@@ -142,6 +143,7 @@ onMounted(() => {
         <EmployeeUiNavbar v-if="!employeeMenuState()"></EmployeeUiNavbar>
         <main class="flex h-full w-full flex-row">
           <RouterView />
+          <EmployeeUiOrderDetailsNavbar />
         </main>
       </div>
     </div>
