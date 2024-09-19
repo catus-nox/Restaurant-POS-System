@@ -69,7 +69,9 @@ function menuArrowState(): boolean {
 //-----
 //判斷目前頁面是否為員工
 function pageCustomerOrEmployeeState(): boolean {
-  return ['employeeLogin', 'employeeFohOrderView'].includes(route.name as string)
+  return ['employeeLogin', 'employeeFohOrderView', 'employeeFohCheckoutView'].includes(
+    route.name as string
+  )
 }
 //-----
 //員工-選單顯示判斷
@@ -121,7 +123,7 @@ onMounted(() => {
       <div
         v-if="menuState()"
         ref="menuNavbar"
-        class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-neutral-0 opacity-100 transition-all"
+        class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-white opacity-100 transition-all"
         aria-hidden="false"
       >
         <UiMenuNavbar />
