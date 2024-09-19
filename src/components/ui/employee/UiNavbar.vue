@@ -1,31 +1,46 @@
 <script setup lang="ts">
+import { useEmployeeStore } from '@/stores/employee/productsStore'
 import UiButton from '@/components/ui/UiButton.vue'
 import EmployeeUiNavbarOptionButton from '@/components/ui/employee/UiNavbarOptionButton.vue'
-import { useCustomerStore } from '@/stores/productsStore'
-import { defineProps, defineEmits, computed, onMounted, ref } from 'vue'
+const identity = localStorage.foh_identity
+const username = localStorage.foh_username
+
+//-----
+//api
+const employeeStore = useEmployeeStore()
+//-----
+//員工登出
+async function employeeLogout() {
+  await employeeStore.fetchEmployeeLogout()
+}
 </script>
 
 <template>
   <div class="flex w-full max-w-32 flex-col justify-between bg-primary-700 px-4 py-6">
     <div class="flex flex-col items-center gap-4">
       <div class="flex flex-col items-center gap-2">
-        <div class="bg-neutral-0 h-20 w-20 overflow-hidden rounded-full">
+        <div class="h-20 w-20 overflow-hidden rounded-full bg-neutral-0">
           <img
             class="-ml-[3px] w-[207%] max-w-none object-cover"
             src="../../../assets/img/logo/character-black.png"
             alt=""
           />
         </div>
-        <div class="text-xl font-normal text-neutral-950">外場店員</div>
+
+        <div class="text-center text-xl font-normal text-neutral-950">
+          <template v-if="identity == 1"> 外場店員 </template>
+          <template v-if="identity == 2"> 內場店員 </template>
+          <span class="block text-sm text-neutral-0/55">{{ username }}</span>
+        </div>
       </div>
       <UiButton
         :btn-style="'style4'"
         :btn-width="'w-full'"
         :btnPadding="'px-2 py-2'"
-        :router-name="'employeeLogin'"
         :font-size="'text-xs'"
         :is-right-icon="false"
         :icon-size="'w-4 h-4'"
+        @define-function="employeeLogout"
       >
         <template #left-icon
           ><svg

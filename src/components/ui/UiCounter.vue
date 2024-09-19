@@ -54,7 +54,7 @@ const updateQuantity = (target: HTMLInputElement) => {
 
 async function incrementToCArtDataFunction(serving: number) {
   const data = {
-    orderId: String(localStorage.orderId),
+    orderId: String(localStorage.customer_orderId),
     orderItemId: props.orderItemId,
     serving: serving
   }
@@ -64,7 +64,10 @@ async function incrementToCArtDataFunction(serving: number) {
 //-----
 //重新取得購物車商品數量
 async function returnCustomerGetCart() {
-  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  await customerStore.fetchCustomerGetOrderInfo(
+    localStorage.customer_orderId,
+    localStorage.customer_guid
+  )
 }
 //-----
 onMounted(() => {})

@@ -114,8 +114,8 @@ async function confirmOrder() {
     confirmUrl?: String | null //line pay
     cancelUrl?: String | null //line pay
   } = {
-    orderId: Number(localStorage.orderId),
-    guid: String(localStorage.guid),
+    orderId: Number(localStorage.customer_orderId),
+    guid: String(localStorage.customer_guid),
     invoice: pay.value,
     invoiceCarrier: invoiceCarrierDate
   }
@@ -126,7 +126,7 @@ async function confirmOrder() {
     await customerStore.fetchCustomerPostConfirmOrderCash(data)
     toRouterName('cartConfirmInformation')
   } else if (nowClick.value == 1) {
-    // data.confirmUrl = `${baseUrl}/cartConfirmInformation/${localStorage.guid}`
+    // data.confirmUrl = `${baseUrl}/cartConfirmInformation/${localStorage.customer_guid}`
     data.confirmUrl = `${baseUrl}/cartPayInformation`
     data.cancelUrl = `${baseUrl}/cartPayInformation`
     await customerStore.fetchCustomerPostConfirmOrderLinePay(data)
@@ -140,21 +140,22 @@ async function confirmOrder() {
 //-----
 //換頁
 function toRouterName(name: string) {
-  router.push({ name, params: { guid: localStorage.guid } })
+  router.push({ name, params: { guid: localStorage.customer_guid } })
   localStorageClear()
 }
 
 //-----
 //清除 localStorage
 function localStorageClear() {
-  localStorage.clear()
+  localStorage.customer_guid = null
+  localStorage.customer_orderId = null
 }
 // Line Pay付款確認
 async function confirmLinePayRequestIsPayMentFunction() {
   if (confirmLinePayRequestIsPayMent.value == undefined) {
     let data: { orderId: Number; guid: String } = {
-      orderId: Number(localStorage.orderId),
-      guid: String(localStorage.guid)
+      orderId: Number(localStorage.customer_orderId),
+      guid: String(localStorage.customer_guid)
     }
     await customerStore.fetchConfirmLinePayRequest(data)
     if (confirmLinePayRequestIsPayMent.value) {
@@ -170,9 +171,15 @@ onMounted(async () => {
 
   //-----
   //取得購物車現有訂單
-  await customerStore.fetchCustomerGetCart(localStorage.orderId, localStorage.guid)
+  await customerStore.fetchCustomerGetCart(
+    localStorage.customer_orderId,
+    localStorage.customer_guid
+  )
   //取得現在購物車的商品筆數跟總價
-  await customerStore.fetchCustomerGetOrderInfo(localStorage.orderId, localStorage.guid)
+  await customerStore.fetchCustomerGetOrderInfo(
+    localStorage.customer_orderId,
+    localStorage.customer_guid
+  )
 })
 </script>
 

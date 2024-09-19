@@ -54,6 +54,9 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  titleClass: {
+    type: String
+  },
   error: {
     type: String,
     default: '',
@@ -68,11 +71,15 @@ const model = defineModel()
 
 <template>
   <div class="flex flex-col gap-1 text">
-    <div v-if="isLabel" class="font w-fix mb-2 flex flex-row gap-1 font-medium">
+    <div
+      v-if="isLabel"
+      class="font w-fix mb-2 flex flex-row gap-1 font-medium"
+      :class="[titleClass]"
+    >
       <label class="text-nowrap" :for="props.id">{{ props.label }}</label>
       <span v-if="isImportant" class="text-error-700">*</span>
     </div>
-    <div class="relative flex min-h-10 w-full items-center gap-2 pl-4 pr-3">
+    <div class="relative flex min-h-10 grow items-center gap-2 pl-4 pr-3">
       <template v-if="props.isIcon == true">
         <span class="relative z-10">
           <slot name="prefix"></slot>

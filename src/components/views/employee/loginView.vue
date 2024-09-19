@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import router from '@/router'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
 import {
@@ -28,9 +28,14 @@ const isValidPassword = ref<boolean>(false)
 //密碼是否點擊過輸入框
 const isTouchPassword = ref<boolean>(false)
 //-----
-//前往結帳
+//員工登入資料
+const loginData: any = computed(() => employeeStore.getLoginData)
+
+//員工登入
 async function employeeLogin() {
-  function goCheckoutValidate(): boolean {
+  //-----
+  //驗證
+  function validate(): boolean {
     //帳號判斷
     if (!validateAccount(isValidAccount.value, account.value)) {
       alert(accountValidateData.validationMessage)
@@ -43,18 +48,10 @@ async function employeeLogin() {
     }
     return true
   }
+  if (!validate()) return
 
-  if (!goCheckoutValidate()) return
-
-  // //-----
-  // // 給api的data資訊
-  // let invoiceCarrierDate: any = null
-  // if (pay.value === payData.options[0].id) {
-  //   invoiceCarrierDate = receipt.value
-  // } else if (pay.value === payData.options[1].id) {
-  //   invoiceCarrierDate = taxId.value
-  // }
-
+  //-----
+  // 給api的data資訊
   let data: {
     account: string
     password: string
@@ -62,10 +59,16 @@ async function employeeLogin() {
     account: account.value,
     password: password.value
   }
-
+  //員工登入
   await employeeStore.fetchEmployeeLogin(data)
 
-  router.push({ name: 'employeeFohOrderView' })
+  //-----
+  if (loginData.value !== undefined) {
+    router.push({ name: 'employeeFohOrderView' })
+    localStorage.foh_identity = loginData.value.identity
+    localStorage.foh_username = loginData.value.username
+    localStorage.foh_token = loginData.value.token
+  }
 }
 </script>
 
