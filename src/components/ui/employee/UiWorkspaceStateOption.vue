@@ -10,12 +10,12 @@ const props = defineProps({
   orderData: {
     type: Object as PropType<any>,
     default: () => ({
-      orderId: 88,
-      orderStatus: '待結帳',
+      orderId: 0,
+      orderStatus: '???',
       phone: null,
-      time: '00:29點餐',
-      totalAmount: 200,
-      typeAndNumber: '外帶002'
+      time: '??:??點餐',
+      totalAmount: 0,
+      typeAndNumber: '??00'
     })
   }
 })
