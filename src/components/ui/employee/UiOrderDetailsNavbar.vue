@@ -6,6 +6,17 @@ import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
 import UiButton from '@/components/ui/UiButton.vue'
 import router from '@/router'
 import { useRoute } from 'vue-router'
+import {
+  validateReceipt,
+  receiptValidateData,
+  validateTaxId,
+  taxIdValidateData,
+  phoneValidateData,
+  validatePhoneNumber
+} from '@/models/validate'
+
+//-----
+const route = useRoute()
 //-----
 //api
 const employeeStore = useEmployeeStore()
@@ -21,8 +32,86 @@ function pay() {
     params: { id: functionDataStore.getNowOrderDetailId }
   })
 }
-function finish() {}
+async function finish() {
+  function goCheckoutValidate(): boolean {
+    if (!functionDataStore.getNowCustomerCash) {
+      alert('請輸入現金')
+      return false
+    }
+    if (orderDetailData.value.totalAmount > functionDataStore.getNowCustomerCash) {
+      alert('金額不足')
+      return false
+    }
 
+    //載具判斷
+    if (
+      functionDataStore.getNowCustomerPay == '載具' &&
+      !validateReceipt(
+        functionDataStore.getNowCustomerIsValidReceipt,
+        functionDataStore.getNowCustomerReceipt
+      )
+    ) {
+      alert(receiptValidateData.validationMessage)
+      return false
+    }
+    //統編判斷
+    if (
+      functionDataStore.getNowCustomerPay == '統編' &&
+      !validateTaxId(
+        functionDataStore.getNowCustomerIsValidTaxId,
+        functionDataStore.getNowCustomerTaxId
+      )
+    ) {
+      alert(taxIdValidateData.validationMessage)
+      return false
+    }
+    //電話判斷
+    if (
+      functionDataStore.getNowCustomerPhoneNumber &&
+      !validatePhoneNumber(
+        functionDataStore.getNowCustomerIsValidPhoneNumber,
+        functionDataStore.getNowCustomerPhoneNumber
+      )
+    ) {
+      alert(phoneValidateData.validationMessage)
+      return false
+    }
+    return true
+  }
+
+  if (!goCheckoutValidate()) return
+
+  let data: any = {
+    orderId: Number(productId),
+    cash: Number(functionDataStore.getNowCustomerCash),
+    invoice: functionDataStore.getNowCustomerPay
+  }
+  if (functionDataStore.getNowCustomerPay == '載具') {
+    data.invoiceCarrier = functionDataStore.getNowCustomerReceipt
+  }
+  if (functionDataStore.getNowCustomerPay == '統編') {
+    data.invoiceCarrier = functionDataStore.getNowCustomerTaxId
+  }
+  if (functionDataStore.getNowCustomerPhoneNumber) {
+    data.phone = functionDataStore.getNowCustomerPhoneNumber
+  }
+
+  console.log(data)
+  await employeeStore.fetchEmployeeFohCheckout(data)
+  alert('結帳成功')
+  router.push({ name: 'employeeFohOrderView' })
+}
+
+function statusBtnFunction(status: string) {
+  let routeStatus = ['employeeFohCheckoutView'].includes(route.name as string)
+  if (routeStatus) {
+    finish()
+    return
+  }
+  if (status == '待結帳') {
+    pay()
+  }
+}
 onMounted(async () => {
   //取得單一訂單資訊
   await employeeStore.fetchEmployeeFohGetOrderDetail(productId)
@@ -207,7 +296,7 @@ onMounted(async () => {
           :font-size="'text font-medium'"
           :btn-width="'w-full'"
           :is-disabled="orderDetailData.orderStatus == '準備中'"
-          @define-function="orderDetailData.orderStatus == '待結帳' ? pay() : finish()"
+          @define-function="statusBtnFunction(orderDetailData.orderStatus)"
         >
           <span v-text="orderDetailData.orderStatus == '待結帳' ? '前往結帳' : '完成訂單'"> </span>
         </UiButton>
