@@ -6,6 +6,7 @@ import EmployeeUiSearchAndFilterBar from '@/components/ui/employee/UiSearchAndFi
 import EmployeeUiWorkspaceStateNavbar from '@/components/ui/employee/UiWorkspaceStateNavbar.vue'
 import EmployeeUiWorkspaceStateOption from '@/components/ui/employee/UiWorkspaceStateOption.vue'
 import EmployeeUiOrderDetailsNavbar from '@/components/ui/employee/UiOrderDetailsNavbar.vue'
+import router from '@/router'
 
 //-----
 //api
@@ -18,6 +19,17 @@ const fohGetOrderAllCountData = computed(() => employeeStore.getFohGetOrderAllCo
 const fohGetOrder: any = computed(() => employeeStore.getFohGetOrderData)
 //-----
 onMounted(async () => {
+  //
+  if (
+    localStorage.foh_identity == 'undefined' ||
+    localStorage.foh_identity == 'null' ||
+    !localStorage.foh_identity
+  ) {
+    router.push({ name: 'employeeLogin' })
+    alert('請先登入')
+    return
+  }
+
   //取得今日全部訂單數量與頁數
   await employeeStore.fetchEmployeeFohGetAllOrderCount()
   //外場訂單總覽
