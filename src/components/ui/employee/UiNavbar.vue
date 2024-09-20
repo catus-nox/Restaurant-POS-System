@@ -24,10 +24,12 @@ if ((route.name as string).includes('employeeBoh')) {
 //-----
 //員工登出
 async function employeeLogout() {
+  // ['employeeFohOrder', 'employeeFohCheckout'].includes(route.name as string)
   if ((route.name as string).includes('employeeFoh')) {
     await employeeStore.fetchEmployeeLogout(1)
     return
   }
+  // ['employeeBohOrder'].includes(route.name as string)
   if ((route.name as string).includes('employeeBoh')) {
     await employeeStore.fetchEmployeeLogout(2)
     return
