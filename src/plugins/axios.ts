@@ -34,6 +34,8 @@ instance.interceptors.response.use(
       console.log(response.data.data)
     }
 
+    console.log(response)
+
     return response
   },
   (error) => {
