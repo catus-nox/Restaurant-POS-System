@@ -8,8 +8,8 @@ import CartConfirmInformationView from '@/components/views/CartConfirmInformatio
 import OrderProcessHistoryView from '@/components/views/OrderProcessHistoryView.vue'
 import OrderHistoryView from '@/components/views/OrderHistoryView.vue'
 import employeeLoginView from '@/components/views/employee/loginView.vue'
-import employeeFohOrderView from '@/components/views/employee/foh/orderView.vue'
-import employeeFohCheckoutView from '@/components/views/employee/foh/checkoutView.vue'
+import employeeFohOrder from '@/components/views/employee/foh/orderView.vue'
+import employeeFohCheckout from '@/components/views/employee/foh/checkoutView.vue'
 import employeeBohOrderView from '@/components/views/employee/boh/orderView.vue'
 
 const router = createRouter({
@@ -66,12 +66,12 @@ const router = createRouter({
     {
       path: '/employeeFohOrder',
       name: 'employeeFohOrder',
-      component: employeeFohOrderView
+      component: employeeFohOrder
     },
     {
       path: '/employeeFohCheckout/:id',
       name: 'employeeFohCheckout',
-      component: employeeFohCheckoutView,
+      component: employeeFohCheckout,
       props: (route) => ({ id: Number(route.params.id) })
     },
     {
