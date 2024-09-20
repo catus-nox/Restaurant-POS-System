@@ -7,6 +7,7 @@ import UiMenubar from '@/components/ui/UiMenubar.vue'
 import UiMenuNavbar from '@/components/ui/UiMenuNavbar.vue'
 import UiFooter from '@/components/ui/UiFooter.vue'
 import EmployeeUiNavbar from '@/components/ui/employee/UiNavbar.vue'
+import EmployeeUiOrderDetailsNavbar from '@/components/ui/employee/UiOrderDetailsNavbar.vue'
 
 const route = useRoute()
 const menuNavbar = ref<HTMLElement | null>(null)
@@ -68,7 +69,9 @@ function menuArrowState(): boolean {
 //-----
 //判斷目前頁面是否為員工
 function pageCustomerOrEmployeeState(): boolean {
-  return ['employeeLogin', 'employeeFohOrderView'].includes(route.name as string)
+  return ['employeeLogin', 'employeeFohOrderView', 'employeeFohCheckoutView'].includes(
+    route.name as string
+  )
 }
 //-----
 //員工-選單顯示判斷
@@ -120,7 +123,7 @@ onMounted(() => {
       <div
         v-if="menuState()"
         ref="menuNavbar"
-        class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-neutral-0 opacity-100 transition-all"
+        class="fixed left-auto top-14 z-50 h-[calc(100vh-3.5rem)] w-full max-w-[305px] bg-white opacity-100 transition-all"
         aria-hidden="false"
       >
         <UiMenuNavbar />
@@ -142,6 +145,7 @@ onMounted(() => {
         <EmployeeUiNavbar v-if="!employeeMenuState()"></EmployeeUiNavbar>
         <main class="flex h-full w-full flex-row">
           <RouterView />
+          <EmployeeUiOrderDetailsNavbar v-if="!employeeMenuState()" />
         </main>
       </div>
     </div>

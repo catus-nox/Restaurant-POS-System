@@ -4,7 +4,10 @@ import {
   postEmployeeLogin,
   postEmployeeLogout,
   getEmployeeFohGetOrderCount,
-  getEmployeeFohGetOrder
+  getEmployeeFohGetOrder,
+  getEmployeeFohFetOrderDetail,
+  postEmployeeCheckout,
+  postEmployeeFohOrderCompleted
 } from '@/models/employee/api'
 import router from '@/router'
 
@@ -20,6 +23,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   const fohGetOrderAllCountData = ref()
   //外場訂單總覽
   const fohGetOrderData = ref()
+  //取得單一訂單資訊
+  const fohFetOrderDetailData = ref()
 
   //------
   //getter
@@ -32,6 +37,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   const getFohGetOrderAllCountData = computed(() => fohGetOrderAllCountData.value)
   //外場訂單總覽
   const getFohGetOrderData = computed(() => fohGetOrderData.value)
+  //取得單一訂單資訊
+  const getFohFetOrderDetailData = computed(() => fohFetOrderDetailData.value)
 
   //------
   //action 異步請求
@@ -214,15 +221,47 @@ export const useEmployeeStore = defineStore('employee', () => {
         orderBy: `&orderBy=${getDataStringOrderBy}`,
         search: getDataStringSearch
       }
-
-      console.log('////////////')
-      console.log(getDataStringOrderBy)
-
       getDataString.token = localStorage.foh_token
 
       const response = await getEmployeeFohGetOrder(getDataString)
 
       fohGetOrderData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //取得單一訂單資訊
+  const fetchEmployeeFohGetOrderDetail = async (orderId: number) => {
+    try {
+      const response = await getEmployeeFohFetOrderDetail(orderId)
+      fohFetOrderDetailData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //外場結帳(外場結帳僅供現金)
+  const fetchEmployeeFohCheckout = async (data: {
+    orderId: number // 訂單編號，必須為數字
+    cash: number // 客人付的現金，必須為數字
+    note?: string // 付款備註，選填，類型為字串
+    invoice: '載具' | '統編' | '捐贈發票' | '紙本' // 發票類型，特定字串選項
+    invoiceCarrier?: string // 發票載具號碼或統編，選填，類型為字串
+    phone?: string // 顧客電話，選填，類型為字串
+  }) => {
+    try {
+      const response = await postEmployeeCheckout(data)
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  //完成訂單(送餐)
+  const fetchEmployeeFohOrderCompleted = async (orderId: number) => {
+    try {
+      const response = await postEmployeeFohOrderCompleted(orderId)
+      console.log(response)
     } catch (error) {
       console.log(error)
     }
@@ -237,6 +276,9 @@ export const useEmployeeStore = defineStore('employee', () => {
     getFohGetOrderAllCountData,
     fetchEmployeeFohGetAllOrderCount,
     getFohGetOrderData,
-    fetchEmployeeFohGetOrder
+    fetchEmployeeFohGetOrder,
+    getFohFetOrderDetailData,
+    fetchEmployeeFohGetOrderDetail,
+    fetchEmployeeFohCheckout
   }
 })

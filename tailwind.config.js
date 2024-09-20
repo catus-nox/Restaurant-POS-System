@@ -144,7 +144,7 @@ module.exports = {
           900: '#7F211D',
           950: '#450C0A'
         },
-        neutral: {
+        netural: {
           0: '#FFFFFF',
           100: '#EFEFEF',
           200: '#DCDCDC',

@@ -11,7 +11,7 @@ const btnStyleG: ButtonStyle[] = [
   {
     style: 'style1',
     class: `
-    bg-primary-700 text-neutral-0 
+    bg-primary-700 text-white 
     hover:bg-primary-600 hover:shadow-[0_0_0_1px] hover:shadow-secondary-200 
     focus:bg-primary-500 focus:shadow-[0_0_0_3px] focus:shadow-secondary-300 
     disabled:bg-neutral-300`
@@ -22,20 +22,21 @@ const btnStyleG: ButtonStyle[] = [
     bg-primary-50 text-primary-700 shadow-[0_0_0_1px] shadow-primary-200 
     hover:bg-primary-100  
     focus:text-primary-900 focus:shadow-[0_0_0_3px] focus:shadow-primary-900 
-    disabled:bg-neutral-300 disabled:text-neutral-0  disabled:shadow-none`
+    disabled:bg-neutral-300 disabled:text-white  disabled:shadow-none`
   },
   {
     style: 'style3',
     class: `
-    bg-neutral-950 text-neutral-0 
+    bg-neutral-950 text-white 
     hover:bg-primary-700 hover:shadow-[0_0_0_1px] hover:shadow-secondary-200 
     focus:bg-primary-600 focus:shadow-[0_0_0_3px] focus:shadow-secondary-300
+    disabled:bg-neutral-300 disabled:text-white  disabled:shadow-[0_0_0_0px]  disabled:shadow-none
     `
   },
   {
     style: 'style4',
     class: `
-    bg-neutral-0 text-neutral-950 shadow-[0_0_0_1px] shadow-neutral-200 hover:shadow-neutral-200 
+    bg-white text-neutral-950 shadow-[0_0_0_1px] shadow-neutral-200 hover:shadow-neutral-200 
     hover:bg-primary-100 hover:text-primary-700 
     focus:bg-primary-100 focus:text-primary-800 focus:shadow-[0_0_0_3px] focus:shadow-primary-800
     disabled:bg-neutral-100 disabled:text-neutral-300  disabled:shadow-[0_0_0_1px]  disabled:shadow-neutral-300 `
@@ -94,6 +95,10 @@ const props = defineProps({
   routerName: {
     type: String,
     default: null
+  },
+  isDisabled: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -122,6 +127,7 @@ defineEmits(['defineFunction'])
           props.btnJustify,
           props.btnPress
         ]"
+        :disabled="props.isDisabled"
       >
         <template v-if="!props.isOnlyIcon">
           <span :class="[props.iconSize]" v-if="props.isLeftIcon">
@@ -142,7 +148,7 @@ defineEmits(['defineFunction'])
 
 <style scoped>
 .press2 {
-  @apply text-neutral-0 bg-primary-800 shadow-none;
+  @apply bg-primary-800 text-white shadow-none;
 }
 .press4 {
   @apply bg-white text-primary-700 shadow-[0_0_0_2px] shadow-primary-700;

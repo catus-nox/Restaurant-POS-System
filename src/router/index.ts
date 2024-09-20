@@ -9,6 +9,7 @@ import OrderProcessHistoryView from '@/components/views/OrderProcessHistoryView.
 import OrderHistoryView from '@/components/views/OrderHistoryView.vue'
 import employeeLoginView from '@/components/views/employee/loginView.vue'
 import employeeFohOrderView from '@/components/views/employee/foh/orderView.vue'
+import employeeFohCheckoutView from '@/components/views/employee/foh/checkoutView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,6 +65,12 @@ const router = createRouter({
       path: '/employeeFohOrderView',
       name: 'employeeFohOrderView',
       component: employeeFohOrderView
+    },
+    {
+      path: '/employeeFohCheckoutView/:id',
+      name: 'employeeFohCheckoutView',
+      component: employeeFohCheckoutView,
+      props: (route) => ({ id: Number(route.params.id) })
     }
     // {
     //   path: '/about',
