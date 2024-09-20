@@ -28,7 +28,7 @@ const orderDetailData = computed(() => employeeStore.getFohFetOrderDetailData)
 
 function pay() {
   router.push({
-    name: 'employeeFohCheckoutView',
+    name: 'employeeFohCheckout',
     params: { id: functionDataStore.getNowOrderDetailId }
   })
 }
@@ -100,11 +100,11 @@ async function finish() {
   console.log(data)
   await employeeStore.fetchEmployeeFohCheckout(data)
   alert('結帳成功')
-  router.push({ name: 'employeeFohOrderView' })
+  router.push({ name: 'employeeFohOrder' })
 }
 
 function statusBtnFunction(status: string) {
-  let routeStatus = ['employeeFohCheckoutView'].includes(route.name as string)
+  let routeStatus = ['employeeFohCheckout'].includes(route.name as string)
   if (routeStatus) {
     finish()
     return
