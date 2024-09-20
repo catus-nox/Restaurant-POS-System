@@ -36,6 +36,10 @@ onMounted(async () => {
     clickGroup.value.push({ ['order' + i]: [] })
   }
 })
+
+async function bohOrderCompletedFunction() {
+  // await employeeStorebohOrderShow
+}
 </script>
 
 <template>
@@ -47,6 +51,7 @@ onMounted(async () => {
           <EmployeeBohUiWorkspaceStateOption
             :order-data="order"
             v-model="clickGroup[index]['order' + index]"
+            @define-function="bohOrderCompletedFunction"
           />
         </template>
       </template>

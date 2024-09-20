@@ -43,7 +43,11 @@ for (let index = 0; index < props.orderData.items.length; index++) {
     <div
       class="inline-flex flex-col gap-4 p-4 font-bold text-black shadow-[0_2px_0_-1px] shadow-neutral-900"
     >
-      <UiButton :btn-style="'style1'" :btn-width="'min-w-60'" :router-name="'menu'">
+      <UiButton
+        :btn-style="'style1'"
+        :btn-width="'min-w-60'"
+        @define-function="$emit('defineFunction')"
+      >
         完成備餐
       </UiButton>
       <div class="flex flex-col gap-2">
@@ -63,7 +67,6 @@ for (let index = 0; index < props.orderData.items.length; index++) {
         class="boh-order p-4"
         v-model="model"
         :class="String(model).includes(String(index)) ? 'orderClick' : ''"
-        @click="$emit('defineFunction')"
       >
         <div
           class="inline-flex grow basis-0 flex-col gap-0.5 text-3xl font-medium text-neutral-950"
