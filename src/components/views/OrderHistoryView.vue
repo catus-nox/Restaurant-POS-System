@@ -45,7 +45,7 @@ import UiButton from '@/components/ui/UiButton.vue'
           </UiButton>
         </div>
 
-        <div class="flex flex-col gap-3 rounded-xl border border-neutral-900 bg-white p-4">
+        <div class="flex flex-col gap-3 rounded-xl border border-netural-900 bg-white p-4">
           <div class="flex h-6 justify-between gap-2">
             <div class="text-base font-medium leading-normal text-black">訂單進度 :</div>
             <div class="text-base font-medium leading-normal text-black">準備中</div>
@@ -104,11 +104,11 @@ import UiButton from '@/components/ui/UiButton.vue'
         </div>
 
         <div
-          class="inline-flex min-h-56 flex-col items-center justify-center gap-3 rounded-xl border border-neutral-400 bg-white p-4"
+          class="inline-flex min-h-56 flex-col items-center justify-center gap-3 rounded-xl border border-netural-400 bg-white p-4"
         >
           <div class="flex h-5 flex-col items-start justify-start gap-2">
             <div class="inline-flex items-center justify-between">
-              <div class="text-base font-bold text-neutral-400">
+              <div class="text-base font-bold text-netural-400">
                 登入會員後，可顯示歷史訂單
               </div>
             </div>
@@ -117,7 +117,7 @@ import UiButton from '@/components/ui/UiButton.vue'
 
         <div v-for="index in 10" :key="index">
           <div
-            class="flex flex-col gap-3 rounded-xl border border-neutral-900 bg-white p-4"
+            class="flex flex-col gap-3 rounded-xl border border-netural-900 bg-white p-4"
           >
             <div class="flex h-6 justify-between gap-2">
               <div class="text-base font-medium leading-normal text-black">訂單進度 :</div>

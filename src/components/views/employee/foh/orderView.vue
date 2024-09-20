@@ -5,7 +5,6 @@ import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
 import EmployeeUiSearchAndFilterBar from '@/components/ui/employee/UiSearchAndFilterBar.vue'
 import EmployeeUiWorkspaceStateNavbar from '@/components/ui/employee/UiWorkspaceStateNavbar.vue'
 import EmployeeUiWorkspaceStateOption from '@/components/ui/employee/UiWorkspaceStateOption.vue'
-import EmployeeUiOrderDetailsNavbar from '@/components/ui/employee/UiOrderDetailsNavbar.vue'
 import router from '@/router'
 
 //-----
@@ -50,6 +49,5 @@ onMounted(async () => {
       </template>
     </div>
   </div>
-  <EmployeeUiOrderDetailsNavbar />
 </template>
 <style scoped></style>
