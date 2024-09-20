@@ -14,8 +14,8 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
     '已完成'
   ]
   //type選單
-  const orderType: ('全部' | '內用' | '外帶' | '預約自取')[] = ['全部', '內用', '外帶', '預約自取']
-  // const orderType: ('全部' | '內用' | '外帶')[] = ['全部', '內用', '外帶']
+  // const orderType: ('全部' | '內用' | '外帶' | '預約自取')[] = ['全部', '內用', '外帶', '預約自取']
+  const orderType: ('全部' | '內用' | '外帶')[] = ['全部', '內用', '外帶']
   //orderBy 選項
   const orderBy: ('時間越早優先' | '時間越晚優先')[] = ['時間越早優先', '時間越晚優先']
   //Status選單選擇
