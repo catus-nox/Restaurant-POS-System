@@ -10,6 +10,7 @@ import OrderHistoryView from '@/components/views/OrderHistoryView.vue'
 import employeeLoginView from '@/components/views/employee/loginView.vue'
 import employeeFohOrderView from '@/components/views/employee/foh/orderView.vue'
 import employeeFohCheckoutView from '@/components/views/employee/foh/checkoutView.vue'
+import employeeBohOrderView from '@/components/views/employee/boh/orderView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +19,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+      // component: () => import('../views/AboutView.vue')
     },
     {
       path: '/menu',
@@ -71,15 +73,12 @@ const router = createRouter({
       name: 'employeeFohCheckoutView',
       component: employeeFohCheckoutView,
       props: (route) => ({ id: Number(route.params.id) })
+    },
+    {
+      path: '/employeeBohOrderView',
+      name: 'employeeBohOrderView',
+      component: employeeBohOrderView
     }
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue')
-    // }
   ]
 })
 
