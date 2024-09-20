@@ -10,7 +10,6 @@ import {
   postEmployeeFohOrderCompleted
 } from '@/models/employee/api'
 import router from '@/router'
-
 export const useEmployeeStore = defineStore('employee', () => {
   //------
   //state
@@ -60,13 +59,13 @@ export const useEmployeeStore = defineStore('employee', () => {
           localStorage.foh_identity = loginData.value.identity
           localStorage.foh_username = loginData.value.username
           localStorage.foh_token = loginData.value.token
-          router.push({ name: 'employeeFohOrderView' })
+          router.push({ name: 'employeeFohOrder' })
         }
         if (loginData.value.identity === 2) {
           localStorage.boh_identity = loginData.value.identity
           localStorage.boh_username = loginData.value.username
           localStorage.boh_token = loginData.value.token
-          router.push({ name: 'employeeBohOrderView' })
+          router.push({ name: 'employeeBohOrder' })
         }
         alert(`${loginData.value.username} ${response.data.message}`)
       }
@@ -81,6 +80,7 @@ export const useEmployeeStore = defineStore('employee', () => {
       const getDataString: any = {
         token: getData?.token
       }
+
       if (identity === 1) {
         getDataString.token = localStorage.foh_token
       }
@@ -103,6 +103,7 @@ export const useEmployeeStore = defineStore('employee', () => {
           localStorage.boh_username = null
           localStorage.boh_token = null
         }
+
         router.push({ name: 'employeeLogin' })
       }
     } catch (error) {
@@ -281,6 +282,59 @@ export const useEmployeeStore = defineStore('employee', () => {
     try {
       const response = await postEmployeeFohOrderCompleted(orderId)
       console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //內場訂單總覽
+  const fetchEmployeeBohGetOrder = async (
+    getData: {
+      page?: number // 抓該頁的1~9筆訂單  (為空或其他值會傳第一頁)
+      orderStatus?:
+        | '全部訂單'
+        | '0'
+        | 0
+        | '待結帳'
+        | '2'
+        | 2
+        | '準備中'
+        | '3'
+        | 3
+        | '待取餐'
+        | '4'
+        | 4
+        | '已完成'
+        | '5'
+        | 5 //(全部訂單不會抓"已完成"的)
+      type?: '0' | '全部訂單' | '內用' | '1' | '外帶' | '2' | '預約自取' | '3' //用餐類型，為空的話也是傳所有類型的(外帶跟預約自取都算外帶)
+      orderBy?: '時間越早優先' | '時間越晚優先' //依據排序，為空的話會以"時間越早優先"為主
+      search?: any //依據值來搜尋
+    } = {}
+  ) => {
+    try {
+      const getDataStringPage = getData.page != null ? getData.page : 1
+      let getDataStringOrderStatus = getData.orderStatus != null ? getData.orderStatus : '0'
+      if (Number(getDataStringOrderStatus) != 0) {
+        getDataStringOrderStatus = Number(getData.orderStatus) + 1
+      }
+
+      const getDataStringType = getData.type != null ? getData.type : '0'
+      const getDataStringOrderBy = getData.orderBy != null ? getData.orderBy : '時間越早優先'
+
+      const getDataStringSearch = getData.search != null ? `&search=${getData.search}` : ''
+
+      const getDataString: any = {
+        page: `?page=${getDataStringPage}`,
+        orderStatus: `&orderStatus=${getDataStringOrderStatus}`,
+        type: `&type=${getDataStringType}`,
+        orderBy: `&orderBy=${getDataStringOrderBy}`,
+        search: getDataStringSearch
+      }
+
+      const response = await getEmployeeFohGetOrder(getDataString)
+
+      fohGetOrderData.value = response.data.data
     } catch (error) {
       console.log(error)
     }

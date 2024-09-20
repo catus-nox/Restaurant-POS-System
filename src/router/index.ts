@@ -64,19 +64,19 @@ const router = createRouter({
       component: employeeLoginView
     },
     {
-      path: '/employeeFohOrderView',
-      name: 'employeeFohOrderView',
+      path: '/employeeFohOrder',
+      name: 'employeeFohOrder',
       component: employeeFohOrderView
     },
     {
-      path: '/employeeFohCheckoutView/:id',
-      name: 'employeeFohCheckoutView',
+      path: '/employeeFohCheckout/:id',
+      name: 'employeeFohCheckout',
       component: employeeFohCheckoutView,
       props: (route) => ({ id: Number(route.params.id) })
     },
     {
-      path: '/employeeBohOrderView',
-      name: 'employeeBohOrderView',
+      path: '/employeeBohOrder',
+      name: 'employeeBohOrder',
       component: employeeBohOrderView
     }
   ]
