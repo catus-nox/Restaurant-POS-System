@@ -32,7 +32,6 @@ export function postEmployeeLogout(
 //取得今日訂單數量與頁數
 export function getEmployeeFohGetOrderCount(
   getData: {
-    token?: string // 添加 token 參數
     orderStatus?: string | number
   },
   data?: any
@@ -41,7 +40,7 @@ export function getEmployeeFohGetOrderCount(
     url: `/foh/getOrderCount/${getData.orderStatus}`,
     method: 'get',
     headers: {
-      Authorization: `Bearer ${getData.token}`
+      Authorization: `Bearer ${localStorage.foh_token}`
     },
     data //params:
   })
@@ -50,7 +49,6 @@ export function getEmployeeFohGetOrderCount(
 //外場訂單總覽
 export function getEmployeeFohGetOrder(
   getData: {
-    token?: string // 添加 token 參數
     page?: string // 抓該頁的1~9筆訂單  (為空或其他值會傳第一頁)
     orderStatus?: string | number
     type?: string
@@ -63,7 +61,7 @@ export function getEmployeeFohGetOrder(
     url: `/foh/getOrder${getData.page}${getData.orderStatus}${getData.type}${getData.orderBy}${getData.search}`,
     method: 'get',
     headers: {
-      Authorization: `Bearer ${getData.token}`
+      Authorization: `Bearer ${localStorage.foh_token}`
     },
     data
   })
@@ -82,7 +80,7 @@ export function getEmployeeFohFetOrderDetail(orderId: number, data?: any) {
 }
 
 //外場結帳(外場結帳僅供現金)
-export function postEmployeeCheckout(data: {
+export function postEmployeeFohCheckout(data: {
   orderId: number // 訂單編號，必須為數字
   cash: number // 客人付的現金，必須為數字
   note?: string // 付款備註，選填，類型為字串

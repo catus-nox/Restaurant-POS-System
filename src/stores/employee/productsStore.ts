@@ -6,7 +6,7 @@ import {
   getEmployeeFohGetOrderCount,
   getEmployeeFohGetOrder,
   getEmployeeFohFetOrderDetail,
-  postEmployeeCheckout,
+  postEmployeeFohCheckout,
   postEmployeeFohOrderCompleted
 } from '@/models/employee/api'
 import router from '@/router'
@@ -66,7 +66,7 @@ export const useEmployeeStore = defineStore('employee', () => {
           localStorage.boh_identity = loginData.value.identity
           localStorage.boh_username = loginData.value.username
           localStorage.boh_token = loginData.value.token
-          router.push({ name: 'employeeFohOrderView' })
+          router.push({ name: 'employeeBohOrderView' })
         }
         alert(`${loginData.value.username} ${response.data.message}`)
       }
@@ -75,22 +75,34 @@ export const useEmployeeStore = defineStore('employee', () => {
     }
   }
 
-  //員工登入出
-  const fetchEmployeeLogout = async (getData?: { token: string }) => {
+  //員工登出
+  const fetchEmployeeLogout = async (identity: number, getData?: { token: string }) => {
     try {
       const getDataString: any = {
         token: getData?.token
       }
-      getDataString.token = localStorage.foh_token
+      if (identity === 1) {
+        getDataString.token = localStorage.foh_token
+      }
+      if (identity === 2) {
+        getDataString.token = localStorage.boh_token
+      }
       const response = await postEmployeeLogout(getDataString)
 
       if (response.data.statusCode === 400) {
         alert(response.data.message)
       } else {
-        alert(response.data.message)
-        localStorage.foh_identity = null
-        localStorage.foh_username = null
-        localStorage.foh_token = null
+        alert(`${loginData.value.username} ${response.data.message}`)
+        if (identity === 1) {
+          localStorage.foh_identity = null
+          localStorage.foh_username = null
+          localStorage.foh_token = null
+        }
+        if (identity === 2) {
+          localStorage.boh_identity = null
+          localStorage.boh_username = null
+          localStorage.boh_token = null
+        }
         router.push({ name: 'employeeLogin' })
       }
     } catch (error) {
@@ -101,7 +113,6 @@ export const useEmployeeStore = defineStore('employee', () => {
   //取得今日訂單數量與頁數
   const fetchEmployeeFohGetOrderCount = async (
     getData: {
-      token?: string // 添加 token 參數
       orderStatus?:
         | '全部訂單'
         | '0'
@@ -126,10 +137,8 @@ export const useEmployeeStore = defineStore('employee', () => {
         getDataStringOrderStatus = Number(getData.orderStatus) + 1
       }
       const getDataString: any = {
-        token: getData.token,
         orderStatus: getDataStringOrderStatus
       }
-      getDataString.token = localStorage.foh_token
 
       const response = await getEmployeeFohGetOrderCount(getDataString)
       fohGetOrderCountData.value = response.data.data
@@ -191,7 +200,6 @@ export const useEmployeeStore = defineStore('employee', () => {
   //外場訂單總覽
   const fetchEmployeeFohGetOrder = async (
     getData: {
-      token?: string // 添加 token 參數
       page?: number // 抓該頁的1~9筆訂單  (為空或其他值會傳第一頁)
       orderStatus?:
         | '全部訂單'
@@ -227,14 +235,12 @@ export const useEmployeeStore = defineStore('employee', () => {
       const getDataStringSearch = getData.search != null ? `&search=${getData.search}` : ''
 
       const getDataString: any = {
-        token: getData.token,
         page: `?page=${getDataStringPage}`,
         orderStatus: `&orderStatus=${getDataStringOrderStatus}`,
         type: `&type=${getDataStringType}`,
         orderBy: `&orderBy=${getDataStringOrderBy}`,
         search: getDataStringSearch
       }
-      getDataString.token = localStorage.foh_token
 
       const response = await getEmployeeFohGetOrder(getDataString)
 
@@ -264,7 +270,7 @@ export const useEmployeeStore = defineStore('employee', () => {
     phone?: string // 顧客電話，選填，類型為字串
   }) => {
     try {
-      const response = await postEmployeeCheckout(data)
+      const response = await postEmployeeFohCheckout(data)
       console.log(response)
     } catch (error) {
       console.log(error)
