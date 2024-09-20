@@ -8,8 +8,9 @@ import CartConfirmInformationView from '@/components/views/CartConfirmInformatio
 import OrderProcessHistoryView from '@/components/views/OrderProcessHistoryView.vue'
 import OrderHistoryView from '@/components/views/OrderHistoryView.vue'
 import employeeLoginView from '@/components/views/employee/loginView.vue'
-import employeeFohOrderView from '@/components/views/employee/foh/orderView.vue'
-import employeeFohCheckoutView from '@/components/views/employee/foh/checkoutView.vue'
+import employeeFohOrder from '@/components/views/employee/foh/orderView.vue'
+import employeeFohCheckout from '@/components/views/employee/foh/checkoutView.vue'
+import employeeBohOrderView from '@/components/views/employee/boh/orderView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +19,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+      // component: () => import('../views/AboutView.vue')
     },
     {
       path: '/menu',
@@ -62,24 +64,21 @@ const router = createRouter({
       component: employeeLoginView
     },
     {
-      path: '/employeeFohOrderView',
-      name: 'employeeFohOrderView',
-      component: employeeFohOrderView
+      path: '/employeeFohOrder',
+      name: 'employeeFohOrder',
+      component: employeeFohOrder
     },
     {
-      path: '/employeeFohCheckoutView/:id',
-      name: 'employeeFohCheckoutView',
-      component: employeeFohCheckoutView,
+      path: '/employeeFohCheckout/:id',
+      name: 'employeeFohCheckout',
+      component: employeeFohCheckout,
       props: (route) => ({ id: Number(route.params.id) })
+    },
+    {
+      path: '/employeeBohOrder',
+      name: 'employeeBohOrder',
+      component: employeeBohOrderView
     }
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue')
-    // }
   ]
 })
 

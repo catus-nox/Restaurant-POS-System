@@ -4,7 +4,7 @@ import { useEmployeeStore } from '@/stores/employee/productsStore'
 import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
 import EmployeeUiSearchAndFilterBar from '@/components/ui/employee/UiSearchAndFilterBar.vue'
 import EmployeeUiWorkspaceStateNavbar from '@/components/ui/employee/UiWorkspaceStateNavbar.vue'
-import EmployeeUiWorkspaceStateOption from '@/components/ui/employee/UiWorkspaceStateOption.vue'
+import EmployeeFohUiWorkspaceStateOption from '@/components/ui/employee/foh/UiWorkspaceStateOption.vue'
 import router from '@/router'
 
 //-----
@@ -37,7 +37,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="h-full grow" v-if="functionDataStore">
+  <div class="h-full w-full grow" v-if="functionDataStore">
     <EmployeeUiSearchAndFilterBar />
     <EmployeeUiWorkspaceStateNavbar
       v-if="fohGetOrderAllCountData"
@@ -45,7 +45,7 @@ onMounted(async () => {
     />
     <div class="grid grid-cols-3 gap-6 p-6">
       <template v-for="(order, index) in fohGetOrder" :key="index">
-        <EmployeeUiWorkspaceStateOption :order-data="order" />
+        <EmployeeFohUiWorkspaceStateOption :order-data="order" />
       </template>
     </div>
   </div>

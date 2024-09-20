@@ -6,11 +6,12 @@ import {
   getEmployeeFohGetOrderCount,
   getEmployeeFohGetOrder,
   getEmployeeFohFetOrderDetail,
-  postEmployeeCheckout,
-  postEmployeeFohOrderCompleted
+  postEmployeeFohCheckout,
+  postEmployeeFohOrderCompleted,
+  getEmployeeBohGetOrder,
+  getEmployeeBohOrderCompleted
 } from '@/models/employee/api'
 import router from '@/router'
-
 export const useEmployeeStore = defineStore('employee', () => {
   //------
   //state
@@ -25,6 +26,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   const fohGetOrderData = ref()
   //取得單一訂單資訊
   const fohFetOrderDetailData = ref()
+  //內場訂單總覽
+  const bohGetOrderData = ref()
 
   //------
   //getter
@@ -39,6 +42,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   const getFohGetOrderData = computed(() => fohGetOrderData.value)
   //取得單一訂單資訊
   const getFohFetOrderDetailData = computed(() => fohFetOrderDetailData.value)
+  //內場訂單總覽
+  const getBohGetOrderData = computed(() => bohGetOrderData.value)
 
   //------
   //action 異步請求
@@ -55,29 +60,56 @@ export const useEmployeeStore = defineStore('employee', () => {
       } else {
         //員工資訊
         loginData.value = response.data.data
-        alert(response.data.message)
+        //-----
+        if (loginData.value.identity === 1) {
+          localStorage.foh_identity = loginData.value.identity
+          localStorage.foh_username = loginData.value.username
+          localStorage.foh_token = loginData.value.token
+          router.push({ name: 'employeeFohOrder' })
+        }
+        if (loginData.value.identity === 2) {
+          localStorage.boh_identity = loginData.value.identity
+          localStorage.boh_username = loginData.value.username
+          localStorage.boh_token = loginData.value.token
+          router.push({ name: 'employeeBohOrder' })
+        }
+        alert(`${loginData.value.username} ${response.data.message}`)
       }
     } catch (error) {
       console.log(error)
     }
   }
 
-  //員工登入出
-  const fetchEmployeeLogout = async (getData?: { token: string }) => {
+  //員工登出
+  const fetchEmployeeLogout = async (identity: number, getData?: { token: string }) => {
     try {
       const getDataString: any = {
         token: getData?.token
       }
-      getDataString.token = localStorage.foh_token
+
+      if (identity === 1) {
+        getDataString.token = localStorage.foh_token
+      }
+      if (identity === 2) {
+        getDataString.token = localStorage.boh_token
+      }
       const response = await postEmployeeLogout(getDataString)
 
       if (response.data.statusCode === 400) {
         alert(response.data.message)
       } else {
-        alert(response.data.message)
-        localStorage.foh_identity = null
-        localStorage.foh_username = null
-        localStorage.foh_token = null
+        alert(`${loginData.value.username} ${response.data.message}`)
+        if (identity === 1) {
+          localStorage.foh_identity = null
+          localStorage.foh_username = null
+          localStorage.foh_token = null
+        }
+        if (identity === 2) {
+          localStorage.boh_identity = null
+          localStorage.boh_username = null
+          localStorage.boh_token = null
+        }
+
         router.push({ name: 'employeeLogin' })
       }
     } catch (error) {
@@ -88,7 +120,6 @@ export const useEmployeeStore = defineStore('employee', () => {
   //取得今日訂單數量與頁數
   const fetchEmployeeFohGetOrderCount = async (
     getData: {
-      token?: string // 添加 token 參數
       orderStatus?:
         | '全部訂單'
         | '0'
@@ -113,10 +144,8 @@ export const useEmployeeStore = defineStore('employee', () => {
         getDataStringOrderStatus = Number(getData.orderStatus) + 1
       }
       const getDataString: any = {
-        token: getData.token,
         orderStatus: getDataStringOrderStatus
       }
-      getDataString.token = localStorage.foh_token
 
       const response = await getEmployeeFohGetOrderCount(getDataString)
       fohGetOrderCountData.value = response.data.data
@@ -178,7 +207,6 @@ export const useEmployeeStore = defineStore('employee', () => {
   //外場訂單總覽
   const fetchEmployeeFohGetOrder = async (
     getData: {
-      token?: string // 添加 token 參數
       page?: number // 抓該頁的1~9筆訂單  (為空或其他值會傳第一頁)
       orderStatus?:
         | '全部訂單'
@@ -214,14 +242,12 @@ export const useEmployeeStore = defineStore('employee', () => {
       const getDataStringSearch = getData.search != null ? `&search=${getData.search}` : ''
 
       const getDataString: any = {
-        token: getData.token,
         page: `?page=${getDataStringPage}`,
         orderStatus: `&orderStatus=${getDataStringOrderStatus}`,
         type: `&type=${getDataStringType}`,
         orderBy: `&orderBy=${getDataStringOrderBy}`,
         search: getDataStringSearch
       }
-      getDataString.token = localStorage.foh_token
 
       const response = await getEmployeeFohGetOrder(getDataString)
 
@@ -251,7 +277,7 @@ export const useEmployeeStore = defineStore('employee', () => {
     phone?: string // 顧客電話，選填，類型為字串
   }) => {
     try {
-      const response = await postEmployeeCheckout(data)
+      const response = await postEmployeeFohCheckout(data)
       console.log(response)
     } catch (error) {
       console.log(error)
@@ -261,6 +287,44 @@ export const useEmployeeStore = defineStore('employee', () => {
   const fetchEmployeeFohOrderCompleted = async (orderId: number) => {
     try {
       const response = await postEmployeeFohOrderCompleted(orderId)
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //內場訂單總覽
+  const fetchEmployeeBohGetOrder = async (
+    getData: {
+      type?: '0' | 0 | '全部訂單' | '內用' | '1' | 1 | '外帶' | '2' | 2 | '預約自取' | '3' | 3
+      orderBy?: '時間越早優先' | '時間越晚優先'
+      search?: any
+    } = {}
+  ) => {
+    try {
+      const getDataStringType = getData.type != null ? getData.type : '0'
+      const getDataStringOrderBy = getData.orderBy != null ? getData.orderBy : '時間越早優先'
+
+      const getDataStringSearch = getData.search != null ? `&search=${getData.search}` : ''
+
+      const getDataString: any = {
+        type: `&type=${getDataStringType}`,
+        orderBy: `&orderBy=${getDataStringOrderBy}`,
+        search: getDataStringSearch
+      }
+
+      const response = await getEmployeeBohGetOrder(getDataString)
+
+      bohGetOrderData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // 完成備餐 (修改OrderStatusEnum)
+  const fetchEmployeeBohOrderCompleted = async (orderId: number) => {
+    try {
+      const response = await getEmployeeBohOrderCompleted(orderId)
       console.log(response)
     } catch (error) {
       console.log(error)
@@ -279,6 +343,10 @@ export const useEmployeeStore = defineStore('employee', () => {
     fetchEmployeeFohGetOrder,
     getFohFetOrderDetailData,
     fetchEmployeeFohGetOrderDetail,
-    fetchEmployeeFohCheckout
+    fetchEmployeeFohCheckout,
+
+    getBohGetOrderData,
+    fetchEmployeeBohGetOrder,
+    fetchEmployeeBohOrderCompleted
   }
 })

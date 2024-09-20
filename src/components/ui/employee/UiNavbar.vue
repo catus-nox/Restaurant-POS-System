@@ -2,16 +2,38 @@
 import { useEmployeeStore } from '@/stores/employee/productsStore'
 import UiButton from '@/components/ui/UiButton.vue'
 import EmployeeUiNavbarOptionButton from '@/components/ui/employee/UiNavbarOptionButton.vue'
-const identity = localStorage.foh_identity
-const username = localStorage.foh_username
+import { useRoute } from 'vue-router'
 
+//-----
+const route = useRoute()
 //-----
 //api
 const employeeStore = useEmployeeStore()
 //-----
+//判斷前後台
+let identity: number
+let username: string
+if ((route.name as string).includes('employeeFoh')) {
+  identity = localStorage.foh_identity
+  username = localStorage.foh_username
+}
+if ((route.name as string).includes('employeeBoh')) {
+  identity = localStorage.boh_identity
+  username = localStorage.boh_username
+}
+//-----
 //員工登出
 async function employeeLogout() {
-  await employeeStore.fetchEmployeeLogout()
+  // ['employeeFohOrder', 'employeeFohCheckout'].includes(route.name as string)
+  if ((route.name as string).includes('employeeFoh')) {
+    await employeeStore.fetchEmployeeLogout(1)
+    return
+  }
+  // ['employeeBohOrder'].includes(route.name as string)
+  if ((route.name as string).includes('employeeBoh')) {
+    await employeeStore.fetchEmployeeLogout(2)
+    return
+  }
 }
 </script>
 
@@ -30,7 +52,10 @@ async function employeeLogout() {
         <div class="text-center text-xl font-normal text-neutral-950">
           <template v-if="identity == 1"> 外場店員 </template>
           <template v-if="identity == 2"> 內場店員 </template>
-          <span class="block text-sm text-white/55">{{ username }}</span>
+
+          <span class="block text-sm text-white/55">
+            {{ username }}
+          </span>
         </div>
       </div>
       <UiButton

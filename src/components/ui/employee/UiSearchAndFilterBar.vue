@@ -23,7 +23,7 @@ const nowSearchFunction = computed({
 
 <template>
   <div class="flex gap-4 p-4" v-if="functionDataStore">
-    <div class="flex max-w-[50%] grow items-center gap-2">
+    <div class="flex w-1/2 max-w-[calc(343px+1.5rem*4)] grow items-center gap-2">
       <div class="text-xl font-medium">排序依據</div>
       <UiSelect
         class="grow"
@@ -41,7 +41,7 @@ const nowSearchFunction = computed({
       </UiSelect>
     </div>
     <UiInput
-      :class="'grow !flex-row items-center gap-2 text-xl'"
+      :class="'w-1/2 max-w-[calc(343px+1.5rem*4)] grow !flex-row items-center gap-2 text-xl'"
       :is-label="true"
       :label="'搜尋訂單'"
       :placeholder="'輸入桌號、編號或手機號碼'"

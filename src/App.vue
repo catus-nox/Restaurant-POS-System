@@ -20,14 +20,14 @@ watch(
   () => {
     // (newPath, oldPath) => {
     // console.log(`路由從 ${oldPath} 變化到 ${newPath}`)
-
     // 確保選單關閉
     if (menuNavbar.value) {
       drawer.value.hide()
     }
   }
 )
-//選單樣式設定
+//-----
+//顧客選單樣式設定
 const options = {
   placement: 'left',
   backdrop: true,
@@ -45,40 +45,43 @@ const options = {
     // console.log('drawer has been toggled')
   }
 }
-//-----
-//選單開關
+//顧客選單開關
 function toggleMenu() {
   drawer.value.toggle()
 }
-//-----
-//選單顯示判斷
+//顧客選單顯示判斷
 function menuState(): boolean {
   return ['menu', 'productOrder', 'orderProcessHistory'].includes(route.name as string)
 }
-//顯示判斷判斷anchor訂定pt高度
+//顧客選單箭頭顯示判斷
+function menuArrowState(): boolean {
+  return ['productOrder'].includes(route.name as string)
+}
+//-----
+//顧客顯示判斷判斷anchor訂定pt高度
 function anchorMainPaddingTopChange() {
   if (menuState()) {
     return 'pt-14'
   }
   return
 }
-//選單箭頭顯示判斷
-function menuArrowState(): boolean {
-  return ['productOrder'].includes(route.name as string)
-}
 //-----
 //判斷目前頁面是否為員工
-function pageCustomerOrEmployeeState(): boolean {
-  return ['employeeLogin', 'employeeFohOrderView', 'employeeFohCheckoutView'].includes(
-    route.name as string
-  )
+function pageCustomerOrEmployeeState(): any {
+  return route.name && (route.name as string).includes('employee')
+  // return ['employeeLogin', 'employeeFohOrder', 'employeeFohCheckout', 'employeeBohOrder'].includes(
+  //   route.name as string
+  // )
 }
-//-----
 //員工-選單顯示判斷
 function employeeMenuState(): boolean {
   return ['employeeLogin'].includes(route.name as string)
 }
-
+//員工-外場詳細資料顯示
+function employeeFohState(): boolean {
+  return (route.name as string).includes('employeeFoh')
+  // return ['employeeFohOrder', 'employeeFohCheckout'].includes(route.name as string)
+}
 //-----
 onMounted(async () => {
   //判斷是否為員工頁面
@@ -91,7 +94,7 @@ onMounted(async () => {
     )
   }
 })
-// 選單
+// 顧客選單
 onMounted(() => {
   watch(
     [menuState, menuArrowState],
@@ -143,9 +146,9 @@ onMounted(() => {
         :class="{ ['flex']: !employeeMenuState() }"
       >
         <EmployeeUiNavbar v-if="!employeeMenuState()"></EmployeeUiNavbar>
-        <main class="flex h-full w-full flex-row">
+        <main class="flex h-full w-[calc(100%-7rem)] flex-row">
           <RouterView />
-          <EmployeeUiOrderDetailsNavbar v-if="!employeeMenuState()" />
+          <EmployeeUiOrderDetailsNavbar v-if="!employeeMenuState() && employeeFohState()" />
         </main>
       </div>
     </div>

@@ -118,7 +118,7 @@ onMounted(async () => {
   <div v-if="functionDataStore" class="flex h-full w-full grow flex-col text-2xl text-black">
     <div class="inline-flex items-center gap-6 bg-primary-200 px-6 py-3 font-bold text-neutral-950">
       <svg
-        @click="router.push({ name: 'employeeFohOrderView' })"
+        @click="router.push({ name: 'employeeFohOrder' })"
         class="h-7 w-7 cursor-pointer"
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
