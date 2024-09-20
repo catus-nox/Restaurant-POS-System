@@ -67,12 +67,20 @@ function anchorMainPaddingTopChange() {
 }
 //-----
 //判斷目前頁面是否為員工
-function pageCustomerOrEmployeeState(): boolean {
-  return (route.name as string).includes('employee')
+function pageCustomerOrEmployeeState(): any {
+  return route.name && (route.name as string).includes('employee')
+  // return ['employeeLogin', 'employeeFohOrder', 'employeeFohCheckout', 'employeeBohOrder'].includes(
+  //   route.name as string
+  // )
 }
 //員工-選單顯示判斷
 function employeeMenuState(): boolean {
   return ['employeeLogin'].includes(route.name as string)
+}
+//員工-外場詳細資料顯示
+function employeeFohState(): boolean {
+  return (route.name as string).includes('employeeFoh')
+  // return ['employeeFohOrder', 'employeeFohCheckout'].includes(route.name as string)
 }
 //-----
 onMounted(async () => {
@@ -140,7 +148,7 @@ onMounted(() => {
         <EmployeeUiNavbar v-if="!employeeMenuState()"></EmployeeUiNavbar>
         <main class="flex h-full w-full flex-row">
           <RouterView />
-          <EmployeeUiOrderDetailsNavbar v-if="!employeeMenuState()" />
+          <EmployeeUiOrderDetailsNavbar v-if="!employeeMenuState() && employeeFohState()" />
         </main>
       </div>
     </div>
