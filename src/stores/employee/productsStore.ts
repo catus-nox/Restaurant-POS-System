@@ -55,7 +55,20 @@ export const useEmployeeStore = defineStore('employee', () => {
       } else {
         //員工資訊
         loginData.value = response.data.data
-        alert(response.data.message)
+        //-----
+        if (loginData.value.identity === 1) {
+          localStorage.foh_identity = loginData.value.identity
+          localStorage.foh_username = loginData.value.username
+          localStorage.foh_token = loginData.value.token
+          router.push({ name: 'employeeFohOrderView' })
+        }
+        if (loginData.value.identity === 2) {
+          localStorage.boh_identity = loginData.value.identity
+          localStorage.boh_username = loginData.value.username
+          localStorage.boh_token = loginData.value.token
+          router.push({ name: 'employeeFohOrderView' })
+        }
+        alert(`${loginData.value.username} ${response.data.message}`)
       }
     } catch (error) {
       console.log(error)

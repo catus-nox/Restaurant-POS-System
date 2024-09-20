@@ -28,9 +28,6 @@ const isValidPassword = ref<boolean>(false)
 //密碼是否點擊過輸入框
 const isTouchPassword = ref<boolean>(false)
 //-----
-//員工登入資料
-const loginData: any = computed(() => employeeStore.getLoginData)
-
 //員工登入
 async function employeeLogin() {
   //-----
@@ -49,7 +46,6 @@ async function employeeLogin() {
     return true
   }
   if (!validate()) return
-
   //-----
   // 給api的data資訊
   let data: {
@@ -61,14 +57,10 @@ async function employeeLogin() {
   }
   //員工登入
   await employeeStore.fetchEmployeeLogin(data)
-
-  //-----
-  if (loginData.value !== undefined) {
-    router.push({ name: 'employeeFohOrderView' })
-    localStorage.foh_identity = loginData.value.identity
-    localStorage.foh_username = loginData.value.username
-    localStorage.foh_token = loginData.value.token
-  }
+}
+//員工忘記密碼
+function employeeForgetPassword() {
+  alert(`去找老闆!`)
 }
 </script>
 
@@ -77,7 +69,7 @@ async function employeeLogin() {
     <div class="flex w-full max-w-[459px] flex-col items-center gap-4">
       <img src="../../../assets/img/logo/character-black.png" class="max-w-72" alt="" />
       <div
-        class="flex w-full max-w-[459px] flex-col items-center gap-4 gap-7 rounded-3xl border border-neutral-950 bg-white p-5"
+        class="flex w-full max-w-[459px] flex-col items-center gap-7 rounded-3xl border border-neutral-950 bg-white p-5"
       >
         <div class="flex w-full flex-col gap-4">
           <UiInput
@@ -124,11 +116,12 @@ async function employeeLogin() {
             登入
           </UiButton>
           <RouterLink
+            @click="employeeForgetPassword"
             class="text text-primary-800 underline"
             style="text-underline-offset: 0.4rem"
             to="/employeeLogin"
-            >忘記密碼 ?</RouterLink
-          >
+            >忘記密碼 ?
+          </RouterLink>
         </div>
       </div>
     </div>
