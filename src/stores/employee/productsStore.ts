@@ -8,7 +8,8 @@ import {
   getEmployeeFohFetOrderDetail,
   postEmployeeFohCheckout,
   postEmployeeFohOrderCompleted,
-  getEmployeeBohGetOrder
+  getEmployeeBohGetOrder,
+  getEmployeeBohOrderCompleted
 } from '@/models/employee/api'
 import router from '@/router'
 export const useEmployeeStore = defineStore('employee', () => {
@@ -320,6 +321,16 @@ export const useEmployeeStore = defineStore('employee', () => {
     }
   }
 
+  // 完成備餐 (修改OrderStatusEnum)
+  const fetchEmployeeBohOrderCompleted = async (orderId: number) => {
+    try {
+      const response = await getEmployeeBohOrderCompleted(orderId)
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getLoginData,
     fetchEmployeeLogin,
@@ -335,6 +346,7 @@ export const useEmployeeStore = defineStore('employee', () => {
     fetchEmployeeFohCheckout,
 
     getBohGetOrderData,
-    fetchEmployeeBohGetOrder
+    fetchEmployeeBohGetOrder,
+    fetchEmployeeBohOrderCompleted
   }
 })
