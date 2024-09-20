@@ -68,9 +68,7 @@ function anchorMainPaddingTopChange() {
 //-----
 //判斷目前頁面是否為員工
 function pageCustomerOrEmployeeState(): boolean {
-  return ['employeeLogin', 'employeeFohOrderView', 'employeeFohCheckoutView'].includes(
-    route.name as string
-  )
+  return (route.name as string).includes('employee')
 }
 //員工-選單顯示判斷
 function employeeMenuState(): boolean {
