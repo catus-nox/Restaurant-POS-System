@@ -37,7 +37,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="h-full grow" v-if="functionDataStore">
+  <div class="h-full w-full grow" v-if="functionDataStore">
     <EmployeeUiSearchAndFilterBar />
     <EmployeeUiWorkspaceStateNavbar
       v-if="fohGetOrderAllCountData"
