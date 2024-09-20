@@ -57,4 +57,12 @@ const model = defineModel()
 .error {
   @apply text-neutral-950 shadow-[0_0_0_2px] shadow-error-700 placeholder:text-neutral-950;
 }
+
+.boh-order > div {
+  align-items: flex-start;
+}
+.boh-order > div > input {
+  margin-top: 0.6rem;
+  @apply !border-neutral-950;
+}
 </style>
