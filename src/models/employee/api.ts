@@ -58,7 +58,7 @@ export function getEmployeeFohGetOrder(
   data?: any
 ) {
   return request({
-    url: `/foh/getOrder${getData.page}${getData.orderStatus}${getData.type}${getData.orderBy}${getData.search}`,
+    url: `/foh/getOrder?${getData.page}${getData.orderStatus}${getData.type}${getData.orderBy}${getData.search}`,
     method: 'get',
     headers: {
       Authorization: `Bearer ${localStorage.foh_token}`
@@ -116,5 +116,36 @@ export function postEmployeeFohOrderCompleted(orderId: number) {
     data: {
       orderId
     }
+  })
+}
+
+//內場訂單總覽
+export function getEmployeeBohGetOrder(
+  getData: {
+    type?: '0' | 0 | '全部訂單' | '內用' | '1' | 1 | '外帶' | '2' | 2 | '預約自取' | '3' | 3
+    orderBy?: '時間越早優先' | '時間越晚優先'
+    search?: any
+  },
+  data?: any
+) {
+  return request({
+    url: `/boh/getOrder?${getData.type}${getData.orderBy}${getData.search}`,
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${localStorage.boh_token}`
+    },
+    data
+  })
+}
+
+// 完成備餐 (修改OrderStatusEnum)
+export function getEmployeeBohOrderCompleted(orderId: number, data?: any) {
+  return request({
+    url: `/boh/orderCompleted`,
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${localStorage.boh_token}`
+    },
+    data
   })
 }

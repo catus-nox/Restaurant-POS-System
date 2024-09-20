@@ -7,7 +7,9 @@ import {
   getEmployeeFohGetOrder,
   getEmployeeFohFetOrderDetail,
   postEmployeeFohCheckout,
-  postEmployeeFohOrderCompleted
+  postEmployeeFohOrderCompleted,
+  getEmployeeBohGetOrder,
+  getEmployeeBohOrderCompleted
 } from '@/models/employee/api'
 import router from '@/router'
 export const useEmployeeStore = defineStore('employee', () => {
@@ -24,6 +26,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   const fohGetOrderData = ref()
   //取得單一訂單資訊
   const fohFetOrderDetailData = ref()
+  //內場訂單總覽
+  const bohGetOrderData = ref()
 
   //------
   //getter
@@ -38,6 +42,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   const getFohGetOrderData = computed(() => fohGetOrderData.value)
   //取得單一訂單資訊
   const getFohFetOrderDetailData = computed(() => fohFetOrderDetailData.value)
+  //內場訂單總覽
+  const getBohGetOrderData = computed(() => bohGetOrderData.value)
 
   //------
   //action 異步請求
@@ -290,51 +296,36 @@ export const useEmployeeStore = defineStore('employee', () => {
   //內場訂單總覽
   const fetchEmployeeBohGetOrder = async (
     getData: {
-      page?: number // 抓該頁的1~9筆訂單  (為空或其他值會傳第一頁)
-      orderStatus?:
-        | '全部訂單'
-        | '0'
-        | 0
-        | '待結帳'
-        | '2'
-        | 2
-        | '準備中'
-        | '3'
-        | 3
-        | '待取餐'
-        | '4'
-        | 4
-        | '已完成'
-        | '5'
-        | 5 //(全部訂單不會抓"已完成"的)
-      type?: '0' | '全部訂單' | '內用' | '1' | '外帶' | '2' | '預約自取' | '3' //用餐類型，為空的話也是傳所有類型的(外帶跟預約自取都算外帶)
-      orderBy?: '時間越早優先' | '時間越晚優先' //依據排序，為空的話會以"時間越早優先"為主
-      search?: any //依據值來搜尋
+      type?: '0' | 0 | '全部訂單' | '內用' | '1' | 1 | '外帶' | '2' | 2 | '預約自取' | '3' | 3
+      orderBy?: '時間越早優先' | '時間越晚優先'
+      search?: any
     } = {}
   ) => {
     try {
-      const getDataStringPage = getData.page != null ? getData.page : 1
-      let getDataStringOrderStatus = getData.orderStatus != null ? getData.orderStatus : '0'
-      if (Number(getDataStringOrderStatus) != 0) {
-        getDataStringOrderStatus = Number(getData.orderStatus) + 1
-      }
-
       const getDataStringType = getData.type != null ? getData.type : '0'
       const getDataStringOrderBy = getData.orderBy != null ? getData.orderBy : '時間越早優先'
 
       const getDataStringSearch = getData.search != null ? `&search=${getData.search}` : ''
 
       const getDataString: any = {
-        page: `?page=${getDataStringPage}`,
-        orderStatus: `&orderStatus=${getDataStringOrderStatus}`,
         type: `&type=${getDataStringType}`,
         orderBy: `&orderBy=${getDataStringOrderBy}`,
         search: getDataStringSearch
       }
 
-      const response = await getEmployeeFohGetOrder(getDataString)
+      const response = await getEmployeeBohGetOrder(getDataString)
 
-      fohGetOrderData.value = response.data.data
+      bohGetOrderData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // 完成備餐 (修改OrderStatusEnum)
+  const fetchEmployeeBohOrderCompleted = async (orderId: number) => {
+    try {
+      const response = await getEmployeeBohOrderCompleted(orderId)
+      console.log(response)
     } catch (error) {
       console.log(error)
     }
@@ -352,6 +343,10 @@ export const useEmployeeStore = defineStore('employee', () => {
     fetchEmployeeFohGetOrder,
     getFohFetOrderDetailData,
     fetchEmployeeFohGetOrderDetail,
-    fetchEmployeeFohCheckout
+    fetchEmployeeFohCheckout,
+
+    getBohGetOrderData,
+    fetchEmployeeBohGetOrder,
+    fetchEmployeeBohOrderCompleted
   }
 })

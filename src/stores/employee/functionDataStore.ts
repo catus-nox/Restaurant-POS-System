@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
 import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 export const useFunctionDataStore = defineStore('employeeFunction', () => {
   //------
   //state
-
+  const route = useRoute()
   //Status選單
   const orderStates: ('全部訂單' | '待結帳' | '準備中' | '待取餐' | '已完成')[] = [
     '全部訂單',
@@ -93,16 +94,32 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   function getNowOrderTypeClickFunction(index: number) {
     nowOrderTypeClick.value = index
     orderShow()
+    if ((route.name as string).includes('employeeBoh')) {
+      bohOrderShow()
+    }
+    if ((route.name as string).includes('employeeFoh')) {
+      orderShow()
+    }
   }
   //orderBy 選項選擇
   function getNowOrderBySelectFunction(value: string) {
     nowOrderBySelect.value = value
-    orderShow()
+    if ((route.name as string).includes('employeeBoh')) {
+      bohOrderShow()
+    }
+    if ((route.name as string).includes('employeeFoh')) {
+      orderShow()
+    }
   }
   //Search 搜尋
   function getNowSearchFunction(value: any) {
     nowSearch.value = value
-    orderShow()
+    if ((route.name as string).includes('employeeBoh')) {
+      bohOrderShow()
+    }
+    if ((route.name as string).includes('employeeFoh')) {
+      orderShow()
+    }
   }
   //取得單一訂單資訊 id
   function getNowOrderDetailIdFunction(value: number) {
@@ -163,11 +180,24 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
     await useEmployeeStore().fetchEmployeeFohGetOrder(orderGetData)
   }
 
+  //boh選單顯示
+  async function bohOrderShow() {
+    //外場訂單總覽
+    const orderGetData: any = {
+      type: getNowOrderTypeClick.value,
+      orderBy: getNowOrderBySelect.value,
+      search: getNowSearch.value
+    }
+    //外場訂單總覽
+    await useEmployeeStore().fetchEmployeeBohGetOrder(orderGetData)
+  }
+
   return {
     orderType,
     orderStates,
     orderBy,
     orderShow,
+    bohOrderShow,
     getNowOrderStatusClick,
     getNowOrderStatusClickFunction,
     getNowOrderTypeClick,
