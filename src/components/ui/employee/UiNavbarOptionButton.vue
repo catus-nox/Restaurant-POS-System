@@ -169,7 +169,7 @@ const nowOrderTypeClick = computed(() => functionDataStore.getNowOrderTypeClick)
             />
           </svg>
         </template>
-        <template v-if="btn == orderType[3]">
+        <template v-if="orderType[3] && btn == orderType[3]">
           <svg
             width="45"
             height="45"
@@ -212,7 +212,7 @@ const nowOrderTypeClick = computed(() => functionDataStore.getNowOrderTypeClick)
             />
           </svg>
         </template>
-        <span class="option-text" :class="btn == '預約自取' ? 'tracking-tighter' : ''">{{
+        <span class="option-text" :class="btn == orderType[3] ? 'tracking-tighter' : ''">{{
           btn
         }}</span>
       </li>
