@@ -26,20 +26,14 @@ defineEmits(['changeCategoryId'])
   <div class="">
     <ul class="scrollbar flex gap-4 overflow-x-auto">
       <template v-for="(category, index) in props.menuCategory" :key="category.categoryId">
-        <template v-if="category.categoryId == props.showId">
-          <li :id="category.categoryId" class="menu-navbar-btn press-menu-navbar-btn">
-            {{ category.category }}
-          </li>
-        </template>
-        <template v-else>
-          <li
-            :id="category.categoryId"
-            @click="$emit('changeCategoryId', category.categoryId, index)"
-            class="menu-navbar-btn"
-          >
-            {{ category.category }}
-          </li>
-        </template>
+        <li
+          :id="category.categoryId"
+          @click="$emit('changeCategoryId', category.categoryId, index)"
+          class="menu-navbar-btn"
+          :class="category.categoryId == props.showId ? 'press-menu-navbar-btn' : ''"
+        >
+          {{ category.category }}
+        </li>
       </template>
     </ul>
   </div>
@@ -47,10 +41,10 @@ defineEmits(['changeCategoryId'])
 
 <style scoped>
 .menu-navbar-btn {
-  @apply block min-w-[4.5rem] cursor-pointer pb-2 text-center text-base text-netural-600 hover:border-b-0 hover:border-primary-700 hover:text-primary-700;
+  @apply block min-w-[4.5rem] cursor-pointer pb-2 text-center text-base text-netural-600 hover:text-primary-700 hover:shadow-[inset_0_-2px_0_-1px] hover:shadow-primary-700;
 }
 .press-menu-navbar-btn {
-  @apply border-b border-primary-700 text-primary-700;
+  @apply text-primary-700 shadow-[inset_0_-2px_0_-1px] shadow-primary-700;
 }
 .scrollbar::-webkit-scrollbar {
   @apply hidden;
