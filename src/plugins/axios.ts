@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '@/router'
 // const baseURL = import.meta.env.VITE_APP_API_URL
 
 const instance = axios.create({
@@ -29,6 +30,11 @@ instance.interceptors.response.use(
 
     if (response.data.statusCode === 400) {
       console.log(response.data.message)
+    } else if (response.data.statusCode === 401) {
+      if (localStorage.boh_identity || localStorage.foh_identity) {
+        router.push({ name: 'employeeLogin' })
+      }
+      console.log(response.data.message)
     } else {
       console.log(response.data.message)
       console.log(response.data.data)
@@ -43,6 +49,9 @@ instance.interceptors.response.use(
       switch (error.response.status) {
         case 400:
           console.log('something wrong 其他異常')
+          break
+        case 401:
+          console.log('請重新登入')
           break
         case 404:
           console.log('你要找的頁面不存在')
