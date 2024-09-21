@@ -5,7 +5,7 @@ import { Drawer } from 'flowbite'
 import { RouterView, useRoute } from 'vue-router'
 import UiMenubar from '@/components/ui/customer/UiMenubar.vue'
 import UiMenuNavbar from '@/components/ui/customer/UiMenuNavbar.vue'
-import UiFooter from '@/components/ui/UiFooter.vue'
+import UiFooter from '@/components/ui/customer/UiFooter.vue'
 import EmployeeUiNavbar from '@/components/ui/employee/UiNavbar.vue'
 import EmployeeUiOrderDetailsNavbar from '@/components/ui/employee/UiOrderDetailsNavbar.vue'
 
