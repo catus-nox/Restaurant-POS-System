@@ -2,9 +2,9 @@
 import { ref, onMounted, computed } from 'vue'
 import { useCustomerStore } from '@/stores/customer/productsStore'
 import UiInput from '@/components/ui/UiInput.vue'
-import UiShopInformation from '@/components/ui/UiShopInformation.vue'
-import UiCustomerMenuNavbar from '@/components/ui/UiCustomerMenuNavbar.vue'
-import UiProductItem from '@/components/ui/UiProductItem.vue'
+import UiShopInformation from '@/components/ui/customer/UiShopInformation.vue'
+import UiCustomerMenuNavbar from '@/components/ui/customer/UiCustomerMenuNavbar.vue'
+import UiProductItem from '@/components/ui/customer/UiProductItem.vue'
 const customerStore = useCustomerStore()
 const menuCategory: any = computed(() => customerStore.getMenuCategoryData)
 const menuItemData: any = computed(() => customerStore.getMenuItemData)

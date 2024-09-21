@@ -2,7 +2,7 @@
 import { useCustomerStore } from '@/stores/customer/productsStore'
 import { computed, onMounted, ref, watch } from 'vue'
 import { validatePhoneNumber, phoneValidateData } from '@/models/validate'
-import UiCartProcess from '@/components/ui/UiCartProcess.vue'
+import UiCartProcess from '@/components/ui/customer/UiCartProcess.vue'
 import UiCounter from '@/components/ui/UiCounter.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'

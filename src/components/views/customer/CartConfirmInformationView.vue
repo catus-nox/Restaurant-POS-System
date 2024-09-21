@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCustomerStore } from '@/stores/customer/productsStore'
 import { computed, onMounted, watch } from 'vue'
-import UiCartProcess from '@/components/ui/UiCartProcess.vue'
+import UiCartProcess from '@/components/ui/customer/UiCartProcess.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import { useRoute } from 'vue-router'
 //-----

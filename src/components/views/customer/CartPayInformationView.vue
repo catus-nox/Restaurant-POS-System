@@ -7,7 +7,7 @@ import {
   taxIdValidateData
 } from '@/models/validate'
 import router from '@/router'
-import UiCartProcess from '@/components/ui/UiCartProcess.vue'
+import UiCartProcess from '@/components/ui/customer/UiCartProcess.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
 import UiInput from '@/components/ui/UiInput.vue'
