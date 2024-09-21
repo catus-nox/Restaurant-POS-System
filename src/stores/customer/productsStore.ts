@@ -15,7 +15,7 @@ import {
   postConfirmOrderLinePay,
   postConfirmLinePayRequest,
   getOrder
-} from '@/models/api'
+} from '@/models/customer/api'
 
 export const useCustomerStore = defineStore('customer', () => {
   //------
