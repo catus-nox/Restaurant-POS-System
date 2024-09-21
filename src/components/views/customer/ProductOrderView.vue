@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useCustomerStore } from '@/stores/productsStore'
+import { useCustomerStore } from '@/stores/customer/productsStore'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiCounter from '@/components/ui/UiCounter.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'

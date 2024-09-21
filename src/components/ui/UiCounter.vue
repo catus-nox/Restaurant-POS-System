@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineEmits, defineModel, computed, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useCustomerStore } from '@/stores/productsStore'
+import { useCustomerStore } from '@/stores/customer/productsStore'
 import UiButton from '@/components/ui/UiButton.vue'
 
 //-----

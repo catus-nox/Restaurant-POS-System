@@ -12,7 +12,7 @@ import UiButton from '@/components/ui/UiButton.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
-import { useCustomerStore } from '@/stores/productsStore'
+import { useCustomerStore } from '@/stores/customer/productsStore'
 
 //-----
 const baseUrl = import.meta.env.VITE_APP_BASE_URL

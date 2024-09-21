@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { useCustomerStore } from '@/stores/productsStore'
+import { useCustomerStore } from '@/stores/customer/productsStore'
 import { Drawer } from 'flowbite'
 import { RouterView, useRoute } from 'vue-router'
 import UiMenubar from '@/components/ui/UiMenubar.vue'

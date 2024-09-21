@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCustomerStore } from '@/stores/productsStore'
+import { useCustomerStore } from '@/stores/customer/productsStore'
 import { computed, onMounted, watch } from 'vue'
 import UiCartProcess from '@/components/ui/UiCartProcess.vue'
 import UiButton from '@/components/ui/UiButton.vue'
