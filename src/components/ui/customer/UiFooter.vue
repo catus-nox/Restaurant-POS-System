@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { watch } from 'vue'
+import characterWhite from '@/assets/img/logo/character-white.png'
 
 //判斷進入頁面是否顯示menu
 const route = useRoute()
-watch(
-  () => route.path,
-  (newPath, oldPath) => {
-    // console.log(`路由從 ${oldPath} 變化到 ${newPath} `)
-  }
-)
 </script>
 
 <template>
@@ -17,7 +11,7 @@ watch(
     <footer class="flex flex-col gap-4 bg-netural-700 px-4 py-8">
       <div>
         <RouterLink to="/menu">
-          <img src="../../assets/img/logo/character-white.png" alt="" srcset="" class="h-16" />
+          <img :src="characterWhite" alt="" srcset="" class="h-16" />
         </RouterLink>
       </div>
       <span class="text-xs text-netural-300">© 2024 SmartSync. All rights reserved.</span>
