@@ -128,8 +128,20 @@ export const useCustomerStore = defineStore('customer', () => {
   //取得OrderId跟Guid(唯一識別碼)(使用者第一次加入購物車時索取訂單資訊)
   const fetchCustomerGetOrderId = async () => {
     try {
-      const response = await getOrderId()
-      orderIdData.value = response.data.data
+      if (
+        localStorage.customer_guid == 'undefined' ||
+        localStorage.customer_guid == 'null' ||
+        !localStorage.customer_guid ||
+        localStorage.customer_orderId == 'undefined' ||
+        localStorage.customer_orderId == 'null' ||
+        !localStorage.customer_orderId
+      ) {
+        const response = await getOrderId()
+        orderIdData.value = response.data.data
+        // 放入localStorage
+        localStorage.customer_guid = response.data.data.guid
+        localStorage.customer_orderId = response.data.data.orderId
+      }
     } catch (error) {
       console.log(error)
     }

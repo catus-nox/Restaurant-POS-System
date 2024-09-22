@@ -164,21 +164,8 @@ const count = ref(1)
 //-----
 //加入購物車按鈕
 async function getOrderId() {
-  //驗證碼判斷新增
-  if (
-    localStorage.customer_guid == 'undefined' ||
-    localStorage.customer_guid == 'null' ||
-    !localStorage.customer_guid ||
-    localStorage.customer_orderId == 'undefined' ||
-    localStorage.customer_orderId == 'null' ||
-    !localStorage.customer_orderId
-  ) {
-    //取得OrderId跟Guid(唯一識別碼)(使用者第一次加入購物車時索取訂單資訊)
-    await customerStore.fetchCustomerGetOrderId()
-    // 放入localStorage
-    localStorage.customer_guid = orderIdData.value.guid
-    localStorage.customer_orderId = orderIdData.value.orderId
-  }
+  //取得OrderId跟Guid(唯一識別碼)(使用者第一次加入購物車時索取訂單資訊)
+  await customerStore.fetchCustomerGetOrderId()
 
   const data = {
     guid: localStorage.customer_guid, //識別碼guid(抓cookie)
