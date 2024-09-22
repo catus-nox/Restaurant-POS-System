@@ -10,37 +10,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        ad1: 'url("@/assets/img/ad1.jpg")',
-        img1002928: 'url("@/assets/img/1002928.jpg")',
-        img1002929: 'url("@/assets/img/1002929.jpg")',
-        img1002930: 'url("@/assets/img/1002930.jpg")',
-        img1002931: 'url("@/assets/img/1002931.jpg")',
-        img1002932: 'url("@/assets/img/1002932.jpg")',
-        img1002933: 'url("@/assets/img/1002933.jpg")',
-        img1002934: 'url("@/assets/img/1002934.jpg")',
-        img1002935: 'url("@/assets/img/1002935.jpg")',
-        img1002936: 'url("@/assets/img/1002936.jpg")',
-        img1002937: 'url("@/assets/img/1002937.jpg")',
-        img1002938: 'url("@/assets/img/1002938.jpg")',
-        img1002939: 'url("@/assets/img/1002939.jpg")',
-        img1002940: 'url("@/assets/img/1002940.jpg")',
-        img1002941: 'url("@/assets/img/1002941.jpg")',
-        img1002942: 'url("@/assets/img/1002942.jpg")',
-        img1002943: 'url("@/assets/img/1002943.jpg")',
-        img1002944: 'url("@/assets/img/1002944.jpg")',
-        img1002945: 'url("@/assets/img/1002945.jpg")',
-        img1002946: 'url("@/assets/img/1002946.jpg")',
-        img1002947: 'url("@/assets/img/1002947.jpg")',
-        img1002948: 'url("@/assets/img/1002948.jpg")',
-        img1002949: 'url("@/assets/img/1002949.jpg")',
-        img1002950: 'url("@/assets/img/1002950.jpg")',
-        img1002951: 'url("@/assets/img/1002951.jpg")',
-        img1002952: 'url("@/assets/img/1002952.jpg")',
-        img1002953: 'url("@/assets/img/1002953.jpg")',
-        img1002954: 'url("@/assets/img/1002954.jpg")',
-        img1002955: 'url("@/assets/img/1002955.jpg")'
-      },
       borderRadius: {
         sm: '2px',
         base: '4px',
@@ -57,24 +26,6 @@ module.exports = {
         2: '2px',
         4: '4px',
         8: '8px'
-      },
-      boxShadow: {
-        'inner-custom1': 'inset 0 0 0 1px rgba(215, 231, 203, 1)',
-        'inner-custom2': 'inset 0 0 0 3px rgba(221, 193, 148, 1)',
-        'inner-custom3': 'inset 0 0 0 1px rgba(200, 103, 6, 1)',
-        'inner-custom4': 'inset 0 0 0 3px rgba(127, 66, 15, 1)',
-        'inner-custom5': 'inset 0 0 0 1px rgba(251, 248, 241, 1)',
-        'inner-custom6': 'inset 0 0 0 1px rgba(235, 219, 189, 1)',
-        'inner-custom7': 'inset 0 0 0 1px rgba(229, 231, 235, 1)',
-        'inner-custom8': 'inset 0 0 0 3px rgba(158, 80, 14, 1)',
-        'inner-custom9': 'inset 0 0 0 2px rgba(200, 103, 6, 1)',
-        'inner-custom10': 'inset 0 0 0 1px rgba(220, 220, 220, 1)',
-        sm: '0 1px 2px 0px rgba(0, 0, 0, 0.08)',
-        DEFAULT: '0 1px 3px 0px rgba(0, 0, 0, 0.1),0 1px 2px -1px rgba(0, 0, 0, 0.1)',
-        md: '0 4px 6px -1px rgba(0, 0, 0, 0.1),0 2px 4px -2px rgba(0, 0, 0, 0.05)',
-        lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1),0 4px 6px 0px rgba(0, 0, 0, 0.05)',
-        xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1),0 10px 10px 0px rgba(0, 0, 0, 0.04)',
-        '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
       },
       fontSize: {
         xs: ['12px', '1.5'],
@@ -159,6 +110,7 @@ module.exports = {
         }
       },
       screens: {
+        sm: '450px',
         tablet: '640px',
         laptop: '1024px',
         desktop: '1563px'

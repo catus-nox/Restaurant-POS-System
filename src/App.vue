@@ -152,7 +152,7 @@ onMounted(() => {
 
 <style scoped>
 [aria-hidden='true'] {
-  left: calc((100% - 640px - 305px) / 2);
+  left: calc((100% - 450px - 305px) / 2);
   @apply -translate-x-1/2 opacity-0 transition-all;
 }
 </style>
