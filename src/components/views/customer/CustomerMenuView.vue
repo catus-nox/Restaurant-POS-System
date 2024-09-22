@@ -47,6 +47,8 @@ function changeCategoryId(id: any, index: any) {
 // 儲存上一次的滾動位置
 let lastScrollTop = 0
 function fixCustomerMenuNavbar() {
+  if (!fixSubHeaderHeight.value) return
+
   // 獲取當前的滾動位置
   const scrollTop = window.scrollY || document.documentElement.scrollTop
   // 判斷滾動方向
