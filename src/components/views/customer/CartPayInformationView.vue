@@ -30,7 +30,7 @@ const customerStore = useCustomerStore()
 //取得購物車現有訂單
 const cartData: any = computed(() => customerStore.getCartData)
 //取得現在購物車的商品筆數跟總價
-const orderInfoData: any = computed(() => customerStore.getOrderInfoData)
+const orderInfo: any = computed(() => customerStore.getOrderInfoData)
 //送出訂單(選擇結帳方式-Line Pay)-網址
 const confirmOrderLinePayPaymentUrlData: any = computed(
   () => customerStore.getConfirmOrderLinePayPaymentUrlData
@@ -278,7 +278,7 @@ onMounted(async () => {
       <div class="flex items-center justify-between">
         <div class="text-xl font-semibold text-black">訂單內容</div>
       </div>
-      <template v-if="orderInfoData">
+      <template v-if="orderInfo">
         <template v-for="(cart, index) in cartData" :key="index">
           <div
             class="flex items-center justify-between rounded-lg border border-neutral-950 bg-white p-3"
@@ -303,7 +303,7 @@ onMounted(async () => {
 
       <div class="inline-flex items-center justify-between p-3 text-base font-bold text-black">
         <div>應付金額</div>
-        <div v-if="orderInfoData">$ {{ orderInfoData.totalAmount }}</div>
+        <div v-if="orderInfo">$ {{ orderInfo.totalAmount }}</div>
       </div>
     </div>
   </div>
@@ -333,17 +333,17 @@ onMounted(async () => {
       :icon-size="'w-auto'"
       @define-function="confirmOrder"
     >
-      <template #left-icon v-if="orderInfoData">
+      <template #left-icon v-if="orderInfo">
         <span
           class="inline-flex h-4 min-w-4 flex-col items-center justify-center rounded border border-white text-sm"
-          ><span class="p-0.5">{{ orderInfoData.count }}</span></span
+          ><span class="p-0.5">{{ orderInfo.count }}</span></span
         >
       </template>
 
       <span>前往結帳</span>
 
-      <template #right-icon v-if="orderInfoData">
-        <span>${{ orderInfoData.totalAmount }}</span>
+      <template #right-icon v-if="orderInfo">
+        <span>${{ orderInfo.totalAmount }}</span>
       </template>
     </UiButton>
   </div>
