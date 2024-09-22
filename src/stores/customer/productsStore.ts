@@ -119,7 +119,7 @@ export const useCustomerStore = defineStore('customer', () => {
     try {
       const response = await getCustomerGetProduct(productId)
       console.log(`目前customization前端設定`)
-      productData.value = response.data.data[0]
+      productData.value = response.data.data
     } catch (error) {
       console.log(error)
     }

@@ -36,13 +36,18 @@ interface PickedOption {
 }
 //-----api
 const route = useRoute()
-const productId: number = Number(route.params.id)
 const customerStore = useCustomerStore()
+//-----
+//商品id
+const productId: number = Number(route.params.id)
+//菜單品項
 const menuItemData: any = computed(() => customerStore.getMenuItemData)
+//取得OrderId跟Guid(唯一識別碼)(使用者第一次加入購物車時索取訂單資訊)
 const orderIdData: any = computed(() => customerStore.getOrderIdData)
-//抓取產品資料
+//取得單一餐點資訊
 const product = computed<CategoryProduct>(() => customerStore.getProductData)
-//-----抓取加購項目
+//-----
+//抓取加購項目
 //加購複選儲存
 const productAddOnListSelected = ref<number[]>([])
 //加購項目從商品篩出 category = 6
@@ -175,8 +180,12 @@ async function getOrderId() {
 }
 //-----
 onMounted(async () => {
+  //菜單品項
   await customerStore.fetchCustomerGetMenuItem()
+  //取得單一餐點資訊
   await customerStore.fetchCustomerGetProduct(productId)
+  console.log(product.value)
+
   productPickedOptionsAdd6()
   productPickedOptionFunction()
 })
