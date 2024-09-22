@@ -50,6 +50,7 @@ const decrement = () => {
 }
 const updateQuantity = (target: HTMLInputElement) => {
   model.value = target.value
+  incrementToCArtDataFunction(Number(target.value))
 }
 
 async function incrementToCArtDataFunction(serving: number) {
@@ -100,9 +101,9 @@ onMounted(() => {})
       </template>
     </UiButton>
     <input
-      class="text-tickets-neutral-950 block h-4 w-12 min-w-8 border-none bg-opacity-0 text-center text shadow-none outline-none checked:bg-black focus:ring-0 focus-visible:ring-0"
+      class="text-tickets-neutral-950 block h-4 w-12 min-w-8 border-none bg-transparent bg-opacity-0 text-center text shadow-none outline-none checked:bg-black focus:ring-0 focus-visible:ring-0"
       :value="quantity"
-      @input="updateQuantity($event.target as HTMLInputElement)"
+      @blur="updateQuantity($event.target as HTMLInputElement)"
     />
     <UiButton
       @define-function="increment"
