@@ -177,11 +177,9 @@ async function getOrderId() {
   }
   //加入購物車
   await customerStore.fetchCustomerAddItem(data)
-  //購物車數量變更
-  await customerStore.fetchCustomerGetOrderInfo(
-    localStorage.customer_orderId,
-    localStorage.customer_guid
-  )
+  //取得現在購物車的商品筆數跟總價
+  await customerStore.fetchCustomerGetOrderInfo()
+  //
   computed(() => customerStore.getOrderInfoData)
   router.push({ name: 'menu' })
 }

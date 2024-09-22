@@ -64,10 +64,8 @@ async function incrementToCArtDataFunction(serving: number) {
 //-----
 //重新取得購物車商品數量
 async function returnCustomerGetCart() {
-  await customerStore.fetchCustomerGetOrderInfo(
-    localStorage.customer_orderId,
-    localStorage.customer_guid
-  )
+  //取得現在購物車的商品筆數跟總價
+  await customerStore.fetchCustomerGetOrderInfo()
 }
 //-----
 onMounted(() => {})

@@ -18,13 +18,8 @@ const displayOrderQuantity = computed(() => {
 })
 
 onMounted(async () => {
-  if (localStorage.customer_guid && localStorage.customer_orderId) {
-    // 取得購物車商品數量
-    await customerStore.fetchCustomerGetOrderInfo(
-      localStorage.customer_orderId,
-      localStorage.customer_guid
-    )
-  }
+  //取得現在購物車的商品筆數跟總價
+  await customerStore.fetchCustomerGetOrderInfo()
 })
 </script>
 

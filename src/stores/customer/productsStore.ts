@@ -173,9 +173,22 @@ export const useCustomerStore = defineStore('customer', () => {
   }
 
   //取得現在購物車的商品筆數跟總價
-  const fetchCustomerGetOrderInfo = async (id: number, guid: string) => {
+  const fetchCustomerGetOrderInfo = async () => {
     try {
-      const response = await getOrderInfo(id, guid)
+      if (
+        localStorage.customer_guid == 'undefined' ||
+        localStorage.customer_guid == 'null' ||
+        !localStorage.customer_guid ||
+        localStorage.customer_orderId == 'undefined' ||
+        localStorage.customer_orderId == 'null' ||
+        !localStorage.customer_orderId
+      ) {
+        //沒有的話數量歸零
+        orderInfoData.value = null
+        return
+      }
+
+      const response = await getOrderInfo(localStorage.customer_orderId, localStorage.customer_guid)
       orderInfoData.value = response.data.data
     } catch (error) {
       console.log(error)
