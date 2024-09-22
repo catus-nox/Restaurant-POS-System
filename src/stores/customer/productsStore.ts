@@ -147,14 +147,14 @@ export const useCustomerStore = defineStore('customer', () => {
     serving: number
   }) => {
     try {
-      await addItem({
+      const response = await addItem({
         guid: data.guid,
         orderId: data.orderId,
         productId: data.productId,
         customization: data.customization,
         serving: data.serving
       })
-      // itemData.value
+      alert(response.data.message)
     } catch (error) {
       console.log(error)
     }
