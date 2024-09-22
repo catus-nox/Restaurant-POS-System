@@ -343,7 +343,7 @@ onMounted(async () => {
             >
               <div class="flex items-center gap-4">
                 <img
-                  class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
+                  class="relative h-[75px] w-[75px] rounded-lg object-cover"
                   :src="cartItem.imagePath"
                 />
                 <div class="flex w-[118px] flex-col gap-1">
