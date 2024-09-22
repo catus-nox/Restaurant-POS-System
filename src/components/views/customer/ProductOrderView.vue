@@ -308,7 +308,6 @@ onMounted(async () => {
           :btn-width="'w-full '"
           :is-only-icon="false"
           :font-size="'text justify-between flex w-full items-center'"
-          :font-padding="'px-0'"
           :icon-size="'w-auto'"
           @define-function="getOrderId"
         >

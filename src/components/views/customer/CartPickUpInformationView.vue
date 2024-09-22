@@ -210,7 +210,6 @@ onMounted(async () => {
                 :btn-style="'style4'"
                 :btn-padding="'px-6 py-2'"
                 :icon-size="''"
-                :icon-style="''"
                 :is-only-icon="false"
                 :font-size="'text-xs font-medium'"
                 :btn-press="'press4'"
@@ -225,7 +224,6 @@ onMounted(async () => {
                 :btn-style="'style4'"
                 :btn-padding="'px-6 py-2'"
                 :icon-size="''"
-                :icon-style="''"
                 :is-only-icon="false"
                 :font-size="'text-xs font-medium'"
               >
@@ -389,10 +387,8 @@ onMounted(async () => {
       :btn-width="'w-fit'"
       :btn-padding="'px-6 py-2'"
       :icon-size="''"
-      :icon-style="''"
       :is-only-icon="false"
-      :font-size="'text whitespace-nowrap !text-black font-medium  '"
-      :font-padding="'px-0'"
+      :font-size="'text whitespace-nowrap !text-black font-medium'"
       :btn-press="'press4'"
       :router-name="'menu'"
     >
@@ -404,7 +400,6 @@ onMounted(async () => {
       :btn-width="'w-full '"
       :is-only-icon="false"
       :font-size="'text justify-between flex w-full items-center'"
-      :font-padding="'px-0'"
       :icon-size="'w-auto'"
       @define-function="goCheckout"
     >

@@ -17,10 +17,8 @@ import UiButton from '@/components/ui/UiButton.vue'
             :btn-width="'w-fit'"
             :btn-padding="'px-6 py-2'"
             :icon-size="''"
-            :icon-style="''"
             :is-only-icon="false"
             :font-size="'text-xs font-medium'"
-            :font-padding="'px-1'"
           >
             <template #left-icon>
               <svg
@@ -73,10 +71,8 @@ import UiButton from '@/components/ui/UiButton.vue'
               :btn-width="'w-fit'"
               :btn-padding="'px-6 py-2'"
               :icon-size="''"
-              :icon-style="''"
               :is-only-icon="false"
               :font-size="'text-xs'"
-              :font-padding="'px-0'"
             >
               詳細資訊
             </UiButton>
@@ -85,10 +81,8 @@ import UiButton from '@/components/ui/UiButton.vue'
               :btn-width="'w-fit'"
               :btn-padding="'px-6 py-2'"
               :icon-size="''"
-              :icon-style="''"
               :is-only-icon="false"
               :font-size="'text-xs'"
-              :font-padding="'px-0'"
             >
               再訂一次
             </UiButton>
@@ -142,10 +136,8 @@ import UiButton from '@/components/ui/UiButton.vue'
                 :btn-width="'w-fit'"
                 :btn-padding="'px-6 py-2'"
                 :icon-size="''"
-                :icon-style="''"
                 :is-only-icon="false"
                 :font-size="'text-xs'"
-                :font-padding="'px-0'"
               >
                 詳細資訊
               </UiButton>
@@ -154,10 +146,8 @@ import UiButton from '@/components/ui/UiButton.vue'
                 :btn-width="'w-fit'"
                 :btn-padding="'px-6 py-2'"
                 :icon-size="''"
-                :icon-style="''"
                 :is-only-icon="false"
                 :font-size="'text-xs'"
-                :font-padding="'px-0'"
               >
                 再訂一次
               </UiButton>
