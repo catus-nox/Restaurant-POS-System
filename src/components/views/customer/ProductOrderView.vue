@@ -43,8 +43,6 @@ const customerStore = useCustomerStore()
 const productId: number = Number(route.params.id)
 //菜單品項
 const menuItemData: any = computed(() => customerStore.getMenuItemData)
-//取得OrderId跟Guid(唯一識別碼)(使用者第一次加入購物車時索取訂單資訊)
-const orderIdData: any = computed(() => customerStore.getOrderIdData)
 //取得單一餐點資訊
 const product = computed<CategoryProduct>(() => customerStore.getProductData)
 //-----
@@ -201,12 +199,14 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col gap-6">
     <div>
-      <div class="relative h-[200px] overflow-hidden">
-        <img
-          :src="product.productImagePath"
-          :alt="product.name"
-          class="h-full w-full object-cover"
-        />
+      <div class="relative w-full overflow-hidden">
+        <div class="w-full pt-[calc(100%*1770/2127*0.59)]">
+          <img
+            :src="product.productImagePath"
+            :alt="product.name"
+            class="absolute left-0 top-0 h-full w-full object-cover"
+          />
+        </div>
       </div>
     </div>
     <div class="mx-3 flex flex-col gap-2">

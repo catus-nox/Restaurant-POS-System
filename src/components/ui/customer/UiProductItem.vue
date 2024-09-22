@@ -29,9 +29,9 @@ function toRouterName(id: any) {
   <div
     @click="toRouterName(props.categoryItem.productId)"
     :id="String(props.categoryItem.productId)"
-    class="flex flex-row items-center gap-4 rounded-xl border border-neutral-900 bg-white p-4 py-3"
+    class="flex cursor-pointer flex-row items-center gap-4 rounded-xl bg-white p-4 py-3 shadow-[inset_0_0_0_1px] shadow-neutral-900 hover:scale-[0.98]"
   >
-    <div class="b flex w-2/4 flex-col gap-3">
+    <div class="flex w-full flex-col gap-3">
       <h3 class="text-h6 font-bold text-black">{{ props.categoryItem.name }}</h3>
       <UiBadge v-if="props.categoryItem.isPoint" :style="'textBadge'" :is-icon="true"
         >特價商品不集點</UiBadge
@@ -60,35 +60,35 @@ function toRouterName(id: any) {
         <span class="text font-bold"> {{ props.categoryItem.price }}</span>
       </div>
     </div>
-    <div class="w-2/4">
-      <div class="relative h-32 overflow-hidden rounded-xl">
+    <div class="relative w-[50%] min-w-[170px] max-w-[300px] overflow-hidden rounded-xl">
+      <div class="w-full pt-[calc(100%*1770/2127)]">
         <img
           :src="props.categoryItem.imagePath"
           :alt="props.categoryItem.name"
-          class="h-full w-full object-cover"
+          class="absolute left-0 top-0 h-full w-full object-cover"
         />
-        <span
-          class="absolute bottom-2 right-2 flex items-center justify-center rounded-lg bg-black p-1"
-        >
-          <svg
-            class="h-4 w-4 text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 12h14m-7 7V5"
-            />
-          </svg>
-        </span>
       </div>
+      <span
+        class="absolute bottom-2 right-2 flex items-center justify-center rounded-lg bg-black p-1"
+      >
+        <svg
+          class="h-4 w-4 text-white"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 12h14m-7 7V5"
+          />
+        </svg>
+      </span>
     </div>
   </div>
 </template>
