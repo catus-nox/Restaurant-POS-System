@@ -40,6 +40,20 @@ const modules = [Pagination, Autoplay]
         <img :src="ImgAd3" alt="ad3" />
       </swiper-slide>
     </swiper>
+    <div class="announce">
+      <div class="announce_in">
+        <div class="marquee_text first">
+          <div>摩卡可可新上市 緊來ＢＵＹ咖 ฅ^•ﻌ•^ฅ</div>
+          <div>摩卡可可新上市 緊來ＢＵＹ咖 ฅ^•ﻌ•^ฅ</div>
+          <div>摩卡可可新上市 緊來ＢＵＹ咖 ฅ^•ﻌ•^ฅ</div>
+        </div>
+        <div class="marquee_text second">
+          <div>摩卡可可新上市 緊來ＢＵＹ咖 ฅ^•ﻌ•^ฅ</div>
+          <div>摩卡可可新上市 緊來ＢＵＹ咖 ฅ^•ﻌ•^ฅ</div>
+          <div>摩卡可可新上市 緊來ＢＵＹ咖 ฅ^•ﻌ•^ฅ</div>
+        </div>
+      </div>
+    </div>
     <div class="absolute bottom-[10%] z-30">
       <UiButton :btn-style="'style1'" :btn-width="'min-w-60'" :router-name="'menu'">
         查看菜單
@@ -47,4 +61,78 @@ const modules = [Pagination, Autoplay]
     </div>
   </div>
 </template>
-<style scoped></style>
+<style scoped>
+.announce {
+  position: absolute;
+  top: 0%;
+  left: 0;
+  z-index: 30;
+  overflow: hidden;
+  @apply bg-white py-3 text-sm;
+}
+
+.announce .announce_in {
+  width: calc(18rem * 3);
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.announce .announce_in .marquee_text {
+  display: flex;
+  justify-content: space-between;
+  justify-content: space-around;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  color: rgba(0, 0, 0, 0);
+}
+
+.announce .announce_in .marquee_text > div {
+  opacity: 0.9;
+  @apply text-black;
+}
+
+.announce .announce_in .marquee_text.first {
+  animation: scroll 40s linear infinite;
+  transform: translateX(100%);
+}
+
+.announce .announce_in .marquee_text.first.a1 {
+  animation-delay: -5s;
+}
+
+.announce .announce_in .marquee_text.second {
+  animation: scroll 40s linear infinite;
+  animation-delay: -20s;
+  transform: translateX(0%);
+}
+
+.announce .announce_in .marquee_text.second.a1 {
+  animation-delay: -25s;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes scroll2 {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(-200%);
+  }
+}
+</style>
