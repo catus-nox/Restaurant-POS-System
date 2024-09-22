@@ -29,6 +29,9 @@ function changeCategoryId(id: any, index: any) {
         (headerHeight + fixSubHeaderHeight.value.offsetHeight)
       )
     } else {
+      if (index === 0) {
+        return fixSubHeaderHeight.value.offsetHeight + headerHeight
+      }
       return (
         (scrollElement.value[index].offsetTop || 0) -
         (headerHeight + fixSubHeaderHeight.value.offsetHeight * 2)
@@ -50,17 +53,18 @@ function fixCustomerMenuNavbar() {
   if (scrollTop > lastScrollTop) {
     // 向下滾動
     if (
-      scrollTop >
+      lastScrollTop >
       scrollElement.value[0].offsetTop - fixSubHeaderHeight.value.offsetHeight * 2 - headerHeight
     ) {
       isFixed.value = true
     }
   } else {
     // 向上滾動
-    if (scrollTop <= fixSubHeaderHeight.value.offsetHeight * 2 + headerHeight) {
+    if (lastScrollTop < fixSubHeaderHeight.value.offsetHeight * 2 + headerHeight) {
       isFixed.value = false
     }
   }
+
   // 更新上一次滾動位置
   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop // 避免負值
 }
