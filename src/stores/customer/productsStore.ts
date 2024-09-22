@@ -198,6 +198,19 @@ export const useCustomerStore = defineStore('customer', () => {
   //取得購物車現有訂單
   const fetchCustomerGetCart = async () => {
     try {
+      if (
+        localStorage.customer_guid == 'undefined' ||
+        localStorage.customer_guid == 'null' ||
+        !localStorage.customer_guid ||
+        localStorage.customer_orderId == 'undefined' ||
+        localStorage.customer_orderId == 'null' ||
+        !localStorage.customer_orderId
+      ) {
+        //沒有的話數量歸零
+        cartData.value = null
+        return
+      }
+
       const response = await getCart(localStorage.customer_orderId, localStorage.customer_guid)
       cartData.value = response.data.data
     } catch (error) {

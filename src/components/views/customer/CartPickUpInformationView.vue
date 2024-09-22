@@ -179,9 +179,9 @@ async function goCheckout() {
 }
 //-----
 onMounted(async () => {
+  //取得購物車現有訂單
+  await customerStore.fetchCustomerGetCart()
   if (localStorage.customer_guid && localStorage.customer_orderId) {
-    //取得購物車現有訂單
-    await customerStore.fetchCustomerGetCart()
     //購物車商品數量
     serving.value = cart.value.map((cartItem: { serving: number }) => cartItem.serving)
   }
