@@ -89,8 +89,8 @@ const props = defineProps({
   },
   btnPress: {
     type: String,
-    default: '',
-    validator: (value: string) => ['press2', 'press4'].includes(value)
+    default: ''
+    // validator: (value: string) => ['press2', 'press4'].includes(value)
   },
   routerName: {
     type: String,

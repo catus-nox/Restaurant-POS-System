@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { useCustomerStore } from '@/stores/productsStore'
+import { useCustomerStore } from '@/stores/customer/productsStore'
 import UiInput from '@/components/ui/UiInput.vue'
-import UiShopInformation from '@/components/ui/UiShopInformation.vue'
-import UiCustomerMenuNavbar from '@/components/ui/UiCustomerMenuNavbar.vue'
-import UiProductItem from '@/components/ui/UiProductItem.vue'
+import UiShopInformation from '@/components/ui/customer/UiShopInformation.vue'
+import UiCustomerMenuNavbar from '@/components/ui/customer/UiCustomerMenuNavbar.vue'
+import UiProductItem from '@/components/ui/customer/UiProductItem.vue'
 const customerStore = useCustomerStore()
 const menuCategory: any = computed(() => customerStore.getMenuCategoryData)
 const menuItemData: any = computed(() => customerStore.getMenuItemData)
@@ -13,21 +13,28 @@ const searchInput = ref('')
 //-----選單滑動+至頂滑動
 const chooseCategoryId = ref(menuCategory.value.length > 0 ? menuCategory.value[0].categoryId : '2')
 const chooseCategoryIdComputed = computed(() => chooseCategoryId.value)
-
-const topElement = ref<any>('')
+//-----
+const headerHeight = 14 * 4
+const fixSubHeaderHeight = ref<any>(null)
 const scrollElement = ref<any>(null)
-const top: any = ref(window.scrollY)
-const fixElement = ref<any>('')
 const isFixed = ref(false)
 
 function changeCategoryId(id: any, index: any) {
+  // 獲取當前的滾動位置
   chooseCategoryId.value = id
   function getHeader() {
-    if (top.value > (fixElement.value.offsetTop || 0)) {
-      return (scrollElement.value[index].offsetTop || 0) - (14 + 14) * 4
-    } else {
+    if (isFixed.value) {
       return (
-        (scrollElement.value[index].offsetTop || 0) - (fixElement.value.offsetTop || 0) + 14 * 4
+        (scrollElement.value[index].offsetTop || 0) -
+        (headerHeight + fixSubHeaderHeight.value.offsetHeight)
+      )
+    } else {
+      if (index === 0) {
+        return fixSubHeaderHeight.value.offsetHeight + headerHeight
+      }
+      return (
+        (scrollElement.value[index].offsetTop || 0) -
+        (headerHeight + fixSubHeaderHeight.value.offsetHeight * 2)
       )
     }
   }
@@ -37,14 +44,31 @@ function changeCategoryId(id: any, index: any) {
   })
 }
 
+// 儲存上一次的滾動位置
+let lastScrollTop = 0
 function fixCustomerMenuNavbar() {
-  top.value = window.scrollY
-  if (!fixElement.value) return
-  if (top.value > fixElement.value.offsetTop) {
-    isFixed.value = true
+  if (!fixSubHeaderHeight.value) return
+
+  // 獲取當前的滾動位置
+  const scrollTop = window.scrollY || document.documentElement.scrollTop
+  // 判斷滾動方向
+  if (scrollTop > lastScrollTop) {
+    // 向下滾動
+    if (
+      lastScrollTop >
+      scrollElement.value[0].offsetTop - fixSubHeaderHeight.value.offsetHeight * 2 - headerHeight
+    ) {
+      isFixed.value = true
+    }
   } else {
-    isFixed.value = false
+    // 向上滾動
+    if (lastScrollTop < fixSubHeaderHeight.value.offsetHeight * 2 + headerHeight) {
+      isFixed.value = false
+    }
   }
+
+  // 更新上一次滾動位置
+  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop // 避免負值
 }
 //-----
 
@@ -54,13 +78,14 @@ onMounted(async () => {
   //菜單品項
   await customerStore.fetchCustomerGetMenuItem()
   //-----
+  // 在組件掛載後，訪問 DOM 元素並獲取高度
   fixCustomerMenuNavbar()
   document.addEventListener('scroll', fixCustomerMenuNavbar)
 })
 </script>
 
 <template>
-  <div ref="topElement" class="m-3 mb-0 flex flex-col gap-3 pb-3">
+  <div class="m-3 mb-0 mt-0 flex flex-col gap-3 pb-3 pt-3">
     <UiShopInformation />
 
     <UiInput v-model="searchInput" :placeholder="'Search'" :is-icon="true">
@@ -83,9 +108,9 @@ onMounted(async () => {
     </UiInput>
   </div>
   <div
-    ref="fixElement"
+    ref="fixSubHeaderHeight"
     :class="{ fixed: isFixed }"
-    class="top-14 z-20 w-full max-w-screen-sm overflow-x-auto bg-primary-50 p-3"
+    class="top-14 z-20 w-full max-w-screen-sm overflow-x-auto bg-primary-50 p-3 transition-all"
   >
     <UiCustomerMenuNavbar
       :menu-category="menuCategory"

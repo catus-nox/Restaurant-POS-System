@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { useCustomerStore } from '@/stores/productsStore'
+import { useCustomerStore } from '@/stores/customer/productsStore'
 import { computed, onMounted, ref, watch } from 'vue'
-import { validatePhoneNumber, phoneValidateData } from '@/models/validate'
-import UiCartProcess from '@/components/ui/UiCartProcess.vue'
+import {
+  validatePhoneNumber,
+  phoneValidateData,
+  tableValidateData,
+  validateTable
+} from '@/models/validate'
+import UiCartProcess from '@/components/ui/customer/UiCartProcess.vue'
 import UiCounter from '@/components/ui/UiCounter.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
@@ -52,7 +57,9 @@ const isValidPhoneNumber = ref<boolean>(false)
 const isTouchPhoneNumber = ref<boolean>(false)
 //-----
 //桌號
-const goCheckoutTable = ref('')
+const goCheckoutTable = ref<any>(undefined)
+//桌號驗證結果
+const isValidTable = ref<boolean>(false)
 
 //-----
 //取得外帶自取時間選項
@@ -70,6 +77,9 @@ const takeTimeDay = ref()
 const takeTimeDayComputed = computed(() => takeTimeDay.value)
 //取得日期
 function takeTimeDayArray() {
+  if (!takeTime.value) return
+  console.log(takeTime.value)
+
   const dateCount: any = {}
   takeTime.value.forEach((slot: any) => {
     const { takeDate } = slot
@@ -86,6 +96,7 @@ const takeTimeNumber = ref()
 const takeTimeNumberComputed = computed(() => takeTimeNumber.value)
 //取得時間
 function takeTimeNumberArray(day: string) {
+  if (!takeTime.value) return
   return takeTime.value.filter((record: { takeDate: string | any[] }) =>
     record.takeDate.includes(day)
   )
@@ -103,10 +114,8 @@ watch(goCheckoutNote, (newValue) => {
 //-----
 //重新取得購物車商品數量
 async function returnCustomerGetCart() {
-  await customerStore.fetchCustomerGetOrderInfo(
-    localStorage.customer_orderId,
-    localStorage.customer_guid
-  )
+  //取得現在購物車的商品筆數跟總價
+  await customerStore.fetchCustomerGetOrderInfo()
 }
 //-----
 //前往結帳
@@ -148,8 +157,8 @@ async function goCheckout() {
       }
     }
     if (customerStatusClick.value === 2) {
-      if (goCheckoutTable.value === '') {
-        alert('請輸入桌號')
+      if (!validateTable(isValidTable.value, goCheckoutTable.value)) {
+        alert(tableValidateData.validationMessage)
         return false
       } else {
         data.table = goCheckoutTable.value
@@ -170,14 +179,18 @@ async function goCheckout() {
 }
 //-----
 onMounted(async () => {
+  //取得購物車現有訂單
+  await customerStore.fetchCustomerGetCart()
   if (localStorage.customer_guid && localStorage.customer_orderId) {
-    //取得購物車現有訂單
-    await customerStore.fetchCustomerGetCart(
-      localStorage.customer_orderId,
-      localStorage.customer_guid
-    )
     //購物車商品數量
     serving.value = cart.value.map((cartItem: { serving: number }) => cartItem.serving)
+  }
+  //取得現在購物車的商品筆數跟總價
+  await customerStore.fetchCustomerGetOrderInfo()
+  //-----
+  // 如果沒有購物車沒有商品=0
+  if (customerStore.getOrderInfoData == null) {
+    return
   }
   //取得外帶自取時間選項
   await customerStore.fetchCustomerGetTakeTime()
@@ -206,7 +219,6 @@ onMounted(async () => {
                 :btn-style="'style4'"
                 :btn-padding="'px-6 py-2'"
                 :icon-size="''"
-                :icon-style="''"
                 :is-only-icon="false"
                 :font-size="'text-xs font-medium'"
                 :btn-press="'press4'"
@@ -221,7 +233,6 @@ onMounted(async () => {
                 :btn-style="'style4'"
                 :btn-padding="'px-6 py-2'"
                 :icon-size="''"
-                :icon-style="''"
                 :is-only-icon="false"
                 :font-size="'text-xs font-medium'"
               >
@@ -284,13 +295,14 @@ onMounted(async () => {
         <UiInput
           :is-label="false"
           :label="'桌號'"
-          :placeholder="'請填寫桌號'"
+          :placeholder="tableValidateData.placeholder"
           :is-important="false"
           :type="'text'"
           v-model="goCheckoutTable"
+          :is-validation-message="!validateTable(isValidTable, goCheckoutTable)"
         >
           <template #helper></template>
-          <template #validationMessage></template>
+          <template #validationMessage>{{ tableValidateData.validationMessage }} </template>
         </UiInput>
       </div>
     </template>
@@ -323,7 +335,7 @@ onMounted(async () => {
       <div class="flex items-center justify-between">
         <div class="text-xl font-semibold text-black">訂單內容</div>
       </div>
-      <template v-if="orderInfo">
+      <template v-if="cart">
         <template v-for="(cartItem, index) in cart" :key="index">
           <template v-if="serving[index] > 0">
             <div
@@ -331,13 +343,13 @@ onMounted(async () => {
             >
               <div class="flex items-center gap-4">
                 <img
-                  class="relative h-[75px] w-[75px] rounded-lg object-cover object-right"
+                  class="relative h-[75px] w-[75px] rounded-lg object-cover"
                   :src="cartItem.imagePath"
                 />
                 <div class="flex w-[118px] flex-col gap-1">
                   <div class="text-base font-bold text-black">{{ cartItem.name }}</div>
                   <div class="text-xs font-medium text-neutral-300">
-                    {{ cartItem.customization.join(' |') }}
+                    {{ cartItem.customization.join(' | ') }}
                   </div>
                   <div class="text-base font-medium text-black">{{ cartItem.price }}</div>
                 </div>
@@ -385,10 +397,8 @@ onMounted(async () => {
       :btn-width="'w-fit'"
       :btn-padding="'px-6 py-2'"
       :icon-size="''"
-      :icon-style="''"
       :is-only-icon="false"
-      :font-size="'text whitespace-nowrap !text-black font-medium  '"
-      :font-padding="'px-0'"
+      :font-size="'text whitespace-nowrap !text-black font-medium'"
       :btn-press="'press4'"
       :router-name="'menu'"
     >
@@ -400,7 +410,6 @@ onMounted(async () => {
       :btn-width="'w-full '"
       :is-only-icon="false"
       :font-size="'text justify-between flex w-full items-center'"
-      :font-padding="'px-0'"
       :icon-size="'w-auto'"
       @define-function="goCheckout"
     >

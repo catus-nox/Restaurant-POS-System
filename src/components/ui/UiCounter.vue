@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineEmits, defineModel, computed, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useCustomerStore } from '@/stores/productsStore'
+import { useCustomerStore } from '@/stores/customer/productsStore'
 import UiButton from '@/components/ui/UiButton.vue'
 
 //-----
@@ -50,6 +50,7 @@ const decrement = () => {
 }
 const updateQuantity = (target: HTMLInputElement) => {
   model.value = target.value
+  incrementToCArtDataFunction(Number(target.value))
 }
 
 async function incrementToCArtDataFunction(serving: number) {
@@ -64,10 +65,8 @@ async function incrementToCArtDataFunction(serving: number) {
 //-----
 //重新取得購物車商品數量
 async function returnCustomerGetCart() {
-  await customerStore.fetchCustomerGetOrderInfo(
-    localStorage.customer_orderId,
-    localStorage.customer_guid
-  )
+  //取得現在購物車的商品筆數跟總價
+  await customerStore.fetchCustomerGetOrderInfo()
 }
 //-----
 onMounted(() => {})
@@ -102,9 +101,9 @@ onMounted(() => {})
       </template>
     </UiButton>
     <input
-      class="text-tickets-neutral-950 block h-4 w-12 min-w-8 border-none bg-opacity-0 text-center text shadow-none outline-none checked:bg-black focus:ring-0 focus-visible:ring-0"
+      class="text-tickets-neutral-950 block h-4 w-12 min-w-8 border-none bg-transparent bg-opacity-0 text-center text shadow-none outline-none checked:bg-black focus:ring-0 focus-visible:ring-0"
       :value="quantity"
-      @input="updateQuantity($event.target as HTMLInputElement)"
+      @blur="updateQuantity($event.target as HTMLInputElement)"
     />
     <UiButton
       @define-function="increment"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useCustomerStore } from '@/stores/productsStore'
+import { useCustomerStore } from '@/stores/customer/productsStore'
 import { computed, onMounted, watch } from 'vue'
-import UiCartProcess from '@/components/ui/UiCartProcess.vue'
+import UiCartProcess from '@/components/ui/customer/UiCartProcess.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import { useRoute } from 'vue-router'
 //-----
@@ -140,10 +140,8 @@ onMounted(async () => {
       :btn-width="'w-full '"
       :btn-padding="'px-6 py-2'"
       :icon-size="''"
-      :icon-style="''"
       :is-only-icon="false"
       :font-size="'text '"
-      :font-padding="'px-0'"
       :router-name="'menu'"
     >
       會員登入
@@ -153,10 +151,8 @@ onMounted(async () => {
       :btn-width="'w-full'"
       :btn-padding="'px-6 py-2'"
       :icon-size="''"
-      :icon-style="''"
       :is-only-icon="false"
       :font-size="'text '"
-      :font-padding="'px-0'"
       :router-name="'menu'"
     >
       回到首頁

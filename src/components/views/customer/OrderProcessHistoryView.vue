@@ -37,10 +37,8 @@ import UiInput from '@/components/ui/UiInput.vue'
         :btn-width="'w-full '"
         :btn-padding="'px-6 py-2'"
         :icon-size="''"
-        :icon-style="''"
         :is-only-icon="false"
         :font-size="'text'"
-        :font-padding="'px-0'"
         :router-name="'orderHistory'"
       >
         開始查詢

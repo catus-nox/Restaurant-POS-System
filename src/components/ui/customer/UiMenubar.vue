@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCustomerStore } from '@/stores/productsStore'
+import { useCustomerStore } from '@/stores/customer/productsStore'
 import { defineProps, defineEmits, computed, onMounted, ref } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
 const props = defineProps<{
@@ -14,17 +14,14 @@ const customerStore = useCustomerStore()
 const orderInfo: any = computed(() => customerStore.getOrderInfoData)
 //計算顯示的數量，若超過 99，顯示 "99+"
 const displayOrderQuantity = computed(() => {
+  //如果沒有資料
+  if (orderInfo.value == undefined || orderInfo.value == null || !orderInfo.value) return
   return orderInfo.value.count >= 99 ? '99+' : orderInfo.value.count
 })
 
 onMounted(async () => {
-  if (localStorage.customer_guid && localStorage.customer_orderId) {
-    // 取得購物車商品數量
-    await customerStore.fetchCustomerGetOrderInfo(
-      localStorage.customer_orderId,
-      localStorage.customer_guid
-    )
-  }
+  //取得現在購物車的商品筆數跟總價
+  await customerStore.fetchCustomerGetOrderInfo()
 })
 </script>
 
@@ -125,7 +122,10 @@ onMounted(async () => {
       >
         <template #only-icon>
           <span
-            v-if="orderInfo != undefined && displayOrderQuantity > 0"
+            v-if="
+              !(orderInfo == undefined || orderInfo == null || !orderInfo) &&
+              displayOrderQuantity > 0
+            "
             class="absolute right-1 top-1 h-fit min-h-5 w-fit min-w-5 rounded-full border border-secondary-50 bg-error-500 px-0.5 text-xs text-white"
             >{{ displayOrderQuantity }}</span
           >

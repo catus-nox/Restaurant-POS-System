@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { useCustomerStore } from '@/stores/productsStore'
+import { useCustomerStore } from '@/stores/customer/productsStore'
 import { Drawer } from 'flowbite'
 import { RouterView, useRoute } from 'vue-router'
-import UiMenubar from '@/components/ui/UiMenubar.vue'
-import UiMenuNavbar from '@/components/ui/UiMenuNavbar.vue'
-import UiFooter from '@/components/ui/UiFooter.vue'
+import UiMenubar from '@/components/ui/customer/UiMenubar.vue'
+import UiMenuNavbar from '@/components/ui/customer/UiMenuNavbar.vue'
+import UiFooter from '@/components/ui/customer/UiFooter.vue'
 import EmployeeUiNavbar from '@/components/ui/employee/UiNavbar.vue'
 import EmployeeUiOrderDetailsNavbar from '@/components/ui/employee/UiOrderDetailsNavbar.vue'
 
@@ -86,13 +86,8 @@ function employeeFohState(): boolean {
 onMounted(async () => {
   //判斷是否為員工頁面
   if (!pageCustomerOrEmployeeState()) return
-  if (localStorage.customer_guid && localStorage.customer_orderId) {
-    // 取得購物車商品數量
-    await customerStore.fetchCustomerGetOrderInfo(
-      localStorage.customer_orderId,
-      localStorage.customer_guid
-    )
-  }
+  //取得現在購物車的商品筆數跟總價
+  await customerStore.fetchCustomerGetOrderInfo()
 })
 // 顧客選單
 onMounted(() => {

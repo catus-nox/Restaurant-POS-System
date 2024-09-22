@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useCustomerStore } from '@/stores/productsStore'
+import { useCustomerStore } from '@/stores/customer/productsStore'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiCounter from '@/components/ui/UiCounter.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
+import router from '@/router'
 //-----
 interface CategoryProduct {
   name: string
@@ -36,13 +37,16 @@ interface PickedOption {
 }
 //-----api
 const route = useRoute()
-const productId: number = Number(route.params.id)
 const customerStore = useCustomerStore()
+//-----
+//商品id
+const productId: number = Number(route.params.id)
+//菜單品項
 const menuItemData: any = computed(() => customerStore.getMenuItemData)
-const orderIdData: any = computed(() => customerStore.getOrderIdData)
-//抓取產品資料
+//取得單一餐點資訊
 const product = computed<CategoryProduct>(() => customerStore.getProductData)
-//-----抓取加購項目
+//-----
+//抓取加購項目
 //加購複選儲存
 const productAddOnListSelected = ref<number[]>([])
 //加購項目從商品篩出 category = 6
@@ -90,15 +94,33 @@ const pickedOptions: PickedOption[] = [
 //抓取包含的自訂義項目
 const productPickedOptions = ref()
 function productPickedOptionFunction() {
-  productPickedOptions.value = pickedOptions.filter((option) =>
-    product.value.customization.includes(option.id)
-  )
+  productPickedOptions.value = pickedOptions.filter((option) => {
+    return product.value.customization.includes(option.id)
+  })
 }
+
 //整理要給api的客製化項目
 function customizationApiData() {
-  let optionArray = productPickedOptions.value.map((option: any) => ({
-    options: option.selected
-  }))
+  // 客製化項目
+  let optionArray = productPickedOptions.value
+    .map((option: any) => {
+      if (option.id === 4 || option.id === 5) {
+        // 如果為否 不要加入
+        if (option.selected === '否') {
+          return // undefined
+        }
+        // 如果為是 要加入且+名稱
+        if (option.selected === '是') {
+          return { options: `${option.name} : ${option.selected}` }
+        }
+      }
+      return {
+        options: option.selected
+      }
+    })
+    .filter(Boolean) // 去除 undefined 項目
+
+  // 加購商品
   let addArray = productAddOnListData.value[0].categoryItem
     .filter((product) => productAddOnListSelected.value.includes(product.productId))
     .map((product) => ({
@@ -106,11 +128,14 @@ function customizationApiData() {
       extraPrice: product.price
     }))
 
+  // 備註文字
   let textareaArray = [
     {
       options: textareaText.value
     }
   ]
+
+  // 總和
   let allData = optionArray.concat(addArray).concat(textareaArray)
 
   return allData
@@ -137,24 +162,8 @@ const count = ref(1)
 //-----
 //加入購物車按鈕
 async function getOrderId() {
-  //驗證碼判斷新增
-  if (
-    localStorage.customer_guid == 'undefined' ||
-    localStorage.customer_guid == 'null' ||
-    !localStorage.customer_guid
-  ) {
-    await customerStore.fetchCustomerGetOrderId()
-    localStorage.customer_guid = orderIdData.value.guid
-  }
-  if (
-    localStorage.customer_orderId == 'undefined' ||
-    localStorage.customer_orderId == 'null' ||
-    !localStorage.customer_orderId
-  ) {
-    localStorage.customer_orderId = orderIdData.value.orderId
-  }
-  //購物車訂單送出
-  console.log(customizationApiData())
+  //取得OrderId跟Guid(唯一識別碼)(使用者第一次加入購物車時索取訂單資訊)
+  await customerStore.fetchCustomerGetOrderId()
 
   const data = {
     guid: localStorage.customer_guid, //識別碼guid(抓cookie)
@@ -164,20 +173,25 @@ async function getOrderId() {
     customization: customizationApiData(),
     serving: Number(count.value) //份數(int)
   }
+  //加入購物車
   await customerStore.fetchCustomerAddItem(data)
-  //購物車數量變更
-  await customerStore.fetchCustomerGetOrderInfo(
-    localStorage.customer_orderId,
-    localStorage.customer_guid
-  )
+  //取得現在購物車的商品筆數跟總價
+  await customerStore.fetchCustomerGetOrderInfo()
+  //
   computed(() => customerStore.getOrderInfoData)
-  alert('加入購物車成功')
+  router.push({ name: 'menu' })
 }
 //-----
 onMounted(async () => {
+  //菜單品項
   await customerStore.fetchCustomerGetMenuItem()
+  //取得單一餐點資訊
   await customerStore.fetchCustomerGetProduct(productId)
+  console.log(product.value)
+
+  //加購項目從商品篩出 category = 6
   productPickedOptionsAdd6()
+  //抓取包含的自訂義項目
   productPickedOptionFunction()
 })
 </script>
@@ -185,12 +199,14 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col gap-6">
     <div>
-      <div class="relative h-[200px] overflow-hidden">
-        <img
-          :src="product.productImagePath"
-          :alt="product.name"
-          class="h-full w-full object-cover"
-        />
+      <div class="relative w-full overflow-hidden">
+        <div class="w-full pt-[calc(100%*1770/2127*0.59)]">
+          <img
+            :src="product.productImagePath"
+            :alt="product.name"
+            class="absolute left-0 top-0 h-full w-full object-cover"
+          />
+        </div>
       </div>
     </div>
     <div class="mx-3 flex flex-col gap-2">
@@ -292,8 +308,6 @@ onMounted(async () => {
           :btn-width="'w-full '"
           :is-only-icon="false"
           :font-size="'text justify-between flex w-full items-center'"
-          :font-padding="'px-0'"
-          :router-name="'menu'"
           :icon-size="'w-auto'"
           @define-function="getOrderId"
         >

@@ -14,6 +14,22 @@ export function validatePhoneNumber(isValidateValue: boolean, validateValue: str
   return (isValidateValue = regex.test(validateValue))
 }
 
+//桌號驗證
+export const tableValidateData: {
+  placeholder?: string
+  helper?: string
+  validationMessage?: string
+} = {
+  placeholder: '請填寫桌號',
+  helper: undefined,
+  validationMessage: '桌號格式錯誤，請輸入數字，ex:1'
+}
+export function validateTable(isValidateValue: boolean, validateValue: string) {
+  const regex = /^\d+$/
+  isValidateValue = regex.test(validateValue)
+  return (isValidateValue = regex.test(validateValue))
+}
+
 //載具驗證
 export const receiptValidateData: {
   placeholder?: string
