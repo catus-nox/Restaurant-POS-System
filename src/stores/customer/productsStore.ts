@@ -196,9 +196,9 @@ export const useCustomerStore = defineStore('customer', () => {
   }
 
   //取得購物車現有訂單
-  const fetchCustomerGetCart = async (id: number, guid: string) => {
+  const fetchCustomerGetCart = async () => {
     try {
-      const response = await getCart(id, guid)
+      const response = await getCart(localStorage.customer_orderId, localStorage.customer_guid)
       cartData.value = response.data.data
     } catch (error) {
       console.log(error)

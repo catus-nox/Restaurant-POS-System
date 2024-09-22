@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import {
   validateReceipt,
   receiptValidateData,
@@ -171,10 +171,7 @@ onMounted(async () => {
 
   //-----
   //取得購物車現有訂單
-  await customerStore.fetchCustomerGetCart(
-    localStorage.customer_orderId,
-    localStorage.customer_guid
-  )
+  await customerStore.fetchCustomerGetCart()
   //取得現在購物車的商品筆數跟總價
   await customerStore.fetchCustomerGetOrderInfo()
 })
