@@ -70,6 +70,9 @@ const takeTimeDay = ref()
 const takeTimeDayComputed = computed(() => takeTimeDay.value)
 //取得日期
 function takeTimeDayArray() {
+  if (!takeTime.value) return
+  console.log(takeTime.value)
+
   const dateCount: any = {}
   takeTime.value.forEach((slot: any) => {
     const { takeDate } = slot
@@ -86,6 +89,7 @@ const takeTimeNumber = ref()
 const takeTimeNumberComputed = computed(() => takeTimeNumber.value)
 //取得時間
 function takeTimeNumberArray(day: string) {
+  if (!takeTime.value) return
   return takeTime.value.filter((record: { takeDate: string | any[] }) =>
     record.takeDate.includes(day)
   )
@@ -170,12 +174,14 @@ async function goCheckout() {
 onMounted(async () => {
   if (localStorage.customer_guid && localStorage.customer_orderId) {
     //取得購物車現有訂單
-    await customerStore.fetchCustomerGetCart(
-      localStorage.customer_orderId,
-      localStorage.customer_guid
-    )
+    await customerStore.fetchCustomerGetCart()
     //購物車商品數量
     serving.value = cart.value.map((cartItem: { serving: number }) => cartItem.serving)
+  }
+
+  // 如果沒有購物車沒有商品=0
+  if (customerStore.getOrderInfoData == null) {
+    return
   }
   //取得外帶自取時間選項
   await customerStore.fetchCustomerGetTakeTime()
