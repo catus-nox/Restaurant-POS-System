@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { useCustomerStore } from '@/stores/customer/productsStore'
 import { computed, onMounted, ref, watch } from 'vue'
-import { validatePhoneNumber, phoneValidateData } from '@/models/validate'
+import {
+  validatePhoneNumber,
+  phoneValidateData,
+  tableValidateData,
+  validateTable
+} from '@/models/validate'
 import UiCartProcess from '@/components/ui/customer/UiCartProcess.vue'
 import UiCounter from '@/components/ui/UiCounter.vue'
 import UiButton from '@/components/ui/UiButton.vue'
@@ -52,7 +57,9 @@ const isValidPhoneNumber = ref<boolean>(false)
 const isTouchPhoneNumber = ref<boolean>(false)
 //-----
 //桌號
-const goCheckoutTable = ref('')
+const goCheckoutTable = ref<any>(undefined)
+//桌號驗證結果
+const isValidTable = ref<boolean>(false)
 
 //-----
 //取得外帶自取時間選項
@@ -150,8 +157,8 @@ async function goCheckout() {
       }
     }
     if (customerStatusClick.value === 2) {
-      if (goCheckoutTable.value === '') {
-        alert('請輸入桌號')
+      if (!validateTable(isValidTable.value, goCheckoutTable.value)) {
+        alert(tableValidateData.validationMessage)
         return false
       } else {
         data.table = goCheckoutTable.value
@@ -178,7 +185,9 @@ onMounted(async () => {
     //購物車商品數量
     serving.value = cart.value.map((cartItem: { serving: number }) => cartItem.serving)
   }
-
+  //取得現在購物車的商品筆數跟總價
+  await customerStore.fetchCustomerGetOrderInfo()
+  //-----
   // 如果沒有購物車沒有商品=0
   if (customerStore.getOrderInfoData == null) {
     return
@@ -286,13 +295,14 @@ onMounted(async () => {
         <UiInput
           :is-label="false"
           :label="'桌號'"
-          :placeholder="'請填寫桌號'"
+          :placeholder="tableValidateData.placeholder"
           :is-important="false"
           :type="'text'"
           v-model="goCheckoutTable"
+          :is-validation-message="!validateTable(isValidTable, goCheckoutTable)"
         >
           <template #helper></template>
-          <template #validationMessage></template>
+          <template #validationMessage>{{ tableValidateData.validationMessage }} </template>
         </UiInput>
       </div>
     </template>
@@ -325,7 +335,7 @@ onMounted(async () => {
       <div class="flex items-center justify-between">
         <div class="text-xl font-semibold text-black">訂單內容</div>
       </div>
-      <template v-if="orderInfo">
+      <template v-if="cart">
         <template v-for="(cartItem, index) in cart" :key="index">
           <template v-if="serving[index] > 0">
             <div
