@@ -286,12 +286,14 @@ onMounted(async () => {
               >
                 {{ cart.serving }}
               </div>
-              <div class="flex grow flex-row items-center gap-3">
-                <div class="text-base font-bold text-black">{{ cart.name }}</div>
-                <div class="text-xs font-medium text-neutral-300">
-                  {{ cart.customization.join(' |') }}
+              <div class="flex grow flex-row items-center justify-between gap-3">
+                <div>
+                  <div class="text-base font-bold text-black">{{ cart.name }}</div>
+                  <div class="text-xs font-medium text-neutral-300">
+                    {{ cart.customization.join(' |') }}
+                  </div>
                 </div>
-                <div class="self-end text-base font-bold text-black">$ {{ cart.price }}</div>
+                <div class="flex text-base font-bold text-black">$ {{ cart.price }}</div>
               </div>
             </div>
           </div>
