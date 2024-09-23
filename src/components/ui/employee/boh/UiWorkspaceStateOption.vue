@@ -16,6 +16,7 @@ const props = defineProps({
     default: () => ({
       typeAndNumber: '--???',
       time: '??:??取餐',
+      orderId: 0,
       items: [
         {
           Name: '?????',
@@ -46,7 +47,7 @@ for (let index = 0; index < props.orderData.items.length; index++) {
       <UiButton
         :btn-style="'style1'"
         :btn-width="'min-w-60'"
-        @define-function="$emit('defineFunction')"
+        @define-function="$emit('defineFunction', props.orderData.orderId)"
       >
         完成備餐
       </UiButton>
