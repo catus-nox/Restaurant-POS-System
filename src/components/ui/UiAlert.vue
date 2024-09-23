@@ -44,8 +44,8 @@ function showAlert() {
   if (modal) {
     modal.show() // 顯示 Modal
     setTimeout(() => {
-      modal?.hide() // 3秒後關閉 Modal
       customerFunction.getAlertStatusFunction(false)
+      modal?.hide() // 3秒後關閉 Modal
     }, duration)
   }
 }
@@ -53,6 +53,7 @@ function showAlert() {
 const alertStatus = computed(() => customerFunction.getAlertStatus)
 
 watch(alertStatus, (newValue) => {
+  modal?.hide()
   if (!pageCustomerOrEmployeeState()) {
     modalOptions.backdropClasses =
       'bg-neutral-800/40 fixed inset-0 left-1/2 -translate-x-1/2 z-50 max-w-screen-sm'
@@ -60,6 +61,7 @@ watch(alertStatus, (newValue) => {
     modalOptions.backdropClasses =
       'bg-neutral-800/40 fixed inset-0 h-screen max-h-[834px] w-full max-w-screen-xl left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-50'
   }
+  modal?.hide()
   modal = new Modal(alertEl.value, modalOptions)
   if (newValue.status == 1) {
     animeFunction()
