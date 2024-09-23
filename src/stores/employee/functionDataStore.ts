@@ -48,6 +48,8 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   const nowCustomerPhoneNumber = ref()
   //取得客人手機驗證結果
   const nowCustomerIsValidPhoneNumber = ref(false)
+  //取得詳細訂單選單狀態
+  const orderDetailsNavBarIsShow = ref(false)
 
   //------
   //getter
@@ -81,6 +83,8 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   const getNowCustomerPhoneNumber = computed(() => nowCustomerPhoneNumber.value)
   //取得客人手機驗證結果
   const getNowCustomerIsValidPhoneNumber = computed(() => nowCustomerIsValidPhoneNumber.value)
+  //取得詳細訂單選單狀態
+  const getOrderDetailsNavBarIsShow = computed(() => orderDetailsNavBarIsShow.value)
 
   //------
   //action 異步請求
@@ -164,6 +168,11 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
     nowCustomerIsValidPhoneNumber.value = value
   }
 
+  //取得詳細訂單選單狀態
+  function getOrderDetailsNavBarIsShowFunction(value: boolean) {
+    orderDetailsNavBarIsShow.value = value
+  }
+
   //選單顯示
   async function orderShow() {
     //外場訂單總覽
@@ -225,6 +234,8 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
     getNowCustomerIsValidReceiptFunction,
     getNowCustomerIsValidTaxIdFunction,
     getNowCustomerIsValidPhoneNumber,
-    getNowCustomerIsValidPhoneNumberFunction
+    getNowCustomerIsValidPhoneNumberFunction,
+    getOrderDetailsNavBarIsShow,
+    getOrderDetailsNavBarIsShowFunction
   }
 })
