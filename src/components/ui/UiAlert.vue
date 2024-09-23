@@ -33,8 +33,10 @@ let modalOptions: ModalOptions = {
     // console.log('modal has been toggled')
   }
 }
+
 onMounted(() => {
   if (alertEl.value) {
+    modalOptions.backdropClasses = ''
     modal = new Modal(alertEl.value, modalOptions)
     modal?.hide() // 初始時隱藏 Modal
   }
@@ -59,10 +61,11 @@ watch(alertStatus, (newValue) => {
       'bg-neutral-800/40 fixed inset-0 left-1/2 -translate-x-1/2 z-50 max-w-screen-sm'
   } else {
     modalOptions.backdropClasses =
-      'bg-neutral-800/40 fixed inset-0 h-screen max-h-[834px] w-full max-w-screen-xl left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-50'
+      'bg-neutral-800/40 fixed inset-0 h-screen w-full max-w-screen-xl left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 max-h-[834px] z-50'
+    // modalOptions.backdropClasses = 'bg-neutral-800/40 fixed inset-0 h-screen w-full'
   }
-  modal?.hide()
   modal = new Modal(alertEl.value, modalOptions)
+  modal?.hide()
   if (newValue.status == 1) {
     animeFunction()
   }
@@ -158,7 +161,7 @@ onMounted(() => {
     tabindex="-1"
     aria-hidden="true"
     :class="
-      !pageCustomerOrEmployeeState()
+      !pageCustomerOrEmployeeState() && useAllFunctionDataStore().getAlertStatus.isShow
         ? 'fixed left-1/2 top-0 z-[60] m-auto min-h-screen w-full max-w-screen-sm -translate-x-1/2 overflow-hidden'
         : 'fixed inset-0 left-1/2 top-1/2 z-[60] h-screen max-h-[834px] w-full max-w-screen-xl -translate-x-1/2 -translate-y-1/2'
     "
