@@ -47,6 +47,8 @@ function showAlert() {
     modal.show() // 顯示 Modal
     setTimeout(() => {
       customerFunction.getAlertStatusFunction(false)
+      modalOptions.backdropClasses = ''
+      modal = new Modal(alertEl.value, modalOptions)
       modal?.hide() // 3秒後關閉 Modal
     }, duration)
   }
