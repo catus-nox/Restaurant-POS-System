@@ -6,11 +6,13 @@ import EmployeeUiSearchAndFilterBar from '@/components/ui/employee/UiSearchAndFi
 import EmployeeUiWorkspaceStateNavbar from '@/components/ui/employee/UiWorkspaceStateNavbar.vue'
 import EmployeeFohUiWorkspaceStateOption from '@/components/ui/employee/foh/UiWorkspaceStateOption.vue'
 import router from '@/router'
+import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 
 //-----
 //api
 const employeeStore = useEmployeeStore()
 const functionDataStore = useFunctionDataStore()
+const customerFunction = useAllFunctionDataStore()
 //-----
 //取得今日全部訂單數量與頁數
 const fohGetOrderAllCountData = computed(() => employeeStore.getFohGetOrderAllCountData)
@@ -25,7 +27,7 @@ onMounted(async () => {
     !localStorage.foh_identity
   ) {
     router.push({ name: 'employeeLogin' })
-    alert('請先登入')
+    customerFunction.getAlertStatusFunction(true, '請先登入', 2)
     return
   }
 

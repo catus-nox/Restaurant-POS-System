@@ -13,7 +13,7 @@ import UiBadge from '@/components/ui/UiBadge.vue'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
 import { useCustomerStore } from '@/stores/customer/productsStore'
-
+import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 //-----
 const baseUrl = import.meta.env.VITE_APP_BASE_URL
 
@@ -27,6 +27,8 @@ function toggleMenu(index: number) {
 //-----
 //api
 const customerStore = useCustomerStore()
+const customerFunction = useAllFunctionDataStore()
+//-----
 //取得購物車現有訂單
 const cartData: any = computed(() => customerStore.getCartData)
 //取得現在購物車的商品筆數跟總價
@@ -84,12 +86,12 @@ async function confirmOrder() {
       pay.value == payData.options[0].id &&
       !validateReceipt(isValidReceipt.value, receipt.value)
     ) {
-      alert(receiptValidateData.validationMessage)
+      customerFunction.getAlertStatusFunction(true, receiptValidateData.validationMessage, 2)
       return false
     }
     //統編判斷
     if (pay.value == payData.options[1].id && !validateTaxId(isValidTaxId.value, taxId.value)) {
-      alert(taxIdValidateData.validationMessage)
+      customerFunction.getAlertStatusFunction(true, taxIdValidateData.validationMessage, 2)
       return false
     }
     return true

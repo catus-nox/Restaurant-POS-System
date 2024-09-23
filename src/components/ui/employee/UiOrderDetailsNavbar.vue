@@ -14,6 +14,7 @@ import {
   phoneValidateData,
   validatePhoneNumber
 } from '@/models/validate'
+import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 
 //-----
 const route = useRoute()
@@ -21,6 +22,7 @@ const route = useRoute()
 //api
 const employeeStore = useEmployeeStore()
 const functionDataStore = useFunctionDataStore()
+const customerFunction = useAllFunctionDataStore()
 //-----
 const productId: number = Number(route.params.id)
 //取得單一訂單資訊
@@ -35,11 +37,11 @@ function pay() {
 async function finish() {
   function goCheckoutValidate(): boolean {
     if (!functionDataStore.getNowCustomerCash) {
-      alert('請輸入現金')
+      customerFunction.getAlertStatusFunction(true, '請輸入現金', 2)
       return false
     }
     if (orderDetailData.value.totalAmount > functionDataStore.getNowCustomerCash) {
-      alert('金額不足')
+      customerFunction.getAlertStatusFunction(true, '金額不足', 2)
       return false
     }
 
@@ -51,7 +53,7 @@ async function finish() {
         functionDataStore.getNowCustomerReceipt
       )
     ) {
-      alert(receiptValidateData.validationMessage)
+      customerFunction.getAlertStatusFunction(true, receiptValidateData.validationMessage, 2)
       return false
     }
     //統編判斷
@@ -62,7 +64,7 @@ async function finish() {
         functionDataStore.getNowCustomerTaxId
       )
     ) {
-      alert(taxIdValidateData.validationMessage)
+      customerFunction.getAlertStatusFunction(true, taxIdValidateData.validationMessage, 2)
       return false
     }
     //電話判斷
@@ -73,7 +75,7 @@ async function finish() {
         functionDataStore.getNowCustomerPhoneNumber
       )
     ) {
-      alert(phoneValidateData.validationMessage)
+      customerFunction.getAlertStatusFunction(true, phoneValidateData.validationMessage, 2)
       return false
     }
     return true
@@ -99,7 +101,7 @@ async function finish() {
   }
   console.log(data)
   await employeeStore.fetchEmployeeFohCheckout(data)
-  alert('結帳成功')
+  customerFunction.getAlertStatusFunction(true, '結帳成功', 1)
   router.push({ name: 'employeeFohOrder' })
 }
 

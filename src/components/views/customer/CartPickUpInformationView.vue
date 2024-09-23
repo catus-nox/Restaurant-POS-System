@@ -14,11 +14,13 @@ import UiBadge from '@/components/ui/UiBadge.vue'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiSelect from '@/components/ui/UiSelect.vue'
 import { useRouter } from 'vue-router'
+import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 
 //-----
 const router = useRouter()
 //api
 const customerStore = useCustomerStore()
+const customerFunction = useAllFunctionDataStore()
 // 數量
 const serving = ref<[]>([])
 //-----
@@ -122,7 +124,7 @@ async function returnCustomerGetCart() {
 async function goCheckout() {
   function orderInfoCount() {
     if (orderInfo.value == null || orderInfo.value == undefined || orderInfo.value.count <= 0) {
-      alert('購物車為空')
+      customerFunction.getAlertStatusFunction(true, '購物車為空', 2)
       return false
     }
     return true
@@ -149,7 +151,7 @@ async function goCheckout() {
     //選單判斷
     if (customerStatusClick.value === 0) {
       if (goCheckoutTakeTime.value === '') {
-        alert('請選擇自取時間')
+        customerFunction.getAlertStatusFunction(true, '請選擇自取時間', 2)
         return false
       } else {
         data.takeDate = takeTimeNumberComputed.value[goCheckoutTakeTime.value].takeDate
@@ -158,7 +160,7 @@ async function goCheckout() {
     }
     if (customerStatusClick.value === 2) {
       if (!validateTable(isValidTable.value, goCheckoutTable.value)) {
-        alert(tableValidateData.validationMessage)
+        customerFunction.getAlertStatusFunction(true, tableValidateData.validationMessage, 2)
         return false
       } else {
         data.table = goCheckoutTable.value
@@ -166,7 +168,7 @@ async function goCheckout() {
     }
     //電話判斷
     if (phoneNumber.value && !validatePhoneNumber(isValidPhoneNumber.value, phoneNumber.value)) {
-      alert(phoneValidateData.validationMessage)
+      customerFunction.getAlertStatusFunction(true, phoneValidateData.validationMessage, 2)
       return false
     }
     return true

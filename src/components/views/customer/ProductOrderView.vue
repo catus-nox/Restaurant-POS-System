@@ -179,7 +179,6 @@ async function getOrderId() {
   await customerStore.fetchCustomerGetOrderInfo()
   //
   computed(() => customerStore.getOrderInfoData)
-  router.push({ name: 'menu' })
 }
 //-----
 onMounted(async () => {
