@@ -9,7 +9,6 @@ export const useAllFunctionDataStore = defineStore('allFunction', () => {
   //取得alert狀態
   const alertStatus = ref<{ isShow: boolean; status?: number; text?: string }>({
     isShow: false,
-    status: 1,
     text: undefined // 預設為 undefined，可以是文字或 null
   })
 
@@ -29,12 +28,6 @@ export const useAllFunctionDataStore = defineStore('allFunction', () => {
 
   //取得alert狀態
   function getAlertStatusFunction(isShow: boolean, text?: string, status?: number) {
-    if (text == undefined || text == null) {
-      text = 'alert'
-    }
-    if (status == undefined || status == null) {
-      status = 1
-    }
     alertStatus.value = {
       isShow,
       status,
