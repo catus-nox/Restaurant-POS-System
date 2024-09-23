@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
 import { useCustomerStore } from '@/stores/customer/productsStore'
 import { Drawer } from 'flowbite'
 import { RouterView, useRoute } from 'vue-router'
@@ -8,12 +8,17 @@ import UiMenuNavbar from '@/components/ui/customer/UiMenuNavbar.vue'
 import UiFooter from '@/components/ui/customer/UiFooter.vue'
 import EmployeeUiNavbar from '@/components/ui/employee/UiNavbar.vue'
 import EmployeeUiOrderDetailsNavbar from '@/components/ui/employee/UiOrderDetailsNavbar.vue'
-
+import UiAlert from '@/components/ui/UiAlert.vue'
+import { useAllFunctionDataStore } from '@/stores/functionDataStore'
+//-----
 const route = useRoute()
 const menuNavbar = ref<HTMLElement | null>(null)
 const drawer = ref<any>(null)
+//-----
 //api
 const customerStore = useCustomerStore()
+const customerFunction = useAllFunctionDataStore()
+//-----
 //查看路由狀態
 watch(
   () => route.path,
@@ -68,6 +73,12 @@ function anchorMainPaddingTopChange() {
 //-----
 //判斷目前頁面是否為員工
 function pageCustomerOrEmployeeState(): any {
+  if (route.name && (route.name as string).includes('employee')) {
+    customerFunction.getCustomerOrEmployeeFunction(2)
+  } else {
+    customerFunction.getCustomerOrEmployeeFunction(1)
+  }
+
   return route.name && (route.name as string).includes('employee')
   // return ['employeeLogin', 'employeeFohOrder', 'employeeFohCheckout', 'employeeBohOrder'].includes(
   //   route.name as string
@@ -148,6 +159,7 @@ onMounted(() => {
       </div>
     </div>
   </template>
+  <UiAlert />
 </template>
 
 <style scoped>

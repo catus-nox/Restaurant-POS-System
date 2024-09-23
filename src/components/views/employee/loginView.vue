@@ -10,9 +10,11 @@ import {
 } from '@/models/validate'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiInput from '@/components/ui/UiInput.vue'
+import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 //-----
 //api
 const employeeStore = useEmployeeStore()
+const customerFunction = useAllFunctionDataStore()
 //-----
 //帳號
 const account = ref('')
@@ -35,12 +37,12 @@ async function employeeLogin() {
   function validate(): boolean {
     //帳號判斷
     if (!validateAccount(isValidAccount.value, account.value)) {
-      alert(accountValidateData.validationMessage)
+      customerFunction.getAlertStatusFunction(true, accountValidateData.validationMessage, 2)
       return false
     }
     //密碼編判斷
     if (!validatePassword(isTouchPassword.value, password.value)) {
-      alert(passwordValidateData.validationMessage)
+      customerFunction.getAlertStatusFunction(true, passwordValidateData.validationMessage, 2)
       return false
     }
     return true
@@ -60,7 +62,7 @@ async function employeeLogin() {
 }
 //員工忘記密碼
 function employeeForgetPassword() {
-  alert(`去找老闆!`)
+  customerFunction.getAlertStatusFunction(true, '去找老闆!', 2)
 }
 </script>
 

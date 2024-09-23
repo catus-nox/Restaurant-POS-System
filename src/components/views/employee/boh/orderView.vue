@@ -5,11 +5,12 @@ import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
 import EmployeeUiSearchAndFilterBar from '@/components/ui/employee/UiSearchAndFilterBar.vue'
 import EmployeeBohUiWorkspaceStateOption from '@/components/ui/employee/boh/UiWorkspaceStateOption.vue'
 import router from '@/router'
-
+import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 //-----
 //api
 const employeeStore = useEmployeeStore()
 const functionDataStore = useFunctionDataStore()
+const customerFunction = useAllFunctionDataStore()
 //-----
 //內場訂單總覽
 const bohGetOrder = computed(() => employeeStore.getBohGetOrderData)
@@ -25,7 +26,7 @@ onMounted(async () => {
     !localStorage.boh_identity
   ) {
     router.push({ name: 'employeeLogin' })
-    alert('請先登入')
+    customerFunction.getAlertStatusFunction(true, '請先登入', 2)
     return
   }
 

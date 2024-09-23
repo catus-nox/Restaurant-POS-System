@@ -14,7 +14,9 @@ const btnStyleG: ButtonStyle[] = [
     bg-primary-700 text-white 
     hover:bg-primary-600 hover:shadow-[0_0_0_1px] hover:shadow-secondary-200 
     focus:bg-primary-500 focus:shadow-[0_0_0_3px] focus:shadow-secondary-300 
-    disabled:bg-neutral-300`
+    disabled:bg-neutral-300
+    disabled:shadow-none
+    `
   },
   {
     style: 'style2',
