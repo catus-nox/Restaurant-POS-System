@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
 
 import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
@@ -130,12 +130,17 @@ onMounted(async () => {
 <template>
   <div
     v-if="orderDetailData"
-    class="inline-flex w-full max-w-[362px] grow flex-col bg-white shadow-[inset_0_0_0_1px] shadow-neutral-300"
+    class="inline-flex w-full max-w-[362px] grow flex-col bg-white shadow-[inset_0_0_0_1px] shadow-neutral-300 transition-all"
+    :class="!functionDataStore.getOrderDetailsNavBarIsShow ? '!w-0 overflow-hidden' : ''"
   >
     <div
+      v-show="functionDataStore.getOrderDetailsNavBarIsShow"
       class="relative inline-flex items-center justify-center bg-primary-700 px-2.5 py-3 text-white"
     >
-      <span class="absolute right-2.5 top-3 cursor-pointer">
+      <span
+        class="absolute right-2.5 top-3 cursor-pointer"
+        @click="functionDataStore.getOrderDetailsNavBarIsShowFunction(false)"
+      >
         <svg
           class="h-6 w-6"
           aria-hidden="true"
@@ -304,7 +309,6 @@ onMounted(async () => {
           :is-disabled="orderDetailData.orderStatus == '準備中'"
           @define-function="statusBtnFunction(orderDetailData.orderStatus, orderDetailData.orderId)"
         >
-          {{ orderDetailData }}
           <span v-text="orderDetailData.orderStatus == '待結帳' ? '前往結帳' : '完成訂單'"> </span>
         </UiButton>
       </div>

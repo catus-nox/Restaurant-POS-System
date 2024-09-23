@@ -27,6 +27,8 @@ async function fohGetOrderDetailShow() {
   await employeeStore.fetchEmployeeFohGetOrderDetail(props.orderData.orderId)
   //取得單一訂單資訊 id
   await functionDataStore.getNowOrderDetailIdFunction(props.orderData.orderId)
+  //取得詳細訂單選單狀態
+  await functionDataStore.getOrderDetailsNavBarIsShowFunction(true)
 }
 </script>
 
