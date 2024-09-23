@@ -171,7 +171,7 @@ export const useCustomerStore = defineStore('customer', () => {
         customization: data.customization,
         serving: data.serving
       })
-      customerFunction.getAlertStatusFunction(true, response.data.message)
+      customerFunction.getAlertStatusFunction(true, response.data.message, 1)
       router.push({ name: 'menu' })
     } catch (error) {
       console.log(error)

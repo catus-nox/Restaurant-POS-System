@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
 
 import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
@@ -104,8 +104,11 @@ async function finish() {
   customerFunction.getAlertStatusFunction(true, '結帳成功', 1)
   router.push({ name: 'employeeFohOrder' })
 }
+function geMeal(orderId: number) {
+  employeeStore.fetchEmployeeFohOrderCompleted(orderId)
+}
 
-function statusBtnFunction(status: string) {
+function statusBtnFunction(status: string, orderId: number) {
   let routeStatus = ['employeeFohCheckout'].includes(route.name as string)
   if (routeStatus) {
     finish()
@@ -113,6 +116,9 @@ function statusBtnFunction(status: string) {
   }
   if (status == '待結帳') {
     pay()
+  }
+  if (status == '待取餐') {
+    geMeal(orderId)
   }
 }
 onMounted(async () => {
@@ -124,12 +130,17 @@ onMounted(async () => {
 <template>
   <div
     v-if="orderDetailData"
-    class="inline-flex w-full max-w-[362px] grow flex-col bg-white shadow-[inset_0_0_0_1px] shadow-neutral-300"
+    class="inline-flex w-full max-w-[362px] grow flex-col bg-white shadow-[inset_0_0_0_1px] shadow-neutral-300 transition-all"
+    :class="!functionDataStore.getOrderDetailsNavBarIsShow ? '!w-0 overflow-hidden' : ''"
   >
     <div
+      v-show="functionDataStore.getOrderDetailsNavBarIsShow"
       class="relative inline-flex items-center justify-center bg-primary-700 px-2.5 py-3 text-white"
     >
-      <span class="absolute right-2.5 top-3 cursor-pointer">
+      <span
+        class="absolute right-2.5 top-3 cursor-pointer"
+        @click="functionDataStore.getOrderDetailsNavBarIsShowFunction(false)"
+      >
         <svg
           class="h-6 w-6"
           aria-hidden="true"
@@ -296,7 +307,7 @@ onMounted(async () => {
           :font-size="'text font-medium'"
           :btn-width="'w-full'"
           :is-disabled="orderDetailData.orderStatus == '準備中'"
-          @define-function="statusBtnFunction(orderDetailData.orderStatus)"
+          @define-function="statusBtnFunction(orderDetailData.orderStatus, orderDetailData.orderId)"
         >
           <span v-text="orderDetailData.orderStatus == '待結帳' ? '前往結帳' : '完成訂單'"> </span>
         </UiButton>
