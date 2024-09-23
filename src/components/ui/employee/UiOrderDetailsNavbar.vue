@@ -104,8 +104,11 @@ async function finish() {
   customerFunction.getAlertStatusFunction(true, '結帳成功', 1)
   router.push({ name: 'employeeFohOrder' })
 }
+function geMeal(orderId: number) {
+  employeeStore.fetchEmployeeFohOrderCompleted(orderId)
+}
 
-function statusBtnFunction(status: string) {
+function statusBtnFunction(status: string, orderId: number) {
   let routeStatus = ['employeeFohCheckout'].includes(route.name as string)
   if (routeStatus) {
     finish()
@@ -113,6 +116,9 @@ function statusBtnFunction(status: string) {
   }
   if (status == '待結帳') {
     pay()
+  }
+  if (status == '待取餐') {
+    geMeal(orderId)
   }
 }
 onMounted(async () => {
@@ -296,8 +302,9 @@ onMounted(async () => {
           :font-size="'text font-medium'"
           :btn-width="'w-full'"
           :is-disabled="orderDetailData.orderStatus == '準備中'"
-          @define-function="statusBtnFunction(orderDetailData.orderStatus)"
+          @define-function="statusBtnFunction(orderDetailData.orderStatus, orderDetailData.orderId)"
         >
+          {{ orderDetailData }}
           <span v-text="orderDetailData.orderStatus == '待結帳' ? '前往結帳' : '完成訂單'"> </span>
         </UiButton>
       </div>
