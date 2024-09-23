@@ -139,13 +139,15 @@ export function getEmployeeBohGetOrder(
 }
 
 // 完成備餐 (修改OrderStatusEnum)
-export function getEmployeeBohOrderCompleted(orderId: number, data?: any) {
+export function getEmployeeBohOrderCompleted(orderId: number) {
   return request({
     url: `/boh/orderCompleted`,
-    method: 'get',
+    method: 'post',
     headers: {
       Authorization: `Bearer ${localStorage.boh_token}`
     },
-    data
+    data: {
+      orderId
+    }
   })
 }

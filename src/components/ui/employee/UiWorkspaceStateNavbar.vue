@@ -28,7 +28,20 @@ const props = defineProps({
         <li
           :id="state"
           class="state-navbar-btn"
-          :class="index === nowOrderStatusClick ? 'press-state-navbar-btn' : ''"
+          :class="[
+            index === nowOrderStatusClick ? 'press-state-navbar-btn' : '',
+            index === 0 ? 'state-navbar-btn0' : '',
+            index === 1 ? 'state-navbar-btn1' : '',
+            index === 2 ? 'state-navbar-btn2' : '',
+            index === 3 ? 'state-navbar-btn3' : '',
+            index === 4 ? 'state-navbar-btn4' : '',
+
+            index === nowOrderStatusClick && index === 0 ? 'press-state-navbar-btn0' : '',
+            index === nowOrderStatusClick && index === 1 ? 'press-state-navbar-btn1' : '',
+            index === nowOrderStatusClick && index === 2 ? 'press-state-navbar-btn2' : '',
+            index === nowOrderStatusClick && index === 3 ? 'press-state-navbar-btn3' : '',
+            index === nowOrderStatusClick && index === 4 ? 'press-state-navbar-btn4' : ''
+          ]"
           @click="functionDataStore.getNowOrderStatusClickFunction(index)"
         >
           {{ state }}
@@ -56,13 +69,43 @@ const props = defineProps({
   @apply rounded-full bg-primary-300 px-1 text-xs font-medium text-neutral-950;
 }
 .press-state-navbar-btn {
-  @apply font-bold text-neutral-950;
-  @apply shadow-[inset_0_-6px_0_-3px] shadow-neutral-950;
+  @apply font-bold shadow-[inset_0_-6px_0_-3px];
 }
 .state-navbar-btn:hover {
-  @apply font-bold text-neutral-950;
+  @apply font-bold;
 }
 .scrollbar::-webkit-scrollbar {
   /* @apply hidden; */
+}
+.press-state-navbar-btn0 {
+  @apply text-neutral-950 shadow-neutral-950;
+}
+.press-state-navbar-btn1 {
+  @apply text-secondary-600 shadow-secondary-600;
+}
+.press-state-navbar-btn2 {
+  @apply text-primary-600 shadow-primary-600;
+}
+.press-state-navbar-btn3 {
+  @apply text-tertiary-600 shadow-tertiary-600;
+}
+.press-state-navbar-btn4 {
+  @apply text-neutral-600 shadow-neutral-600;
+}
+
+.state-navbar-btn0:hover {
+  @apply text-neutral-950;
+}
+.state-navbar-btn1:hover {
+  @apply text-secondary-600;
+}
+.state-navbar-btn2:hover {
+  @apply text-primary-600;
+}
+.state-navbar-btn3:hover {
+  @apply text-tertiary-600;
+}
+.state-navbar-btn4:hover {
+  @apply text-neutral-600;
 }
 </style>

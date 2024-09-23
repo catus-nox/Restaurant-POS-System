@@ -38,8 +38,9 @@ onMounted(async () => {
   }
 })
 
-async function bohOrderCompletedFunction() {
-  // await employeeStorebohOrderShow
+// 完成備餐 (修改OrderStatusEnum)
+async function bohOrderCompletedFunction(value: number) {
+  await employeeStore.fetchEmployeeBohOrderCompleted(value)
 }
 </script>
 

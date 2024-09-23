@@ -22,9 +22,10 @@ const router = createRouter({
       // component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/menu',
+      path: '/menu/:table?',
       name: 'menu',
-      component: CustomerMenuView
+      component: CustomerMenuView,
+      props: (route) => ({ table: Number(route.params.table) || undefined })
     },
     {
       path: '/productOrder/:id',

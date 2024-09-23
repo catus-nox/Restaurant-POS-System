@@ -300,8 +300,7 @@ export const useEmployeeStore = defineStore('employee', () => {
   //完成訂單(送餐)
   const fetchEmployeeFohOrderCompleted = async (orderId: number) => {
     try {
-      const response = await postEmployeeFohOrderCompleted(orderId)
-      console.log(response)
+      await postEmployeeFohOrderCompleted(orderId)
     } catch (error) {
       console.log(error)
     }
@@ -338,8 +337,7 @@ export const useEmployeeStore = defineStore('employee', () => {
   // 完成備餐 (修改OrderStatusEnum)
   const fetchEmployeeBohOrderCompleted = async (orderId: number) => {
     try {
-      const response = await getEmployeeBohOrderCompleted(orderId)
-      console.log(response)
+      await getEmployeeBohOrderCompleted(orderId)
     } catch (error) {
       console.log(error)
     }
@@ -358,6 +356,7 @@ export const useEmployeeStore = defineStore('employee', () => {
     getFohFetOrderDetailData,
     fetchEmployeeFohGetOrderDetail,
     fetchEmployeeFohCheckout,
+    fetchEmployeeFohOrderCompleted,
 
     getBohGetOrderData,
     fetchEmployeeBohGetOrder,
