@@ -38,7 +38,15 @@ async function fohGetOrderDetailShow() {
     @click="fohGetOrderDetailShow"
   >
     <div class="inline-flex grow flex-col">
-      <div class="inline-flex flex-wrap items-center justify-between bg-primary-300 p-4">
+      <div
+        class="inline-flex flex-wrap items-center justify-between p-4"
+        :class="[
+          props.orderData.orderStatus === '待結帳' ? 'bg-secondary-200' : '',
+          props.orderData.orderStatus === '準備中' ? 'bg-primary-300' : '',
+          props.orderData.orderStatus === '待取餐' ? 'bg-tertiary-300' : '',
+          props.orderData.orderStatus === '已完成' ? 'bg-neutral-200' : ''
+        ]"
+      >
         <div class="text-h4 font-bold text-neutral-950">{{ props.orderData.typeAndNumber }}</div>
         <div class="text-base font-normal text-neutral-950">{{ props.orderData.orderStatus }}</div>
       </div>
