@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 import {
   getCustomerGetMenuCategory,
   getCustomerGetMenuItem,
@@ -16,8 +17,12 @@ import {
   postConfirmLinePayRequest,
   getOrder
 } from '@/models/customer/api'
+import router from '@/router'
 
 export const useCustomerStore = defineStore('customer', () => {
+  //-----api
+  const customerFunction = useAllFunctionDataStore()
+
   //------
   //state
 
@@ -166,7 +171,8 @@ export const useCustomerStore = defineStore('customer', () => {
         customization: data.customization,
         serving: data.serving
       })
-      alert(response.data.message)
+      customerFunction.getAlertStatusFunction(true, response.data.message)
+      router.push({ name: 'menu' })
     } catch (error) {
       console.log(error)
     }

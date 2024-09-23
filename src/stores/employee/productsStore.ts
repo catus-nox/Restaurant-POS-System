@@ -12,7 +12,12 @@ import {
   getEmployeeBohOrderCompleted
 } from '@/models/employee/api'
 import router from '@/router'
+import { useAllFunctionDataStore } from '@/stores/functionDataStore'
+
 export const useEmployeeStore = defineStore('employee', () => {
+  //-----api
+  const customerFunction = useAllFunctionDataStore()
+
   //------
   //state
 
@@ -56,7 +61,7 @@ export const useEmployeeStore = defineStore('employee', () => {
         password: data.password
       })
       if (response.data.statusCode === 400) {
-        alert(`${response.data.message}，去找老闆!`)
+        customerFunction.getAlertStatusFunction(true, `${response.data.message}，去找老闆!`, 2)
       } else {
         //員工資訊
         loginData.value = response.data.data
@@ -73,7 +78,12 @@ export const useEmployeeStore = defineStore('employee', () => {
           localStorage.boh_token = loginData.value.token
           router.push({ name: 'employeeBohOrder' })
         }
-        alert(`${loginData.value.username} ${response.data.message}`)
+
+        customerFunction.getAlertStatusFunction(
+          true,
+          `${loginData.value.username} ${response.data.message}`,
+          1
+        )
       }
     } catch (error) {
       console.log(error)
@@ -96,9 +106,13 @@ export const useEmployeeStore = defineStore('employee', () => {
       const response = await postEmployeeLogout(getDataString)
 
       if (response.data.statusCode === 400) {
-        alert(response.data.message)
+        customerFunction.getAlertStatusFunction(true, response.data.message, 2)
       } else {
-        alert(`${loginData.value.username} ${response.data.message}`)
+        customerFunction.getAlertStatusFunction(
+          true,
+          `${loginData.value.username} ${response.data.message}`,
+          1
+        )
         if (identity === 1) {
           localStorage.foh_identity = null
           localStorage.foh_username = null
