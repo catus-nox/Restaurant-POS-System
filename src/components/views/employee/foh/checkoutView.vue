@@ -141,6 +141,7 @@ onMounted(async () => {
       <div class="dropdown" @click="nowClickFunction(1)">
         <div class="flex items-center gap-3">
           <svg
+            class="h-7 w-7"
             width="28"
             height="28"
             viewBox="0 0 28 28"
@@ -242,6 +243,7 @@ onMounted(async () => {
       <div class="dropdown" @click="nowClickFunction(2)">
         <div class="flex items-center gap-3">
           <svg
+            class="h-7 w-7"
             width="28"
             height="28"
             viewBox="0 0 28 28"
@@ -341,6 +343,7 @@ onMounted(async () => {
       <div class="dropdown">
         <div class="flex items-center gap-3">
           <svg
+            class="h-7 w-7"
             width="28"
             height="28"
             viewBox="0 0 28 28"
