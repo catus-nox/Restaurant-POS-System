@@ -130,7 +130,7 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
     nowOrderDetailId.value = value
   }
   //取得客人現金
-  function getNowCustomerCashFunction(value: number) {
+  function getNowCustomerCashFunction(value?: number) {
     nowCustomerCash.value = value
   }
   //取得客人備註
@@ -143,7 +143,7 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   }
 
   //取得客人載具
-  function getNowCustomerReceiptFunction(value: string) {
+  function getNowCustomerReceiptFunction(value?: string) {
     nowCustomerReceipt.value = value
   }
   //取得客人載具驗證結果

@@ -30,7 +30,10 @@ const cash = computed({
 })
 // const cash = ref<number>()
 //備註
-const note = ref<any>()
+const note = computed({
+  get: () => functionDataStore.getNowCustomerNote,
+  set: (value) => functionDataStore.getNowCustomerNote(value)
+})
 //-----
 //發票資訊
 const payReceiptData: {
@@ -114,9 +117,28 @@ function nowClickFunction(value: number) {
 //-----
 //取得單一訂單資訊
 const fohFetOrderDetailData = computed(() => employeeStore.getFohFetOrderDetailData)
+
 onMounted(async () => {
-  //   //取得單一訂單資訊
+  //取得單一訂單資訊
   await employeeStore.fetchEmployeeFohGetOrderDetail(productId)
+
+  //取得詳細訂單選單狀態 初始:打開
+  functionDataStore.getOrderDetailsNavBarIsShowFunction(true)
+  //取得客人現金 初始:無
+  functionDataStore.getNowCustomerCashFunction(undefined)
+  //取得客人發票選項
+  functionDataStore.getNowCustomerPayFunction('紙本')
+  //取得客人載具
+  functionDataStore.getNowCustomerReceiptFunction('')
+  //取得客人統編
+  functionDataStore.getNowCustomerTaxIdFunction('')
+  //取得客人手機
+  functionDataStore.getNowCustomerPhoneNumberFunction(
+    fohFetOrderDetailData.value.phone ? fohFetOrderDetailData.value.phone : ''
+  )
+  fohFetOrderDetailData.value.phone ? (isTouchPhoneNumber.value = true) : ''
+  //取得客人備註
+  functionDataStore.getNowCustomerNoteFunction('')
 })
 </script>
 
