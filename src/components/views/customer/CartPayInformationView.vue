@@ -44,8 +44,8 @@ const confirmLinePayRequestIsPayMent: any = computed(
 //-----
 //發票資訊
 const customerStatus = [
-  { name: '現金付款', id: '現金付款' },
-  { name: 'Line Pay', id: 'linePay' }
+  { name: 'Line Pay', id: 'linePay' },
+  { name: '現金付款', id: '現金付款' }
 ]
 const payData: {
   name: string
@@ -124,18 +124,20 @@ async function confirmOrder() {
 
   //-----
   // 判斷付款資訊打api
-  if (nowClick.value == 0) {
+  if (nowClick.value == 1) {
+    //現金付款
     await customerStore.fetchCustomerPostConfirmOrderCash(data)
     toRouterName('cartConfirmInformation')
-  } else if (nowClick.value == 1) {
+  } else if (nowClick.value == 0) {
+    // line pay
     // data.confirmUrl = `${baseUrl}/cartConfirmInformation/${localStorage.customer_guid}`
     data.confirmUrl = `${baseUrl}/cartPayInformation`
     data.cancelUrl = `${baseUrl}/cartPayInformation`
     await customerStore.fetchCustomerPostConfirmOrderLinePay(data)
     //跳轉往址
-    window.open(confirmOrderLinePayPaymentUrlData.value, '_blank')
-
-    // localStorageClear()
+    // window.open(confirmOrderLinePayPaymentUrlData.value, '_blank')
+    //前往網址
+    window.location.href = confirmOrderLinePayPaymentUrlData.value
   }
 }
 
@@ -190,33 +192,18 @@ onMounted(async () => {
       </div>
       <div class="flex gap-3">
         <template v-for="(sta, index) in customerStatus" :key="index">
-          <template v-if="index === nowClick">
-            <div @click="toggleMenu(index)">
-              <UiButton
-                :btn-style="'style4'"
-                :btn-padding="'px-6 py-2'"
-                :icon-size="''"
-                :is-only-icon="false"
-                :font-size="'text-xs font-medium'"
-                :btn-press="'press4'"
-              >
-                {{ sta.name }}
-              </UiButton>
-            </div>
-          </template>
-          <template v-else>
-            <div @click="toggleMenu(index)">
-              <UiButton
-                :btn-style="'style4'"
-                :btn-padding="'px-6 py-2'"
-                :icon-size="''"
-                :is-only-icon="false"
-                :font-size="'text-xs font-medium'"
-              >
-                {{ sta.name }}
-              </UiButton>
-            </div>
-          </template>
+          <div @click="toggleMenu(index)">
+            <UiButton
+              :btn-style="'style4'"
+              :btn-padding="'px-6 py-2'"
+              :icon-size="''"
+              :is-only-icon="false"
+              :font-size="'text-xs font-medium'"
+              :btn-press="index === nowClick ? 'press4' : ''"
+            >
+              {{ sta.name }}
+            </UiButton>
+          </div>
         </template>
       </div>
     </div>
