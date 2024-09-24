@@ -259,7 +259,9 @@ onMounted(async () => {
       </div>
     </div>
 
-    <div class="flex grow basis-0 flex-col gap-2 px-6 py-4 text-base font-normal text-neutral-950">
+    <div
+      class="flex grow basis-0 flex-col gap-2 overflow-y-auto px-6 py-4 text-base font-normal text-neutral-950"
+    >
       <template v-for="(item, index) in orderDetailData.items" :key="index">
         <div class="inline-flex items-center justify-between">
           <div class="inline-flex grow flex-col">
