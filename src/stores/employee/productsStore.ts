@@ -108,11 +108,7 @@ export const useEmployeeStore = defineStore('employee', () => {
       if (response.data.statusCode === 400) {
         customerFunction.getAlertStatusFunction(true, response.data.message, 2)
       } else {
-        customerFunction.getAlertStatusFunction(
-          true,
-          `${loginData.value.username} ${response.data.message}`,
-          1
-        )
+        customerFunction.getAlertStatusFunction(true, response.data.message, 1)
         if (identity === 1) {
           localStorage.foh_identity = null
           localStorage.foh_username = null

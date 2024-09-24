@@ -121,6 +121,10 @@ function statusBtnFunction(status: string, orderId: number) {
     geMeal(orderId)
   }
 }
+
+function employeeFohGetOrderDetailPosition(): boolean {
+  return ['employeeFohCheckout'].includes(route.name as string)
+}
 onMounted(async () => {
   //取得單一訂單資訊
   await employeeStore.fetchEmployeeFohGetOrderDetail(productId)
@@ -138,6 +142,7 @@ onMounted(async () => {
       class="relative inline-flex items-center justify-center bg-primary-700 px-2.5 py-3 text-white"
     >
       <span
+        v-if="!employeeFohGetOrderDetailPosition()"
         class="absolute right-2.5 top-3 cursor-pointer"
         @click="functionDataStore.getOrderDetailsNavBarIsShowFunction(false)"
       >
