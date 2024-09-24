@@ -101,6 +101,10 @@ const isTouchPhoneNumber = ref<boolean>(false)
 //
 const nowClick = ref()
 function nowClickFunction(value: number) {
+  if (nowClick.value === 1) {
+    nowClick.value = value
+    return
+  }
   if (nowClick.value == value) {
     nowClick.value = null
     return
@@ -145,7 +149,7 @@ onMounted(async () => {
         :class="nowClick == index + 1 ? 'click' : ''"
         @click="index === 0 ? nowClickFunction(index + 1) : ''"
       >
-        <div class="dropdown" @click="nowClickFunction(index + 1)">
+        <div class="dropdown" @click="index !== 0 ? nowClickFunction(index + 1) : ''">
           <div class="flex items-center gap-3">
             <svg
               v-if="index === 0"
