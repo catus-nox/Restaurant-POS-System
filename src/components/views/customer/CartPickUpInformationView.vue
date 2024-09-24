@@ -63,9 +63,6 @@ const isTouchPhoneNumber = ref<boolean>(false)
 //-----
 //桌號
 //取得掃碼桌號
-
-console.log(localStorage.customer_table)
-
 const goCheckoutTable = ref<any>(
   localStorage.customer_table === undefined ||
     localStorage.customer_table === 'undefined' ||
@@ -381,7 +378,7 @@ onMounted(async () => {
           </template>
         </template>
       </template>
-      <template v-if="orderInfo && orderInfo.count == 0">
+      <template v-if="(orderInfo && orderInfo.count == 0) || !orderInfo">
         <div
           class="flex items-center justify-center rounded-lg bg-neutral-200 p-3 shadow-[inset_0_0_0_1px] shadow-neutral-300"
         >
@@ -490,7 +487,7 @@ onMounted(async () => {
       :font-size="'text justify-between flex w-full items-center'"
       :icon-size="'w-auto'"
       @define-function="goCheckout"
-      :is-disabled="orderInfo && orderInfo.count == 0"
+      :is-disabled="(orderInfo && orderInfo.count == 0) || !orderInfo"
     >
       <template #left-icon v-if="orderInfo">
         <span
