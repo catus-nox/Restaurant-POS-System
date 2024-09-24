@@ -64,7 +64,9 @@ const isTouchPhoneNumber = ref<boolean>(false)
 //桌號
 //取得掃碼桌號
 
-const goCheckoutTable = ref<any>(localStorage.customer_table === undefined ? '' : '')
+const goCheckoutTable = ref<any>(
+  localStorage.customer_table === undefined ? '' : localStorage.customer_table
+)
 //桌號驗證結果
 const isValidTable = ref<boolean>(false)
 
