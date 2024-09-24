@@ -68,6 +68,7 @@ console.log(localStorage.customer_table)
 
 const goCheckoutTable = ref<any>(
   localStorage.customer_table === undefined ||
+    localStorage.customer_table === 'undefined' ||
     localStorage.customer_table === null ||
     !localStorage.customer_table
     ? ''
