@@ -25,7 +25,7 @@ const router = createRouter({
       path: '/menu/:table?',
       name: 'menu',
       component: CustomerMenuView,
-      props: (route) => ({ table: Number(route.params.table) || undefined })
+      props: (route) => ({ table: route.params.table ? Number(route.params.table) : null })
     },
     {
       path: '/productOrder/:id',
