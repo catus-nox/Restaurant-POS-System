@@ -41,6 +41,7 @@ onMounted(async () => {
         >
           <template #only-icon>
             <svg
+              width="w-6 h-6"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -70,6 +71,7 @@ onMounted(async () => {
         >
           <template #only-icon>
             <svg
+              width="w-6 h-6"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -99,6 +101,7 @@ onMounted(async () => {
       >
         <template #only-icon>
           <svg
+            width="w-6 h-6"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -130,6 +133,7 @@ onMounted(async () => {
             >{{ displayOrderQuantity }}</span
           >
           <svg
+            width="w-6 h-6"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
