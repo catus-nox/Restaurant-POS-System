@@ -282,6 +282,7 @@ onMounted(async () => {
           :min="takeTimeDayComputed[0]"
           :max="takeTimeDayComputed[takeTimeDayComputed.length - 1]"
           v-model="goCheckoutTakeDay"
+          :default-class="'text-left'"
         >
           <template #helper></template>
           <template #validationMessage></template>

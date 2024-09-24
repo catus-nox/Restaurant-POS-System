@@ -63,6 +63,9 @@ const props = defineProps({
     validator: (value: string): boolean => {
       return ['error', ''].includes(value)
     }
+  },
+  defaultClass: {
+    type: String
   }
 })
 defineEmits(['defineInputFunction', 'defineFocusFunction'])
@@ -94,7 +97,7 @@ const model = defineModel()
             :step="props.step"
             :placeholder="props.placeholder"
             class="focus:placeholder:text-neutral-950focus:shadow-[0_0_0_2px] absolute left-0 top-0 z-0 h-full w-full rounded-full border-none bg-white p-0 py-2 pl-12 pr-3 font-medium text-neutral-500 shadow-[0_0_0_1px] shadow-neutral-950 placeholder:text-neutral-500 hover:text-neutral-500 hover:shadow-[0_0_0_2px] hover:shadow-primary-600 hover:placeholder:text-neutral-500 focus:text-neutral-950 focus:shadow-neutral-950 focus:ring-0 disabled:text-neutral-950 disabled:shadow-[0_0_0_1px] disabled:shadow-neutral-400 disabled:placeholder:text-neutral-950"
-            :class="[props.error]"
+            :class="[props.error, defaultClass]"
             v-model="model"
             @focus="$emit('defineFocusFunction')"
             @input="$emit('defineInputFunction')"
