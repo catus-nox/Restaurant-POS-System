@@ -60,7 +60,7 @@ watch(alertStatus, (newValue) => {
   modal?.hide()
   if (!pageCustomerOrEmployeeState()) {
     modalOptions.backdropClasses =
-      'bg-neutral-800/40 fixed inset-0 left-1/2 -translate-x-1/2 z-50 max-w-screen-sm'
+      'bg-neutral-800/40 fixed inset-0 left-1/2 -translate-x-1/2 z-50 max-w-screen-sm w-full'
   } else {
     modalOptions.backdropClasses =
       'bg-neutral-800/40 fixed inset-0 h-screen w-full max-w-screen-xl left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 max-h-[834px] z-50'
