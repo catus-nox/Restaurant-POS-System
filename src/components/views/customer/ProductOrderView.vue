@@ -32,8 +32,8 @@ interface Product {
 interface PickedOption {
   id: number
   name: string
-  selected: any
-  options: string[]
+  selected?: any
+  options?: string[]
 }
 //-----api
 const route = useRoute()
@@ -89,6 +89,10 @@ const pickedOptions: PickedOption[] = [
     name: '要不要鮮奶油',
     selected: '否',
     options: ['否', '是']
+  },
+  {
+    id: 6,
+    name: '加購項目'
   }
 ]
 //抓取包含的自訂義項目
@@ -220,67 +224,69 @@ onMounted(async () => {
     <div class="mx-3 flex flex-col gap-3">
       <div class="flex flex-col gap-3">
         <template v-for="(productPickedOption, index) in productPickedOptions" :key="index">
-          <div class="flex items-center justify-between">
-            <div class="text-h6 text-black">{{ productPickedOption.name }}</div>
-            <UiBadge :style="'radioBadge'" />
-          </div>
-          <div class="flex flex-col gap-2">
-            <UiInputOption
-              v-for="PickedOption in productPickedOption.options"
-              :key="PickedOption"
-              :id="PickedOption"
-              :value="PickedOption"
-              :type="'radio'"
-              v-model="productPickedOption.selected"
-            >
-              {{ PickedOption }}
-            </UiInputOption>
-          </div>
+          <template v-if="productPickedOption.id != 6">
+            <div class="flex items-center justify-between">
+              <div class="text-h6 text-black">{{ productPickedOption.name }}</div>
+              <UiBadge :style="'radioBadge'" />
+            </div>
+            <div class="flex flex-col gap-2">
+              <UiInputOption
+                v-for="PickedOption in productPickedOption.options"
+                :key="PickedOption"
+                :id="PickedOption"
+                :value="PickedOption"
+                :type="'radio'"
+                v-model="productPickedOption.selected"
+              >
+                {{ PickedOption }}
+              </UiInputOption>
+            </div>
+          </template>
+          <template v-else>
+            <div class="flex items-center justify-between">
+              <div class="text-h6 text-black">{{ productPickedOption.name }}</div>
+              <UiBadge :style="'checkboxBadge'" />
+            </div>
+            <div class="flex flex-col gap-2">
+              <template
+                v-if="productAddOnListData.length > 0 && productAddOnListData[0].categoryItem"
+              >
+                <UiInputOption
+                  v-for="productAddOn in productAddOnListData[0].categoryItem"
+                  :key="String(productAddOn.productId)"
+                  :id="String(productAddOn.productId)"
+                  :value="productAddOn.productId"
+                  :type="'checkbox'"
+                  :border-radius="'rounded'"
+                  v-model="productAddOnListSelected"
+                >
+                  {{ productAddOn.name }}
+                  <template #noteIcon>
+                    <svg
+                      class="h-2 w-2 text-primary-800"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 12h14m-7 7V5"
+                      />
+                    </svg>
+                  </template>
+                  <template #note> $ {{ productAddOn.price }}</template>
+                </UiInputOption>
+              </template>
+            </div>
+          </template>
         </template>
       </div>
-
-      <div class="flex flex-col gap-3">
-        <div class="flex items-center justify-between">
-          <div class="text-h6 text-black">加購項目</div>
-          <UiBadge :style="'checkboxBadge'" />
-        </div>
-        <div class="flex flex-col gap-2">
-          <template v-if="productAddOnListData.length > 0 && productAddOnListData[0].categoryItem">
-            <UiInputOption
-              v-for="productAddOn in productAddOnListData[0].categoryItem"
-              :key="String(productAddOn.productId)"
-              :id="String(productAddOn.productId)"
-              :value="productAddOn.productId"
-              :type="'checkbox'"
-              :border-radius="'rounded'"
-              v-model="productAddOnListSelected"
-            >
-              {{ productAddOn.name }}
-              <template #noteIcon>
-                <svg
-                  class="h-2 w-2 text-primary-800"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 12h14m-7 7V5"
-                  />
-                </svg>
-              </template>
-              <template #note> $ {{ productAddOn.price }}</template>
-            </UiInputOption>
-          </template>
-        </div>
-      </div>
-
       <div class="flex flex-col gap-3">
         <div class="flex items-center justify-between">
           <div class="text-h6 text-black">餐點備註</div>
