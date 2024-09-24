@@ -17,9 +17,14 @@ import { useRoute } from 'vue-router'
 //-----
 const route = useRoute()
 //-----
-//商品id
-const table: number | undefined = Number(route.params.table) || undefined
-localStorage.customer_table = table
+const props = defineProps<{
+  table: number | null
+}>()
+//router桌號
+// 如果需要將 table 存儲到 localStorage
+if (props.table) {
+  localStorage.setItem('customer_table', String(props.table))
+}
 //搜尋
 const searchInput = ref('')
 //-----選單滑動+至頂滑動
