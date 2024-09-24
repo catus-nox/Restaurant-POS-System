@@ -39,7 +39,7 @@ for (let index = 0; index < props.orderData.items.length; index++) {
 
 <template>
   <div
-    class="order inline-flex h-fit max-h-full min-w-80 cursor-pointer flex-col overflow-hidden rounded-xl bg-white shadow-[0_0_0_2px] shadow-neutral-900"
+    class="order inline-flex h-fit max-h-full w-full max-w-[calc(1rem*19.75)] cursor-pointer flex-col overflow-hidden rounded-xl bg-white shadow-[0_0_0_2px] shadow-neutral-900"
   >
     <div
       class="inline-flex flex-col gap-4 p-4 font-bold text-black shadow-[0_2px_0_-1px] shadow-neutral-900"
