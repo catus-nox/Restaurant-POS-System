@@ -22,6 +22,7 @@ const nowOrderTypeClick = computed(() => functionDataStore.getNowOrderTypeClick)
       >
         <template v-if="btn == orderType[0]">
           <svg
+            class="h-11 w-11"
             width="45"
             height="45"
             viewBox="0 0 45 45"
@@ -58,6 +59,7 @@ const nowOrderTypeClick = computed(() => functionDataStore.getNowOrderTypeClick)
         </template>
         <template v-if="btn == orderType[1]">
           <svg
+            class="h-11 w-11"
             width="45"
             height="45"
             viewBox="0 0 45 45"
@@ -128,6 +130,7 @@ const nowOrderTypeClick = computed(() => functionDataStore.getNowOrderTypeClick)
         </template>
         <template v-if="btn == orderType[2]">
           <svg
+            class="h-11 w-11"
             width="45"
             height="45"
             viewBox="0 0 45 45"
@@ -171,6 +174,7 @@ const nowOrderTypeClick = computed(() => functionDataStore.getNowOrderTypeClick)
         </template>
         <template v-if="orderType[3] && btn == orderType[3]">
           <svg
+            class="h-11 w-11"
             width="45"
             height="45"
             viewBox="0 0 45 45"
