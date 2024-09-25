@@ -26,21 +26,21 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     // Do something with response data
-    console.log(`----------------------`)
+    // console.log(`----------------------`)
 
     if (response.data.statusCode === 400) {
-      console.log(response.data.message)
+      // console.log(response.data.message)
     } else if (response.data.statusCode === 401) {
       if (localStorage.boh_identity || localStorage.foh_identity) {
         router.push({ name: 'employeeLogin' })
       }
-      console.log(response.data.message)
+      // console.log(response.data.message)
     } else {
       console.log(response.data.message)
-      console.log(response.data.data)
+      // console.log(response.data.data)
     }
 
-    console.log(response)
+    // console.log(response)
 
     return response
   },

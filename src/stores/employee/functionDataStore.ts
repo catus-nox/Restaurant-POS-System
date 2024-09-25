@@ -21,6 +21,7 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   const orderBy: ('時間越早優先' | '時間越晚優先')[] = ['時間越早優先', '時間越晚優先']
   //Status選單選擇
   const nowOrderStatusClick = ref(0)
+
   //type選單選擇
   const nowOrderTypeClick = ref(0)
   //orderBy 選項選擇
@@ -173,21 +174,40 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
     orderDetailsNavBarIsShow.value = value
   }
 
-  //選單顯示
-  async function orderShow() {
-    //外場訂單總覽
-    const orderGetData: any = {
-      orderStatus: getNowOrderStatusClick.value,
-      type: getNowOrderTypeClick.value,
-      orderBy: getNowOrderBySelect.value,
-      search: getNowSearch.value
-    }
+  const orderShow = async () => {
+    try {
+      //外場訂單總覽
+      const orderGetData: any = {
+        orderStatus: getNowOrderStatusClick.value,
+        type: getNowOrderTypeClick.value,
+        orderBy: getNowOrderBySelect.value,
+        search: getNowSearch.value
+      }
 
-    //取得今日訂單數量與頁數
-    await useEmployeeStore().fetchEmployeeFohGetAllOrderCount()
-    //外場訂單總覽
-    await useEmployeeStore().fetchEmployeeFohGetOrder(orderGetData)
+      //取得今日訂單數量與頁數
+      await useEmployeeStore().fetchEmployeeFohGetAllOrderCount()
+      //外場訂單總覽
+      await useEmployeeStore().fetchEmployeeFohGetOrder(orderGetData)
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+  //選單顯示
+  // async function orderShow() {
+  //   //外場訂單總覽
+  //   const orderGetData: any = {
+  //     orderStatus: getNowOrderStatusClick.value,
+  //     type: getNowOrderTypeClick.value,
+  //     orderBy: getNowOrderBySelect.value,
+  //     search: getNowSearch.value
+  //   }
+
+  //   //取得今日訂單數量與頁數
+  //   await useEmployeeStore().fetchEmployeeFohGetAllOrderCount()
+  //   //外場訂單總覽
+  //   await useEmployeeStore().fetchEmployeeFohGetOrder(orderGetData)
+  // }
 
   //boh選單顯示
   async function bohOrderShow() {

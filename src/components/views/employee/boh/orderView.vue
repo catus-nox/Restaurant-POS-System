@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
 import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
 import EmployeeUiSearchAndFilterBar from '@/components/ui/employee/UiSearchAndFilterBar.vue'
@@ -10,23 +10,27 @@ import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 //api
 const employeeStore = useEmployeeStore()
 const functionDataStore = useFunctionDataStore()
-const customerFunction = useAllFunctionDataStore()
+const allFunctionDataStore = useAllFunctionDataStore()
 //-----
 //內場訂單總覽
 const bohGetOrder = computed(() => employeeStore.getBohGetOrderData)
 //點擊
 let clickGroup: any = ref([]) // 初始化為一個空陣列
 
+// 完成備餐 (修改OrderStatusEnum)
+async function bohOrderCompletedFunction(value: number) {
+  await employeeStore.fetchEmployeeBohOrderCompleted(value)
+}
 //-----
 onMounted(async () => {
-  //畔對是否有登入
+  //判斷是否有登入
   if (
     localStorage.boh_identity == 'undefined' ||
     localStorage.boh_identity == 'null' ||
     !localStorage.boh_identity
   ) {
     router.push({ name: 'employeeLogin' })
-    customerFunction.getAlertStatusFunction(true, '請先登入', 2)
+    allFunctionDataStore.getAlertStatusFunction(true, '請先登入', 2)
     return
   }
 
@@ -38,10 +42,19 @@ onMounted(async () => {
   }
 })
 
-// 完成備餐 (修改OrderStatusEnum)
-async function bohOrderCompletedFunction(value: number) {
-  await employeeStore.fetchEmployeeBohOrderCompleted(value)
-}
+//-----
+let intervalId: any = null
+// 組件開啟時加定時器
+onMounted(() => {
+  intervalId = setInterval(() => {
+    //外場訂單總覽
+    functionDataStore.bohOrderShow()
+  }, allFunctionDataStore.dataGrid)
+})
+// 組件卸載時清除定時器
+onUnmounted(() => {
+  clearInterval(intervalId)
+})
 </script>
 
 <template>

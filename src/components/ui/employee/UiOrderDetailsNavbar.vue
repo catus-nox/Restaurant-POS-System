@@ -126,6 +126,8 @@ function employeeFohGetOrderDetailPosition(): boolean {
   return ['employeeFohCheckout'].includes(route.name as string)
 }
 onMounted(async () => {
+  //判斷是否有訂單資訊
+  if (!orderDetailData.value) return
   //取得單一訂單資訊
   await employeeStore.fetchEmployeeFohGetOrderDetail(productId)
 })
