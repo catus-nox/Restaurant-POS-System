@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, onUnmounted } from 'vue'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
 import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
 import router from '@/router'
+import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 import {
   validateReceipt,
   receiptValidateData,
@@ -18,6 +19,7 @@ import { useRoute } from 'vue-router'
 //api
 const employeeStore = useEmployeeStore()
 const functionDataStore = useFunctionDataStore()
+const allFunctionDataStore = useAllFunctionDataStore()
 //-----
 const productId: number = Number(useRoute().params.id)
 //-----
@@ -139,6 +141,19 @@ onMounted(async () => {
   fohFetOrderDetailData.value.phone ? (isTouchPhoneNumber.value = true) : ''
   //取得客人備註
   functionDataStore.getNowCustomerNoteFunction('')
+})
+
+let intervalId: any = null
+// 組件開啟時加定時器
+onMounted(() => {
+  intervalId = setInterval(() => {
+    //外場訂單總覽
+    employeeStore.fetchEmployeeFohGetOrderDetail(productId)
+  }, allFunctionDataStore.dataGrid)
+})
+// 組件卸載時清除定時器
+onUnmounted(() => {
+  clearInterval(intervalId)
 })
 </script>
 

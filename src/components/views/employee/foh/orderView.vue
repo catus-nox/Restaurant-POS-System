@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
 import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
 import EmployeeUiSearchAndFilterBar from '@/components/ui/employee/UiSearchAndFilterBar.vue'
@@ -12,29 +12,42 @@ import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 //api
 const employeeStore = useEmployeeStore()
 const functionDataStore = useFunctionDataStore()
-const customerFunction = useAllFunctionDataStore()
+const allFunctionDataStore = useAllFunctionDataStore()
 //-----
 //取得今日全部訂單數量與頁數
 const fohGetOrderAllCountData = computed(() => employeeStore.getFohGetOrderAllCountData)
 //外場訂單總覽
 const fohGetOrder: any = computed(() => employeeStore.getFohGetOrderData)
 //-----
+
 onMounted(async () => {
-  //
   if (
     localStorage.foh_identity == 'undefined' ||
     localStorage.foh_identity == 'null' ||
     !localStorage.foh_identity
   ) {
     router.push({ name: 'employeeLogin' })
-    customerFunction.getAlertStatusFunction(true, '請先登入', 2)
+    allFunctionDataStore.getAlertStatusFunction(true, '請先登入', 2)
     return
   }
-
   //取得今日全部訂單數量與頁數
   await employeeStore.fetchEmployeeFohGetAllOrderCount()
   //外場訂單總覽
   await employeeStore.fetchEmployeeFohGetOrder()
+})
+
+//-----
+let intervalId: any = null
+// 組件開啟時加定時器
+onMounted(() => {
+  intervalId = setInterval(() => {
+    //選單顯示.orderShow()
+    functionDataStore.orderShow()
+  }, allFunctionDataStore.dataGrid)
+})
+// 組件卸載時清除定時器
+onUnmounted(() => {
+  clearInterval(intervalId)
 })
 </script>
 

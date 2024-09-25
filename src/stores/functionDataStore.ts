@@ -3,6 +3,9 @@ import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 export const useAllFunctionDataStore = defineStore('allFunction', () => {
   //------
+  //每?秒抓一次資料
+  const dataGrid = 5000
+
   //state
   const route = useRoute()
 
@@ -40,6 +43,7 @@ export const useAllFunctionDataStore = defineStore('allFunction', () => {
   }
 
   return {
+    dataGrid,
     getAlertStatus,
     getAlertStatusFunction,
     getCustomerOrEmployee,
