@@ -17,7 +17,7 @@ const alertStatus = computed(() => customerFunction.getAlertStatus)
 // 自動消失
 function showAlert() {
   setTimeout(() => {
-    alertStatus.value.status === 1 ? customerFunction.getAlertStatusFunction(false) : ''
+    customerFunction.getAlertStatusFunction(false)
   }, duration)
 }
 //-----
