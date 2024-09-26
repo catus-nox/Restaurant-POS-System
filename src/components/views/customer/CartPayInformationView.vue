@@ -323,7 +323,7 @@ onMounted(async () => {
         >
       </template>
 
-      <span>前往結帳</span>
+      <span>送出訂單</span>
 
       <template #right-icon v-if="orderInfo">
         <span>${{ orderInfo.totalAmount }}</span>
