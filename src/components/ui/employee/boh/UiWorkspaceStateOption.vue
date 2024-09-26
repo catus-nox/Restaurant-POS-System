@@ -74,7 +74,10 @@ for (let index = 0; index < props.orderData.items.length; index++) {
         >
           <div class="orderClickText text-4xl">{{ PickedOption.Name }}</div>
           <div class="orderClickText">x {{ PickedOption.Quantity }}</div>
-          <div class="inline-flex items-center gap-3 bg-primary-100 p-2 font-normal">
+          <div
+            v-if="PickedOption.Customization"
+            class="inline-flex items-center gap-3 bg-primary-100 p-2 font-normal"
+          >
             {{ PickedOption.Customization }}
           </div>
         </div>
