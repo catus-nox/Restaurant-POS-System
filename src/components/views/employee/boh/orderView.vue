@@ -35,7 +35,7 @@ onMounted(async () => {
   }
 
   //內場訂單總覽
-  await employeeStore.fetchEmployeeBohGetOrder()
+  await employeeFunctionDataStore.bohOrderShow()
   //點擊
   for (let i = 0; i < bohGetOrder.value.length; i++) {
     clickGroup.value.push({ ['order' + i]: [] })
@@ -53,7 +53,7 @@ onMounted(() => {
         clickGroup.value.push({ ['order' + i]: [] })
       }
     }
-    //外場訂單總覽
+    //內場訂單總覽
     employeeFunctionDataStore.bohOrderShow()
   }, allFunctionDataStore.dataGrid)
 })

@@ -211,13 +211,13 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
 
   //boh選單顯示
   async function bohOrderShow() {
-    //外場訂單總覽
+    //內場訂單總覽
     const orderGetData: any = {
       type: getNowOrderTypeClick.value,
       orderBy: getNowOrderBySelect.value,
       search: getNowSearch.value
     }
-    //外場訂單總覽
+    //內場訂單總覽
     await useEmployeeStore().fetchEmployeeBohGetOrder(orderGetData)
   }
 

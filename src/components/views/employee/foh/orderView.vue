@@ -30,10 +30,8 @@ onMounted(async () => {
     allFunctionDataStore.getAlertStatusFunction(true, '請先登入', 2)
     return
   }
-  //取得今日全部訂單數量與頁數
-  await employeeStore.fetchEmployeeFohGetAllOrderCount()
-  //外場訂單總覽
-  await employeeStore.fetchEmployeeFohGetOrder()
+  //取得今日全部訂單數量與頁數 //外場訂單總覽
+  await employeeFunctionDataStore.orderShow()
 })
 
 //-----
