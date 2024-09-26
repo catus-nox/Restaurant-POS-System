@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
+import { useEmployeeFunctionDataStore } from '@/stores/employee/functionDataStore'
 import { computed } from 'vue'
 import type { PropType } from 'vue'
 
 //-----
 //api
-const functionDataStore = useFunctionDataStore()
+const employeeFunctionDataStore = useEmployeeFunctionDataStore()
 //-----
 //Status選單
-const orderStates = computed(() => functionDataStore.orderStates)
+const orderStates = computed(() => employeeFunctionDataStore.orderStates)
 //Status選單選擇
-const nowOrderStatusClick = computed(() => functionDataStore.getNowOrderStatusClick)
+const nowOrderStatusClick = computed(() => employeeFunctionDataStore.getNowOrderStatusClick)
 
 //-----
 const props = defineProps({
@@ -22,7 +22,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="scrollbar overflow-x-auto" v-if="functionDataStore">
+  <div class="scrollbar overflow-x-auto" v-if="employeeFunctionDataStore">
     <ul class="flex shadow-[inset_0_-2px_0_-1px] shadow-neutral-300">
       <template v-for="(state, index) in orderStates" :key="index">
         <li
@@ -42,7 +42,7 @@ const props = defineProps({
             index === nowOrderStatusClick && index === 3 ? 'press-state-navbar-btn3' : '',
             index === nowOrderStatusClick && index === 4 ? 'press-state-navbar-btn4' : ''
           ]"
-          @click="functionDataStore.getNowOrderStatusClickFunction(index)"
+          @click="employeeFunctionDataStore.getNowOrderStatusClickFunction(index)"
         >
           {{ state }}
           <span

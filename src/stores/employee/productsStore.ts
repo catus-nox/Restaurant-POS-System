@@ -288,7 +288,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   }) => {
     try {
       const response = await postEmployeeFohCheckout(data)
-      console.log(response)
+      customerFunction.getAlertStatusFunction(true, response.data.message, 1)
+      router.push({ name: 'employeeFohOrder' })
     } catch (error) {
       console.log(error)
     }
@@ -296,7 +297,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   //完成訂單(送餐)
   const fetchEmployeeFohOrderCompleted = async (orderId: number) => {
     try {
-      await postEmployeeFohOrderCompleted(orderId)
+      const response = await postEmployeeFohOrderCompleted(orderId)
+      customerFunction.getAlertStatusFunction(true, response.data.message, 1)
     } catch (error) {
       console.log(error)
     }

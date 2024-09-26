@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, onUnmounted } from 'vue'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
-import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
+import { useEmployeeFunctionDataStore } from '@/stores/employee/functionDataStore'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
 import router from '@/router'
@@ -18,7 +18,7 @@ import { useRoute } from 'vue-router'
 //-----
 //api
 const employeeStore = useEmployeeStore()
-const functionDataStore = useFunctionDataStore()
+const employeeFunctionDataStore = useEmployeeFunctionDataStore()
 const allFunctionDataStore = useAllFunctionDataStore()
 //-----
 const productId: number = Number(useRoute().params.id)
@@ -27,14 +27,14 @@ const payWay = ['現金', '台灣發票選項', '訂單會員集點']
 //-----
 //現金
 const cash = computed({
-  get: () => functionDataStore.getNowCustomerCash,
-  set: (value) => functionDataStore.getNowCustomerCashFunction(value)
+  get: () => employeeFunctionDataStore.getNowCustomerCash,
+  set: (value) => employeeFunctionDataStore.getNowCustomerCashFunction(value)
 })
 // const cash = ref<number>()
 //備註
 const note = computed({
-  get: () => functionDataStore.getNowCustomerNote,
-  set: (value) => functionDataStore.getNowCustomerNote(value)
+  get: () => employeeFunctionDataStore.getNowCustomerNote,
+  set: (value) => employeeFunctionDataStore.getNowCustomerNoteFunction(value)
 })
 //-----
 //發票資訊
@@ -56,20 +56,20 @@ const payReceiptData: {
 //預設紙本
 // const pay = ref(payReceiptData.options[3].id)
 const pay = computed({
-  get: () => functionDataStore.getNowCustomerPay,
-  set: (value) => functionDataStore.getNowCustomerPayFunction(value)
+  get: () => employeeFunctionDataStore.getNowCustomerPay,
+  set: (value) => employeeFunctionDataStore.getNowCustomerPayFunction(value)
 })
 //-----
 //載具
 const receipt = computed({
-  get: () => functionDataStore.getNowCustomerReceipt,
-  set: (value) => functionDataStore.getNowCustomerReceiptFunction(value)
+  get: () => employeeFunctionDataStore.getNowCustomerReceipt,
+  set: (value) => employeeFunctionDataStore.getNowCustomerReceiptFunction(value)
 })
 //載具驗證結果
 // const isValidReceipt = ref<boolean>(false)
 const isValidReceipt = computed({
-  get: () => functionDataStore.getNowCustomerIsValidReceipt,
-  set: (value) => functionDataStore.getNowCustomerIsValidReceiptFunction(value)
+  get: () => employeeFunctionDataStore.getNowCustomerIsValidReceipt,
+  set: (value) => employeeFunctionDataStore.getNowCustomerIsValidReceiptFunction(value)
 })
 //是否點擊過載具
 const isTouchReceipt = ref<boolean>(false)
@@ -77,14 +77,14 @@ const isTouchReceipt = ref<boolean>(false)
 //統編
 // const taxId = ref<any>(undefined)
 const taxId = computed({
-  get: () => functionDataStore.getNowCustomerTaxId,
-  set: (value) => functionDataStore.getNowCustomerTaxIdFunction(value)
+  get: () => employeeFunctionDataStore.getNowCustomerTaxId,
+  set: (value) => employeeFunctionDataStore.getNowCustomerTaxIdFunction(value)
 })
 //統編驗證結果
 // const isValidTaxId = ref<boolean>(false)
 const isValidTaxId = computed({
-  get: () => functionDataStore.getNowCustomerIsValidTaxId,
-  set: (value) => functionDataStore.getNowCustomerIsValidTaxIdFunction(value)
+  get: () => employeeFunctionDataStore.getNowCustomerIsValidTaxId,
+  set: (value) => employeeFunctionDataStore.getNowCustomerIsValidTaxIdFunction(value)
 })
 //是否點擊過統編
 const isTouchTaxId = ref<boolean>(false)
@@ -92,14 +92,14 @@ const isTouchTaxId = ref<boolean>(false)
 //手機
 // const phoneNumber = ref<any>(undefined)
 const phoneNumber = computed({
-  get: () => functionDataStore.getNowCustomerPhoneNumber,
-  set: (value) => functionDataStore.getNowCustomerPhoneNumberFunction(value)
+  get: () => employeeFunctionDataStore.getNowCustomerPhoneNumber,
+  set: (value) => employeeFunctionDataStore.getNowCustomerPhoneNumberFunction(value)
 })
 //手機驗證結果
 // const isValidPhoneNumber = ref<boolean>(false)
 const isValidPhoneNumber = computed({
-  get: () => functionDataStore.getNowCustomerIsValidPhoneNumber,
-  set: (value) => functionDataStore.getNowCustomerIsValidPhoneNumberFunction(value)
+  get: () => employeeFunctionDataStore.getNowCustomerIsValidPhoneNumber,
+  set: (value) => employeeFunctionDataStore.getNowCustomerIsValidPhoneNumberFunction(value)
 })
 //手機是否點擊過輸入框
 const isTouchPhoneNumber = ref<boolean>(false)
@@ -125,22 +125,22 @@ onMounted(async () => {
   await employeeStore.fetchEmployeeFohGetOrderDetail(productId)
 
   //取得詳細訂單選單狀態 初始:打開
-  functionDataStore.getOrderDetailsNavBarIsShowFunction(true)
+  employeeFunctionDataStore.getOrderDetailsNavBarIsShowFunction(true)
   //取得客人現金 初始:無
-  functionDataStore.getNowCustomerCashFunction(undefined)
+  employeeFunctionDataStore.getNowCustomerCashFunction(undefined)
   //取得客人發票選項
-  functionDataStore.getNowCustomerPayFunction('紙本')
+  employeeFunctionDataStore.getNowCustomerPayFunction('紙本')
   //取得客人載具
-  functionDataStore.getNowCustomerReceiptFunction('')
+  employeeFunctionDataStore.getNowCustomerReceiptFunction('')
   //取得客人統編
-  functionDataStore.getNowCustomerTaxIdFunction('')
+  employeeFunctionDataStore.getNowCustomerTaxIdFunction('')
   //取得客人手機
-  functionDataStore.getNowCustomerPhoneNumberFunction(
+  employeeFunctionDataStore.getNowCustomerPhoneNumberFunction(
     fohFetOrderDetailData.value.phone ? fohFetOrderDetailData.value.phone : ''
   )
   fohFetOrderDetailData.value.phone ? (isTouchPhoneNumber.value = true) : ''
   //取得客人備註
-  functionDataStore.getNowCustomerNoteFunction('')
+  employeeFunctionDataStore.getNowCustomerNoteFunction('')
 })
 
 let intervalId: any = null
@@ -158,7 +158,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div v-if="functionDataStore" class="flex h-full w-full grow flex-col text-2xl text-black">
+  <div
+    v-if="employeeFunctionDataStore"
+    class="flex h-full w-full grow flex-col text-2xl text-black"
+  >
     <div class="inline-flex items-center gap-6 bg-primary-200 px-6 py-3 font-bold text-neutral-950">
       <svg
         @click="router.push({ name: 'employeeFohOrder' })"

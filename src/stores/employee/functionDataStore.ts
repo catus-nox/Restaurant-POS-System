@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-export const useFunctionDataStore = defineStore('employeeFunction', () => {
+export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () => {
   //------
   //state
   const route = useRoute()

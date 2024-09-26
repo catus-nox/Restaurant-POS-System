@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
-import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
+import { useEmployeeFunctionDataStore } from '@/stores/employee/functionDataStore'
 import EmployeeUiSearchAndFilterBar from '@/components/ui/employee/UiSearchAndFilterBar.vue'
 import EmployeeUiWorkspaceStateNavbar from '@/components/ui/employee/UiWorkspaceStateNavbar.vue'
 import EmployeeFohUiWorkspaceStateOption from '@/components/ui/employee/foh/UiWorkspaceStateOption.vue'
@@ -11,7 +11,7 @@ import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 //-----
 //api
 const employeeStore = useEmployeeStore()
-const functionDataStore = useFunctionDataStore()
+const employeeFunctionDataStore = useEmployeeFunctionDataStore()
 const allFunctionDataStore = useAllFunctionDataStore()
 //-----
 //取得今日全部訂單數量與頁數
@@ -42,7 +42,7 @@ let intervalId: any = null
 onMounted(() => {
   intervalId = setInterval(() => {
     //選單顯示.orderShow()
-    functionDataStore.orderShow()
+    employeeFunctionDataStore.orderShow()
   }, allFunctionDataStore.dataGrid)
 })
 // 組件卸載時清除定時器
@@ -52,7 +52,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="h-full w-full grow" v-if="functionDataStore">
+  <div class="h-full w-full grow" v-if="employeeFunctionDataStore">
     <EmployeeUiSearchAndFilterBar />
     <EmployeeUiWorkspaceStateNavbar
       v-if="fohGetOrderAllCountData"

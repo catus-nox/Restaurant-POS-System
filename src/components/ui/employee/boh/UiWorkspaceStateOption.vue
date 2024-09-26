@@ -1,14 +1,8 @@
 <script setup lang="ts">
-import { useEmployeeStore } from '@/stores/employee/productsStore'
-import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
-import { computed, ref, type PropType } from 'vue'
+import { ref, type PropType } from 'vue'
 
-//-----
-//api
-const employeeStore = useEmployeeStore()
-const functionDataStore = useFunctionDataStore()
 //-----
 const props = defineProps({
   orderData: {
