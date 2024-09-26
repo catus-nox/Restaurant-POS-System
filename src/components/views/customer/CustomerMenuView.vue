@@ -1,21 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useCustomerStore } from '@/stores/customer/productsStore'
-import { useCustomerFunctionDataStore } from '@/stores/customer/functionDataStore'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiShopInformation from '@/components/ui/customer/UiShopInformation.vue'
 import UiCustomerMenuNavbar from '@/components/ui/customer/UiCustomerMenuNavbar.vue'
 import UiProductItem from '@/components/ui/customer/UiProductItem.vue'
 //-----
 const customerStore = useCustomerStore()
-const customerFunctionDataStore = useCustomerFunctionDataStore()
 const menuCategory: any = computed(() => customerStore.getMenuCategoryData)
 const menuItemData: any = computed(() => customerStore.getMenuItemData)
-import { useRoute } from 'vue-router'
 
-//
-//-----
-const route = useRoute()
 //-----
 //搜尋
 const searchInput = ref('')

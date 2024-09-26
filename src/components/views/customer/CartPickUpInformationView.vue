@@ -16,14 +16,11 @@ import UiSelect from '@/components/ui/UiSelect.vue'
 import { useRouter } from 'vue-router'
 import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 
-import { useCustomerFunctionDataStore } from '@/stores/customer/functionDataStore'
-
 //-----
 const router = useRouter()
 //api
 const customerStore = useCustomerStore()
 const customerFunction = useAllFunctionDataStore()
-const customerFunctionDataStore = useCustomerFunctionDataStore()
 // 數量
 const serving = ref<[]>([])
 //-----
