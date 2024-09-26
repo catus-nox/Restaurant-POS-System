@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCustomerStore } from '@/stores/customer/productsStore'
-import { defineProps, defineEmits, computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import UiButton from '@/components/ui/UiButton.vue'
 const props = defineProps<{
   menuState?: boolean

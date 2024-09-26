@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { defineProps, defineEmits } from 'vue'
 import 'flowbite'
 
 interface ButtonStyle {
