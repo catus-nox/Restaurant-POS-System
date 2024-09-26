@@ -34,7 +34,7 @@ onMounted(async () => {
     return
   }
 
-  //外場訂單總覽
+  //內場訂單總覽
   await employeeStore.fetchEmployeeBohGetOrder()
   //點擊
   for (let i = 0; i < bohGetOrder.value.length; i++) {
@@ -47,6 +47,12 @@ let intervalId: any = null
 // 組件開啟時加定時器
 onMounted(() => {
   intervalId = setInterval(() => {
+    //點擊
+    if (bohGetOrder.value.length >= 0) {
+      for (let i = 0; i < bohGetOrder.value.length; i++) {
+        clickGroup.value.push({ ['order' + i]: [] })
+      }
+    }
     //外場訂單總覽
     functionDataStore.bohOrderShow()
   }, allFunctionDataStore.dataGrid)
