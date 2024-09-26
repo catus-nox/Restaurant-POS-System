@@ -40,7 +40,15 @@ const goCheckoutType = ref<'預約自取' | '外帶' | '內用'>(
   customerStatus[0].id as '預約自取' | '外帶' | '內用'
 )
 // 選單控制
-const customerStatusClick = ref<number>(0)
+// 如果有桌號選桌選單
+const customerStatusClick = ref<number>(
+  localStorage.customer_table === undefined ||
+    localStorage.customer_table === 'undefined' ||
+    localStorage.customer_table === null ||
+    !localStorage.customer_table
+    ? 0
+    : 2
+)
 function toggleMenu(index: number) {
   isTouchPhoneNumber.value = false
   phoneNumber.value = ''
