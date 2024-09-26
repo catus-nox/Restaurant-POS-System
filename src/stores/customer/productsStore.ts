@@ -286,12 +286,14 @@ export const useCustomerStore = defineStore('customer', () => {
     invoiceCarrier?: String | null //發票載具號碼or統編
   }) => {
     try {
-      await postConfirmOrderCash({
+      const response = await postConfirmOrderCash({
         orderId: data.orderId,
         guid: data.guid,
         invoice: data.invoice,
         invoiceCarrier: data.invoiceCarrier
       })
+      customerFunction.getAlertStatusFunction(true, response.data.message, 1)
+      router.push({ name: 'cartConfirmInformation', params: { guid: localStorage.customer_guid } })
     } catch (error) {
       console.log(error)
     }
@@ -321,7 +323,6 @@ export const useCustomerStore = defineStore('customer', () => {
       } else {
         //網址
         confirmOrderLinePayPaymentUrlData.value = response.data.data.paymentUrl
-        console.log(response.data.data.paymentUrl)
       }
       return response
     } catch (error) {
