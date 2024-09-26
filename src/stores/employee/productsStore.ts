@@ -13,10 +13,13 @@ import {
 } from '@/models/employee/api'
 import router from '@/router'
 import { useAllFunctionDataStore } from '@/stores/functionDataStore'
+import { useEmployeeFunctionDataStore } from '@/stores/employee/functionDataStore'
 
 export const useEmployeeStore = defineStore('employee', () => {
-  //-----api
-  const customerFunction = useAllFunctionDataStore()
+  //-----
+  //api
+  const customerFunction = useAllFunctionDataStore() //api
+  const employeeFunctionDataStore = useEmployeeFunctionDataStore()
 
   //------
   //state
@@ -289,6 +292,7 @@ export const useEmployeeStore = defineStore('employee', () => {
     try {
       const response = await postEmployeeFohCheckout(data)
       customerFunction.getAlertStatusFunction(true, response.data.message, 1)
+      employeeFunctionDataStore.getOrderDetailsNavBarIsShowFunction(false)
       router.push({ name: 'employeeFohOrder' })
     } catch (error) {
       console.log(error)
@@ -299,6 +303,7 @@ export const useEmployeeStore = defineStore('employee', () => {
     try {
       const response = await postEmployeeFohOrderCompleted(orderId)
       customerFunction.getAlertStatusFunction(true, response.data.message, 1)
+      employeeFunctionDataStore.getOrderDetailsNavBarIsShowFunction(false)
     } catch (error) {
       console.log(error)
     }
