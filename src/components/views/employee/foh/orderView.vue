@@ -31,7 +31,7 @@ onMounted(async () => {
     return
   }
   //取得今日全部訂單數量與頁數 //外場訂單總覽
-  await employeeFunctionDataStore.orderShow()
+  await employeeFunctionDataStore.fohOrderShow()
 })
 
 //-----
@@ -39,8 +39,8 @@ let intervalId: any = null
 // 組件開啟時加定時器
 onMounted(() => {
   intervalId = setInterval(() => {
-    //選單顯示.orderShow()
-    employeeFunctionDataStore.orderShow()
+    //選單顯示
+    employeeFunctionDataStore.fohOrderShow()
   }, allFunctionDataStore.dataGrid)
 })
 // 組件卸載時清除定時器
