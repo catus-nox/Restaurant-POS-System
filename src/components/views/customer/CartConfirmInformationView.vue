@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { useCustomerStore } from '@/stores/customer/productsStore'
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted } from 'vue'
 import UiCartProcess from '@/components/ui/customer/UiCartProcess.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import { useRoute } from 'vue-router'
 //-----
 const route = useRoute()
-watch(
-  () => route.path,
-  (newPath, oldPath) => {}
-)
 //-----
 //api
 const customerStore = useCustomerStore()

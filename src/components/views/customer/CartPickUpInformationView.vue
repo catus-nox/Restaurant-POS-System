@@ -16,14 +16,11 @@ import UiSelect from '@/components/ui/UiSelect.vue'
 import { useRouter } from 'vue-router'
 import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 
-import { useCustomerFunctionDataStore } from '@/stores/customer/functionDataStore'
-
 //-----
 const router = useRouter()
 //api
 const customerStore = useCustomerStore()
 const customerFunction = useAllFunctionDataStore()
-const customerFunctionDataStore = useCustomerFunctionDataStore()
 // 數量
 const serving = ref<[]>([])
 //-----
@@ -40,7 +37,15 @@ const goCheckoutType = ref<'預約自取' | '外帶' | '內用'>(
   customerStatus[0].id as '預約自取' | '外帶' | '內用'
 )
 // 選單控制
-const customerStatusClick = ref<number>(0)
+// 如果有桌號選桌選單
+const customerStatusClick = ref<number>(
+  localStorage.customer_table === undefined ||
+    localStorage.customer_table === 'undefined' ||
+    localStorage.customer_table === null ||
+    !localStorage.customer_table
+    ? 0
+    : 2
+)
 function toggleMenu(index: number) {
   isTouchPhoneNumber.value = false
   phoneNumber.value = ''

@@ -1,14 +1,8 @@
 <script setup lang="ts">
-import { useEmployeeStore } from '@/stores/employee/productsStore'
-import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
-import { computed, ref, type PropType } from 'vue'
+import { ref, type PropType } from 'vue'
 
-//-----
-//api
-const employeeStore = useEmployeeStore()
-const functionDataStore = useFunctionDataStore()
 //-----
 const props = defineProps({
   orderData: {
@@ -74,7 +68,10 @@ for (let index = 0; index < props.orderData.items.length; index++) {
         >
           <div class="orderClickText text-4xl">{{ PickedOption.Name }}</div>
           <div class="orderClickText">x {{ PickedOption.Quantity }}</div>
-          <div class="inline-flex items-center gap-3 bg-primary-100 p-2 font-normal">
+          <div
+            v-if="PickedOption.Customization"
+            class="inline-flex items-center gap-3 bg-primary-100 p-2 font-normal"
+          >
             {{ PickedOption.Customization }}
           </div>
         </div>

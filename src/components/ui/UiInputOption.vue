@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { defineProps, defineModel } from 'vue'
-
 const props = defineProps({
   type: {
     type: String,

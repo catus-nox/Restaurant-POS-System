@@ -10,7 +10,7 @@ export const useAllFunctionDataStore = defineStore('allFunction', () => {
   const route = useRoute()
 
   //取得alert狀態
-  const alertStatus = ref<{ isShow: boolean; status?: number; text?: string }>({
+  const alertStatus = ref<{ isShow: boolean; status?: 1 | 2; text?: string }>({
     isShow: false,
     text: undefined // 預設為 undefined，可以是文字或 null
   })
@@ -30,7 +30,7 @@ export const useAllFunctionDataStore = defineStore('allFunction', () => {
   //action 異步請求
 
   //取得alert狀態
-  function getAlertStatusFunction(isShow: boolean, text?: string, status?: number) {
+  function getAlertStatusFunction(isShow: boolean, text?: string, status?: 1 | 2) {
     alertStatus.value = {
       isShow,
       status,

@@ -16,16 +16,22 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/:table?',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      props: (route) => ({ table: route.params.table ? Number(route.params.table) : null })
       // component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/menu/:table?',
-      name: 'menu',
-      component: CustomerMenuView,
+      path: '/home/:table?',
+      name: 'homeWithHomePath',
+      component: HomeView,
       props: (route) => ({ table: route.params.table ? Number(route.params.table) : null })
+    },
+    {
+      path: '/menu',
+      name: 'menu',
+      component: CustomerMenuView
     },
     {
       path: '/productOrder/:id',

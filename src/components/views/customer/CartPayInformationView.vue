@@ -127,7 +127,7 @@ async function confirmOrder() {
   if (nowClick.value == 1) {
     //現金付款
     await customerStore.fetchCustomerPostConfirmOrderCash(data)
-    toRouterName('cartConfirmInformation')
+    toRouterName()
   } else if (nowClick.value == 0) {
     // line pay
     // data.confirmUrl = `${baseUrl}/cartConfirmInformation/${localStorage.customer_guid}`
@@ -143,8 +143,7 @@ async function confirmOrder() {
 
 //-----
 //換頁
-function toRouterName(name: string) {
-  router.push({ name, params: { guid: localStorage.customer_guid } })
+function toRouterName() {
   localStorageClear()
 }
 
@@ -163,7 +162,9 @@ async function confirmLinePayRequestIsPayMentFunction() {
     }
     await customerStore.fetchConfirmLinePayRequest(data)
     if (confirmLinePayRequestIsPayMent.value) {
-      toRouterName('cartConfirmInformation')
+      customerFunction.getAlertStatusFunction(true, 'line pay 付款成功', 1)
+      router.push({ name: 'cartConfirmInformation', params: { guid: localStorage.customer_guid } })
+      toRouterName()
     }
   }
 }
@@ -323,7 +324,7 @@ onMounted(async () => {
         >
       </template>
 
-      <span>前往結帳</span>
+      <span>送出訂單</span>
 
       <template #right-icon v-if="orderInfo">
         <span>${{ orderInfo.totalAmount }}</span>

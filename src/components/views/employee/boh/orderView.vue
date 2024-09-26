@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
-import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
+import { useEmployeeFunctionDataStore } from '@/stores/employee/functionDataStore'
 import EmployeeUiSearchAndFilterBar from '@/components/ui/employee/UiSearchAndFilterBar.vue'
 import EmployeeBohUiWorkspaceStateOption from '@/components/ui/employee/boh/UiWorkspaceStateOption.vue'
 import router from '@/router'
@@ -9,7 +9,7 @@ import { useAllFunctionDataStore } from '@/stores/functionDataStore'
 //-----
 //api
 const employeeStore = useEmployeeStore()
-const functionDataStore = useFunctionDataStore()
+const employeeFunctionDataStore = useEmployeeFunctionDataStore()
 const allFunctionDataStore = useAllFunctionDataStore()
 //-----
 //內場訂單總覽
@@ -34,8 +34,8 @@ onMounted(async () => {
     return
   }
 
-  //外場訂單總覽
-  await employeeStore.fetchEmployeeBohGetOrder()
+  //內場訂單總覽
+  await employeeFunctionDataStore.bohOrderShow()
   //點擊
   for (let i = 0; i < bohGetOrder.value.length; i++) {
     clickGroup.value.push({ ['order' + i]: [] })
@@ -47,8 +47,14 @@ let intervalId: any = null
 // 組件開啟時加定時器
 onMounted(() => {
   intervalId = setInterval(() => {
-    //外場訂單總覽
-    functionDataStore.bohOrderShow()
+    //點擊
+    if (bohGetOrder.value.length >= 0) {
+      for (let i = 0; i < bohGetOrder.value.length; i++) {
+        clickGroup.value.push({ ['order' + i]: [] })
+      }
+    }
+    //內場訂單總覽
+    employeeFunctionDataStore.bohOrderShow()
   }, allFunctionDataStore.dataGrid)
 })
 // 組件卸載時清除定時器
@@ -58,7 +64,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex h-full w-full grow flex-col" v-if="functionDataStore">
+  <div class="flex h-full w-full grow flex-col" v-if="employeeFunctionDataStore">
     <EmployeeUiSearchAndFilterBar />
     <div class="scrollbar flex h-full w-full gap-6 overflow-x-auto p-6" v-if="bohGetOrder">
       <template v-for="(order, index) in bohGetOrder" :key="index">

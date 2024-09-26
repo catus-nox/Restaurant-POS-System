@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
+import { useEmployeeFunctionDataStore } from '@/stores/employee/functionDataStore'
 import { computed } from 'vue'
 
 //-----
 //api
-const functionDataStore = useFunctionDataStore()
+const employeeFunctionDataStore = useEmployeeFunctionDataStore()
 //-----
 //type選單
-const orderType = computed(() => functionDataStore.orderType)
+const orderType = computed(() => employeeFunctionDataStore.orderType)
 //type選單選擇
-const nowOrderTypeClick = computed(() => functionDataStore.getNowOrderTypeClick)
+const nowOrderTypeClick = computed(() => employeeFunctionDataStore.getNowOrderTypeClick)
 </script>
 
 <template>
-  <ul class="flex flex-col gap-6" v-if="functionDataStore">
+  <ul class="flex flex-col gap-6" v-if="employeeFunctionDataStore">
     <template v-for="(btn, index) in orderType" :key="index">
       <li
         class="option"
-        @click="functionDataStore.getNowOrderTypeClickFunction(index)"
+        @click="employeeFunctionDataStore.getNowOrderTypeClickFunction(index)"
         :class="index === nowOrderTypeClick ? 'press' : ''"
       >
         <template v-if="btn == orderType[0]">

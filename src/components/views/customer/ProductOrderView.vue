@@ -6,7 +6,6 @@ import UiButton from '@/components/ui/UiButton.vue'
 import UiCounter from '@/components/ui/UiCounter.vue'
 import UiInputOption from '@/components/ui/UiInputOption.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
-import router from '@/router'
 //-----
 interface CategoryProduct {
   name: string

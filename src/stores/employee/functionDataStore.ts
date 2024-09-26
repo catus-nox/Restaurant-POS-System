@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-export const useFunctionDataStore = defineStore('employeeFunction', () => {
+export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () => {
   //------
   //state
   const route = useRoute()
@@ -93,17 +93,17 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   //Status選單選擇
   function getNowOrderStatusClickFunction(index: number) {
     nowOrderStatusClick.value = index
-    orderShow()
+    fohOrderShow()
   }
   //type選單選擇
   function getNowOrderTypeClickFunction(index: number) {
     nowOrderTypeClick.value = index
-    orderShow()
+    fohOrderShow()
     if ((route.name as string).includes('employeeBoh')) {
       bohOrderShow()
     }
     if ((route.name as string).includes('employeeFoh')) {
-      orderShow()
+      fohOrderShow()
     }
   }
   //orderBy 選項選擇
@@ -113,7 +113,7 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
       bohOrderShow()
     }
     if ((route.name as string).includes('employeeFoh')) {
-      orderShow()
+      fohOrderShow()
     }
   }
   //Search 搜尋
@@ -123,7 +123,7 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
       bohOrderShow()
     }
     if ((route.name as string).includes('employeeFoh')) {
-      orderShow()
+      fohOrderShow()
     }
   }
   //取得單一訂單資訊 id
@@ -174,7 +174,7 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
     orderDetailsNavBarIsShow.value = value
   }
 
-  const orderShow = async () => {
+  const fohOrderShow = async () => {
     try {
       //外場訂單總覽
       const orderGetData: any = {
@@ -194,7 +194,7 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
   }
 
   //選單顯示
-  // async function orderShow() {
+  // async function fohOrderShow() {
   //   //外場訂單總覽
   //   const orderGetData: any = {
   //     orderStatus: getNowOrderStatusClick.value,
@@ -211,13 +211,13 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
 
   //boh選單顯示
   async function bohOrderShow() {
-    //外場訂單總覽
+    //內場訂單總覽
     const orderGetData: any = {
       type: getNowOrderTypeClick.value,
       orderBy: getNowOrderBySelect.value,
       search: getNowSearch.value
     }
-    //外場訂單總覽
+    //內場訂單總覽
     await useEmployeeStore().fetchEmployeeBohGetOrder(orderGetData)
   }
 
@@ -225,7 +225,7 @@ export const useFunctionDataStore = defineStore('employeeFunction', () => {
     orderType,
     orderStates,
     orderBy,
-    orderShow,
+    fohOrderShow,
     bohOrderShow,
     getNowOrderStatusClick,
     getNowOrderStatusClickFunction,

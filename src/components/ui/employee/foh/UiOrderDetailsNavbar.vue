@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useEmployeeStore } from '@/stores/employee/productsStore'
-
-import { useFunctionDataStore } from '@/stores/employee/functionDataStore'
+import { useEmployeeFunctionDataStore } from '@/stores/employee/functionDataStore'
 import UiButton from '@/components/ui/UiButton.vue'
 import router from '@/router'
 import { useRoute } from 'vue-router'
@@ -21,7 +20,7 @@ const route = useRoute()
 //-----
 //api
 const employeeStore = useEmployeeStore()
-const functionDataStore = useFunctionDataStore()
+const employeeFunctionDataStore = useEmployeeFunctionDataStore()
 const customerFunction = useAllFunctionDataStore()
 //-----
 const productId: number = Number(route.params.id)
@@ -31,26 +30,26 @@ const orderDetailData = computed(() => employeeStore.getFohFetOrderDetailData)
 function pay() {
   router.push({
     name: 'employeeFohCheckout',
-    params: { id: functionDataStore.getNowOrderDetailId }
+    params: { id: employeeFunctionDataStore.getNowOrderDetailId }
   })
 }
 async function finish() {
   function goCheckoutValidate(): boolean {
-    if (!functionDataStore.getNowCustomerCash) {
+    if (!employeeFunctionDataStore.getNowCustomerCash) {
       customerFunction.getAlertStatusFunction(true, '請輸入現金', 2)
       return false
     }
-    if (orderDetailData.value.totalAmount > functionDataStore.getNowCustomerCash) {
+    if (orderDetailData.value.totalAmount > employeeFunctionDataStore.getNowCustomerCash) {
       customerFunction.getAlertStatusFunction(true, '金額不足', 2)
       return false
     }
 
     //載具判斷
     if (
-      functionDataStore.getNowCustomerPay == '載具' &&
+      employeeFunctionDataStore.getNowCustomerPay == '載具' &&
       !validateReceipt(
-        functionDataStore.getNowCustomerIsValidReceipt,
-        functionDataStore.getNowCustomerReceipt
+        employeeFunctionDataStore.getNowCustomerIsValidReceipt,
+        employeeFunctionDataStore.getNowCustomerReceipt
       )
     ) {
       customerFunction.getAlertStatusFunction(true, receiptValidateData.validationMessage, 2)
@@ -58,10 +57,10 @@ async function finish() {
     }
     //統編判斷
     if (
-      functionDataStore.getNowCustomerPay == '統編' &&
+      employeeFunctionDataStore.getNowCustomerPay == '統編' &&
       !validateTaxId(
-        functionDataStore.getNowCustomerIsValidTaxId,
-        functionDataStore.getNowCustomerTaxId
+        employeeFunctionDataStore.getNowCustomerIsValidTaxId,
+        employeeFunctionDataStore.getNowCustomerTaxId
       )
     ) {
       customerFunction.getAlertStatusFunction(true, taxIdValidateData.validationMessage, 2)
@@ -69,10 +68,10 @@ async function finish() {
     }
     //電話判斷
     if (
-      functionDataStore.getNowCustomerPhoneNumber &&
+      employeeFunctionDataStore.getNowCustomerPhoneNumber &&
       !validatePhoneNumber(
-        functionDataStore.getNowCustomerIsValidPhoneNumber,
-        functionDataStore.getNowCustomerPhoneNumber
+        employeeFunctionDataStore.getNowCustomerIsValidPhoneNumber,
+        employeeFunctionDataStore.getNowCustomerPhoneNumber
       )
     ) {
       customerFunction.getAlertStatusFunction(true, phoneValidateData.validationMessage, 2)
@@ -83,31 +82,27 @@ async function finish() {
 
   if (!goCheckoutValidate()) return
   let data: any = {
-    orderId: Number(functionDataStore.getNowOrderDetailId),
-    cash: Number(functionDataStore.getNowCustomerCash),
-    invoice: functionDataStore.getNowCustomerPay
+    orderId: Number(employeeFunctionDataStore.getNowOrderDetailId),
+    cash: Number(employeeFunctionDataStore.getNowCustomerCash),
+    invoice: employeeFunctionDataStore.getNowCustomerPay
   }
-  if (functionDataStore.getNowCustomerPay == '載具') {
-    data.invoiceCarrier = functionDataStore.getNowCustomerReceipt
+  if (employeeFunctionDataStore.getNowCustomerPay == '載具') {
+    data.invoiceCarrier = employeeFunctionDataStore.getNowCustomerReceipt
   }
-  if (functionDataStore.getNowCustomerPay == '統編') {
-    data.invoiceCarrier = functionDataStore.getNowCustomerTaxId
+  if (employeeFunctionDataStore.getNowCustomerPay == '統編') {
+    data.invoiceCarrier = employeeFunctionDataStore.getNowCustomerTaxId
   }
-  if (functionDataStore.getNowCustomerPhoneNumber) {
-    data.phone = functionDataStore.getNowCustomerPhoneNumber
+  if (employeeFunctionDataStore.getNowCustomerPhoneNumber) {
+    data.phone = employeeFunctionDataStore.getNowCustomerPhoneNumber
   }
-  if (functionDataStore.getNowCustomerNote) {
-    data.note = functionDataStore.getNowCustomerNote
+  if (employeeFunctionDataStore.getNowCustomerNote) {
+    data.note = employeeFunctionDataStore.getNowCustomerNote
   }
-  console.log(data)
   await employeeStore.fetchEmployeeFohCheckout(data)
-  customerFunction.getAlertStatusFunction(true, '結帳成功', 1)
-  router.push({ name: 'employeeFohOrder' })
 }
 function geMeal(orderId: number) {
   employeeStore.fetchEmployeeFohOrderCompleted(orderId)
 }
-
 function statusBtnFunction(status: string, orderId: number) {
   let routeStatus = ['employeeFohCheckout'].includes(route.name as string)
   if (routeStatus) {
@@ -137,16 +132,16 @@ onMounted(async () => {
   <div
     v-if="orderDetailData"
     class="inline-flex w-full max-w-[362px] grow flex-col bg-white shadow-[inset_0_0_0_1px] shadow-neutral-300 transition-all"
-    :class="!functionDataStore.getOrderDetailsNavBarIsShow ? '!w-0 overflow-hidden' : ''"
+    :class="!employeeFunctionDataStore.getOrderDetailsNavBarIsShow ? '!w-0 overflow-hidden' : ''"
   >
     <div
-      v-show="functionDataStore.getOrderDetailsNavBarIsShow"
+      v-show="employeeFunctionDataStore.getOrderDetailsNavBarIsShow"
       class="relative inline-flex items-center justify-center bg-primary-700 px-2.5 py-3 text-white"
     >
       <span
         v-if="!employeeFohGetOrderDetailPosition()"
         class="absolute right-2.5 top-3 cursor-pointer"
-        @click="functionDataStore.getOrderDetailsNavBarIsShowFunction(false)"
+        @click="employeeFunctionDataStore.getOrderDetailsNavBarIsShowFunction(false)"
       >
         <svg
           class="h-6 w-6"

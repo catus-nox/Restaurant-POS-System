@@ -1,30 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useCustomerStore } from '@/stores/customer/productsStore'
-import { useCustomerFunctionDataStore } from '@/stores/customer/functionDataStore'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiShopInformation from '@/components/ui/customer/UiShopInformation.vue'
 import UiCustomerMenuNavbar from '@/components/ui/customer/UiCustomerMenuNavbar.vue'
 import UiProductItem from '@/components/ui/customer/UiProductItem.vue'
 //-----
 const customerStore = useCustomerStore()
-const customerFunctionDataStore = useCustomerFunctionDataStore()
 const menuCategory: any = computed(() => customerStore.getMenuCategoryData)
 const menuItemData: any = computed(() => customerStore.getMenuItemData)
-import { useRoute } from 'vue-router'
 
-//
 //-----
-const route = useRoute()
-//-----
-const props = defineProps<{
-  table: number | null
-}>()
-//router桌號
-// 如果需要將 table 存儲到 localStorage
-if (props.table) {
-  localStorage.setItem('customer_table', String(props.table))
-}
 //搜尋
 const searchInput = ref('')
 //-----選單滑動+至頂滑動

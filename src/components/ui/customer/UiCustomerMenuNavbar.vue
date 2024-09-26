@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
-
 interface MenuCategoryItem {
   categoryId?: any // Id
   category: string // 分類名稱 (咖啡、茶飲、蛋糕...)

@@ -11,7 +11,15 @@ import UiButton from '@/components/ui/UiButton.vue'
 import ImgAd1 from '@/assets/img/carousel/ad1.jpg'
 import ImgAd2 from '@/assets/img/carousel/ad2.jpg'
 import ImgAd3 from '@/assets/img/carousel/ad3.jpg'
-
+//-----
+const props = defineProps<{
+  table: number | null
+}>()
+//router桌號
+// 如果需要將 table 存儲到 localStorage
+if (props.table) {
+  localStorage.setItem('customer_table', String(props.table))
+}
 // Swiper modules
 const modules = [Pagination, Autoplay]
 </script>
