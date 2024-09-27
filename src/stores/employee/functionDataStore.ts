@@ -3,9 +3,12 @@ import { useEmployeeStore } from '@/stores/employee/productsStore'
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () => {
+  //-----
+  // api
+  const route = useRoute()
+  const employeeStore = useEmployeeStore()
   //------
   //state
-  const route = useRoute()
   //Status選單
   const orderStates: ('全部訂單' | '待結帳' | '準備中' | '待取餐' | '已完成')[] = [
     '全部訂單',
@@ -185,9 +188,9 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
       }
 
       //取得今日訂單數量與頁數
-      await useEmployeeStore().fetchEmployeeFohGetAllOrderCount()
+      await employeeStore.fetchEmployeeFohGetAllOrderCount()
       //外場訂單總覽
-      await useEmployeeStore().fetchEmployeeFohGetOrder(orderGetData)
+      await employeeStore.fetchEmployeeFohGetOrder(orderGetData)
     } catch (error) {
       console.log(error)
     }
@@ -204,9 +207,9 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
   //   }
 
   //   //取得今日訂單數量與頁數
-  //   await useEmployeeStore().fetchEmployeeFohGetAllOrderCount()
+  //   await employeeStore.fetchEmployeeFohGetAllOrderCount()
   //   //外場訂單總覽
-  //   await useEmployeeStore().fetchEmployeeFohGetOrder(orderGetData)
+  //   await employeeStore.fetchEmployeeFohGetOrder(orderGetData)
   // }
 
   //boh選單顯示
@@ -218,7 +221,7 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
       search: getNowSearch.value
     }
     //內場訂單總覽
-    await useEmployeeStore().fetchEmployeeBohGetOrder(orderGetData)
+    await employeeStore.fetchEmployeeBohGetOrder(orderGetData)
   }
 
   return {
