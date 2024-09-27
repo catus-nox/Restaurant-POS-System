@@ -33,15 +33,19 @@ const customerStatus: {
   { name: '現場外帶', id: '外帶' },
   { name: '內用', id: '內用' }
 ]
+// 如果有桌號選桌選單
 const goCheckoutType = ref<'預約自取' | '外帶' | '內用'>(
-  customerStatus[0].id as '預約自取' | '外帶' | '內用'
+  localStorage.customer_table === 'undefined' ||
+    localStorage.customer_table === 'null' ||
+    !localStorage.customer_table
+    ? customerStatus[0].id
+    : customerStatus[2].id
 )
 // 選單控制
 // 如果有桌號選桌選單
 const customerStatusClick = ref<number>(
-  localStorage.customer_table === undefined ||
-    localStorage.customer_table === 'undefined' ||
-    localStorage.customer_table === null ||
+  localStorage.customer_table === 'undefined' ||
+    localStorage.customer_table === 'null' ||
     !localStorage.customer_table
     ? 0
     : 2
