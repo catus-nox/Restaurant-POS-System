@@ -19,11 +19,7 @@ const route = useRoute()
 // 如果需要將 table 存儲到 localStorage
 const tableNumber = route.params.table
 if (!tableNumber) {
-  if (
-    localStorage.customer_table !== null ||
-    localStorage.customer_table !== undefined ||
-    localStorage.customer_table !== 'undefined'
-  ) {
+  if (localStorage.customer_table !== 'null' || localStorage.customer_table !== 'undefined') {
     localStorage.customer_table = null
   }
 } else {

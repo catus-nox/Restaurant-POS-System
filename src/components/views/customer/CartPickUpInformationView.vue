@@ -35,9 +35,8 @@ const customerStatus: {
 ]
 // 如果有桌號選桌選單
 const goCheckoutType = ref<'預約自取' | '外帶' | '內用'>(
-  localStorage.customer_table === undefined ||
-    localStorage.customer_table === 'undefined' ||
-    localStorage.customer_table === null ||
+  localStorage.customer_table === 'undefined' ||
+    localStorage.customer_table === 'null' ||
     !localStorage.customer_table
     ? customerStatus[0].id
     : customerStatus[2].id
@@ -45,9 +44,8 @@ const goCheckoutType = ref<'預約自取' | '外帶' | '內用'>(
 // 選單控制
 // 如果有桌號選桌選單
 const customerStatusClick = ref<number>(
-  localStorage.customer_table === undefined ||
-    localStorage.customer_table === 'undefined' ||
-    localStorage.customer_table === null ||
+  localStorage.customer_table === 'undefined' ||
+    localStorage.customer_table === 'null' ||
     !localStorage.customer_table
     ? 0
     : 2
