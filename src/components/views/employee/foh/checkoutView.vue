@@ -147,7 +147,7 @@ let intervalId: any = null
 // 組件開啟時加定時器
 onMounted(() => {
   intervalId = setInterval(() => {
-    //外場訂單總覽
+    //取得單一訂單資訊
     employeeStore.fetchEmployeeFohGetOrderDetail(productId)
   }, allFunctionDataStore.dataGrid)
 })

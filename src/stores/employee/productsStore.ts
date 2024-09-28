@@ -5,6 +5,7 @@ import {
   postEmployeeLogout,
   getEmployeeFohGetOrderCount,
   getEmployeeFohGetOrder,
+  getEmployeeFohGetOrderNoPaging,
   getEmployeeFohFetOrderDetail,
   postEmployeeFohCheckout,
   postEmployeeFohOrderCompleted,
@@ -30,8 +31,10 @@ export const useEmployeeStore = defineStore('employee', () => {
   const fohGetOrderCountData = ref()
   //取得今日全部訂單數量與頁數
   const fohGetOrderAllCountData = ref()
-  //外場訂單總覽
+  //外場訂單總覽-有頁數
   const fohGetOrderData = ref()
+  //外場訂單總覽-無頁數
+  const fohGetOrderNoPagingData = ref()
   //取得單一訂單資訊
   const fohFetOrderDetailData = ref()
   //內場訂單總覽
@@ -46,8 +49,10 @@ export const useEmployeeStore = defineStore('employee', () => {
   const getFohGetOrderCountData = computed(() => fohGetOrderCountData.value)
   //取得今日全部訂單數量與頁數
   const getFohGetOrderAllCountData = computed(() => fohGetOrderAllCountData.value)
-  //外場訂單總覽
+  //外場訂單總覽-有頁數
   const getFohGetOrderData = computed(() => fohGetOrderData.value)
+  //外場訂單總覽-無頁數
+  const getFohGetOrderNoPagingData = computed(() => fohGetOrderNoPagingData.value)
   //取得單一訂單資訊
   const getFohFetOrderDetailData = computed(() => fohFetOrderDetailData.value)
   //內場訂單總覽
@@ -217,7 +222,7 @@ export const useEmployeeStore = defineStore('employee', () => {
     }
   }
 
-  //外場訂單總覽
+  //外場訂單總覽-有頁數
   const fetchEmployeeFohGetOrder = async (
     getData: {
       page?: number // 抓該頁的1~9筆訂單  (為空或其他值會傳第一頁)
@@ -263,8 +268,57 @@ export const useEmployeeStore = defineStore('employee', () => {
       }
 
       const response = await getEmployeeFohGetOrder(getDataString)
-
       fohGetOrderData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //外場訂單總覽-無頁數
+  const fetchEmployeeFohGetOrderNoPaging = async (
+    getData: {
+      orderStatus?:
+        | '全部訂單'
+        | '0'
+        | 0
+        | '待結帳'
+        | '2'
+        | 2
+        | '準備中'
+        | '3'
+        | 3
+        | '待取餐'
+        | '4'
+        | 4
+        | '已完成'
+        | '5'
+        | 5 //(全部訂單不會抓"已完成"的)
+      type?: '0' | '全部訂單' | '內用' | '1' | '外帶' | '2' | '預約自取' | '3' //用餐類型，為空的話也是傳所有類型的(外帶跟預約自取都算外帶)
+      orderBy?: '時間越早優先' | '時間越晚優先' //依據排序，為空的話會以"時間越早優先"為主
+      search?: any //依據值來搜尋
+    } = {}
+  ) => {
+    try {
+      let getDataStringOrderStatus = getData.orderStatus != null ? getData.orderStatus : '0'
+      if (Number(getDataStringOrderStatus) != 0) {
+        getDataStringOrderStatus = Number(getData.orderStatus) + 1
+      }
+
+      const getDataStringType = getData.type != null ? getData.type : '0'
+      const getDataStringOrderBy = getData.orderBy != null ? getData.orderBy : '時間越早優先'
+
+      const getDataStringSearch = getData.search != null ? `&search=${getData.search}` : ''
+
+      const getDataString: any = {
+        orderStatus: `orderStatus=${getDataStringOrderStatus}`,
+        type: `&type=${getDataStringType}`,
+        orderBy: `&orderBy=${getDataStringOrderBy}`,
+        search: getDataStringSearch
+      }
+
+      const response = await getEmployeeFohGetOrderNoPaging(getDataString)
+
+      fohGetOrderNoPagingData.value = response.data.data
     } catch (error) {
       console.log(error)
     }
@@ -356,6 +410,8 @@ export const useEmployeeStore = defineStore('employee', () => {
     fetchEmployeeFohGetAllOrderCount,
     getFohGetOrderData,
     fetchEmployeeFohGetOrder,
+    getFohGetOrderNoPagingData,
+    fetchEmployeeFohGetOrderNoPaging,
     getFohFetOrderDetailData,
     fetchEmployeeFohGetOrderDetail,
     fetchEmployeeFohCheckout,

@@ -44,14 +44,26 @@ const props = defineProps({
           ]"
           @click="employeeFunctionDataStore.getNowOrderStatusClickFunction(index)"
         >
-          {{ state }}
-          <span
-            v-text="
-              props.orderAllCountData[index].orderCount >= 99
-                ? '99+'
-                : props.orderAllCountData[index].orderCount
-            "
-          ></span>
+          <span class="relative inline-flex items-center justify-center gap-2">
+            <span> {{ state }}</span>
+            <span
+              v-show="props.orderAllCountData[index].orderCount > 0"
+              v-text="
+                props.orderAllCountData[index].orderCount >= 99
+                  ? '(99+)'
+                  : `( ${props.orderAllCountData[index].orderCount} )`
+              "
+            ></span>
+            <span
+              v-show="employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index] > 0"
+              class="alertNumber"
+              v-text="
+                employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index] >= 99
+                  ? '99+'
+                  : employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index]
+              "
+            ></span>
+          </span>
         </li>
       </template>
     </ul>
@@ -60,13 +72,14 @@ const props = defineProps({
 
 <style scoped>
 .state-navbar-btn {
-  @apply inline-flex grow items-center justify-center gap-2;
+  @apply relative grow;
   @apply cursor-pointer px-2.5 py-4 text-center text-h5;
   @apply font-normal text-neutral-300;
 }
-.state-navbar-btn span {
-  @apply inline-flex h-fit min-h-[22px] w-fit min-w-[22px] items-center justify-center;
+.state-navbar-btn .alertNumber {
+  @apply inline-flex size-6 items-center justify-center;
   @apply rounded-full bg-primary-300 px-1 text-xs font-medium text-neutral-950;
+  @apply absolute -right-6 -top-3;
 }
 .press-state-navbar-btn {
   @apply font-bold shadow-[inset_0_-6px_0_-3px];
