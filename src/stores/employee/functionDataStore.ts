@@ -55,6 +55,11 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
   //取得詳細訂單選單狀態
   const orderDetailsNavBarIsShow = ref(false)
 
+  //取得新增訂單選單狀態數量
+  const statusCount = orderStates.map(() => 0)
+  //取得新增訂單選單狀態數量
+  const orderDetailsNavBarStatusCount = ref(statusCount)
+
   //------
   //getter
 
@@ -89,6 +94,9 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
   const getNowCustomerIsValidPhoneNumber = computed(() => nowCustomerIsValidPhoneNumber.value)
   //取得詳細訂單選單狀態
   const getOrderDetailsNavBarIsShow = computed(() => orderDetailsNavBarIsShow.value)
+
+  //取得新增訂單選單狀態數量
+  const getOrderDetailsNavBarStatusCount = computed(() => orderDetailsNavBarStatusCount.value)
 
   //------
   //action 異步請求
@@ -177,6 +185,17 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
     orderDetailsNavBarIsShow.value = value
   }
 
+  //取得新增訂單選單狀態數量
+  function getOrderDetailsNavBarStatusCountFunction(value: []) {
+    for (let i = 1; i < orderStates.length; i++) {
+      orderDetailsNavBarStatusCount.value[i] = value[i]
+    }
+    //全部訂單=其他加總
+    orderDetailsNavBarStatusCount.value[0] = orderDetailsNavBarStatusCount.value
+      .slice(1)
+      .reduce((acc, val) => acc + val, 0)
+  }
+
   const fohOrderShow = async () => {
     try {
       //外場訂單總覽
@@ -189,28 +208,14 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
 
       //取得今日訂單數量與頁數
       await employeeStore.fetchEmployeeFohGetAllOrderCount()
-      //外場訂單總覽
-      await employeeStore.fetchEmployeeFohGetOrder(orderGetData)
+      //外場訂單總覽-有頁數
+      // await employeeStore.fetchEmployeeFohGetOrder(orderGetData)
+      //外場訂單總覽-無頁數
+      await employeeStore.fetchEmployeeFohGetOrderNoPaging(orderGetData)
     } catch (error) {
       console.log(error)
     }
   }
-
-  //選單顯示
-  // async function fohOrderShow() {
-  //   //外場訂單總覽
-  //   const orderGetData: any = {
-  //     orderStatus: getNowOrderStatusClick.value,
-  //     type: getNowOrderTypeClick.value,
-  //     orderBy: getNowOrderBySelect.value,
-  //     search: getNowSearch.value
-  //   }
-
-  //   //取得今日訂單數量與頁數
-  //   await employeeStore.fetchEmployeeFohGetAllOrderCount()
-  //   //外場訂單總覽
-  //   await employeeStore.fetchEmployeeFohGetOrder(orderGetData)
-  // }
 
   //boh選單顯示
   async function bohOrderShow() {
@@ -259,6 +264,8 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
     getNowCustomerIsValidPhoneNumber,
     getNowCustomerIsValidPhoneNumberFunction,
     getOrderDetailsNavBarIsShow,
-    getOrderDetailsNavBarIsShowFunction
+    getOrderDetailsNavBarIsShowFunction,
+    getOrderDetailsNavBarStatusCount, //取得新增訂單選單狀態數量
+    getOrderDetailsNavBarStatusCountFunction //取得新增訂單選單狀態數量
   }
 })

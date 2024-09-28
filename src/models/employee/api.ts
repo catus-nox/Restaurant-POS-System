@@ -46,7 +46,7 @@ export function getEmployeeFohGetOrderCount(
   })
 }
 
-//外場訂單總覽
+//外場訂單總覽-有頁數
 export function getEmployeeFohGetOrder(
   getData: {
     page?: string // 抓該頁的1~9筆訂單  (為空或其他值會傳第一頁)
@@ -59,6 +59,26 @@ export function getEmployeeFohGetOrder(
 ) {
   return request({
     url: `/foh/getOrder?${getData.page}${getData.orderStatus}${getData.type}${getData.orderBy}${getData.search}`,
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${localStorage.foh_token}`
+    },
+    data
+  })
+}
+
+//外場訂單總覽-無頁數
+export function getEmployeeFohGetOrderNoPaging(
+  getData: {
+    orderStatus?: string | number
+    type?: string
+    orderBy?: string
+    search?: any //依據值來搜尋
+  },
+  data?: any
+) {
+  return request({
+    url: `/foh/getOrderNoPaging?${getData.orderStatus}${getData.type}${getData.orderBy}${getData.search}`,
     method: 'get',
     headers: {
       Authorization: `Bearer ${localStorage.foh_token}`
