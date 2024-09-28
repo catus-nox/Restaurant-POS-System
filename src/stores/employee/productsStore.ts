@@ -35,6 +35,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   const fohGetOrderData = ref()
   //外場訂單總覽-無頁數
   const fohGetOrderNoPagingData = ref()
+  //外場訂單總覽-無頁數-預設
+  const fohGetOrderNoPagingDefaultData = ref()
   //取得單一訂單資訊
   const fohFetOrderDetailData = ref()
   //內場訂單總覽
@@ -53,6 +55,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   const getFohGetOrderData = computed(() => fohGetOrderData.value)
   //外場訂單總覽-無頁數
   const getFohGetOrderNoPagingData = computed(() => fohGetOrderNoPagingData.value)
+  //外場訂單總覽-無頁數-預設
+  const getFohGetOrderNoPagingDefaultData = computed(() => fohGetOrderNoPagingDefaultData.value)
   //取得單一訂單資訊
   const getFohFetOrderDetailData = computed(() => fohFetOrderDetailData.value)
   //內場訂單總覽
@@ -324,6 +328,22 @@ export const useEmployeeStore = defineStore('employee', () => {
     }
   }
 
+  //外場訂單總覽-無頁數-預設
+  const fetchEmployeeFohGetOrderNoPagingDefault = async () => {
+    try {
+      const getDataString: any = {
+        orderStatus: `orderStatus=0`,
+        type: `&type=0`,
+        orderBy: `&orderBy=時間越早優先`,
+        search: ''
+      }
+      const response = await getEmployeeFohGetOrderNoPaging(getDataString)
+      fohGetOrderNoPagingDefaultData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   //取得單一訂單資訊
   const fetchEmployeeFohGetOrderDetail = async (orderId: number) => {
     try {
@@ -412,6 +432,8 @@ export const useEmployeeStore = defineStore('employee', () => {
     fetchEmployeeFohGetOrder,
     getFohGetOrderNoPagingData,
     fetchEmployeeFohGetOrderNoPaging,
+    getFohGetOrderNoPagingDefaultData,
+    fetchEmployeeFohGetOrderNoPagingDefault,
     getFohFetOrderDetailData,
     fetchEmployeeFohGetOrderDetail,
     fetchEmployeeFohCheckout,
