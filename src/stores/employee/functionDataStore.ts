@@ -57,8 +57,9 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
 
   //取得新增訂單選單狀態數量
   const statusCount = orderStates.map(() => 0)
-  //取得新增訂單選單狀態數量
   const orderDetailsNavBarStatusCount = ref(statusCount)
+  //外場訂單總覽-無頁數-監聽變化
+  const fohGetOrderNoPagingDefault_watch: any = ref({})
 
   //------
   //getter
@@ -97,6 +98,8 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
 
   //取得新增訂單選單狀態數量
   const getOrderDetailsNavBarStatusCount = computed(() => orderDetailsNavBarStatusCount.value)
+  //外場訂單總覽-無頁數-預設-監聽變化
+  const getFohGetOrderNoPagingDefault_watch = computed(() => fohGetOrderNoPagingDefault_watch.value)
 
   //------
   //action 異步請求
@@ -185,15 +188,43 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
     orderDetailsNavBarIsShow.value = value
   }
 
+  //外場訂單總覽-無頁數-預設-監聽變化
+  function getFohGetOrderNoPagingDefault_watchFunction(value: any) {
+    Object.assign(fohGetOrderNoPagingDefault_watch.value, value)
+  }
+  //外場訂單總覽-無頁數-預設-監聽變化-刪除
+  function getFohGetOrderNoPagingDefault_watchDeleteFunction(value: any) {
+    delete fohGetOrderNoPagingDefault_watch.value[value]
+  }
+
   //取得新增訂單選單狀態數量
-  function getOrderDetailsNavBarStatusCountFunction(value: []) {
-    for (let i = 1; i < orderStates.length; i++) {
-      orderDetailsNavBarStatusCount.value[i] = value[i]
+  function getOrderDetailsNavBarStatusCountFunction(data: []) {
+    orderDetailsNavBarStatusCount.value = orderDetailsNavBarStatusCount.value.map((num, index) => {
+      return num + data[index] >= 0 ? num + data[index] : 0
+    })
+    //完成訂單保持0-不要有通知
+    orderDetailsNavBarStatusCount.value[orderDetailsNavBarStatusCount.value.length - 1] = 0
+  }
+  //取得新增訂單選單狀態數量-刪除
+  function getOrderDetailsNavBarStatusCount_watchDeleteFunction(data: any) {
+    if (!data) return
+    function ifZero(number: number) {
+      orderDetailsNavBarStatusCount.value[number] <= 0
+        ? 0
+        : orderDetailsNavBarStatusCount.value[number]
     }
-    //全部訂單=其他加總
-    orderDetailsNavBarStatusCount.value[0] = orderDetailsNavBarStatusCount.value
-      .slice(1)
-      .reduce((acc, val) => acc + val, 0)
+    if (data == '待結帳') {
+      orderDetailsNavBarStatusCount.value[1] -= 1
+      ifZero(1)
+    } else if (data == '準備中') {
+      orderDetailsNavBarStatusCount.value[2] -= 1
+      ifZero(2)
+    } else if (data == '待取餐') {
+      orderDetailsNavBarStatusCount.value[3] -= 1
+      ifZero(3)
+    }
+    orderDetailsNavBarStatusCount.value[0] -= 1
+    ifZero(0)
   }
 
   const fohOrderShow = async () => {
@@ -210,7 +241,7 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
       await employeeStore.fetchEmployeeFohGetAllOrderCount()
       //外場訂單總覽-有頁數
       // await employeeStore.fetchEmployeeFohGetOrder(orderGetData)
-      //外場訂單總覽-無頁數
+      //外場訂單總覽-無頁數-預設
       await employeeStore.fetchEmployeeFohGetOrderNoPaging(orderGetData)
     } catch (error) {
       console.log(error)
@@ -266,6 +297,11 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
     getOrderDetailsNavBarIsShow,
     getOrderDetailsNavBarIsShowFunction,
     getOrderDetailsNavBarStatusCount, //取得新增訂單選單狀態數量
-    getOrderDetailsNavBarStatusCountFunction //取得新增訂單選單狀態數量
+    getOrderDetailsNavBarStatusCountFunction, //取得新增訂單選單狀態數量
+    getFohGetOrderNoPagingDefault_watch, //外場訂單總覽-無頁數-預設-監聽變化
+    getFohGetOrderNoPagingDefault_watchFunction, //外場訂單總覽-無頁數-預設-監聽變化
+    getFohGetOrderNoPagingDefault_watchDeleteFunction,
+    //外場訂單總覽-無頁數-預設-監聽變化-刪除
+    getOrderDetailsNavBarStatusCount_watchDeleteFunction //取得新增訂單選單狀態數量-刪除
   }
 })
