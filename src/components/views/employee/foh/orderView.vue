@@ -24,6 +24,10 @@ const fohGetOrderNoPaging: any = computed(() => employeeStore.getFohGetOrderNoPa
 const fohGetOrderNoPagingDefaultData: any = computed(
   () => employeeStore.getFohGetOrderNoPagingDefaultData
 )
+//外場訂單總覽-無頁數-預設
+const fohGetOrderNoPagingDefault_watch: any = computed(
+  () => employeeFunctionDataStore.getFohGetOrderNoPagingDefault_watch
+)
 //-----
 
 onMounted(async () => {
@@ -39,11 +43,19 @@ onMounted(async () => {
   //取得今日全部訂單數量與頁數 //外場訂單總覽
   await employeeFunctionDataStore.fohOrderShow()
 })
-
+//-----
+function fohGetOrderNoPagingOrders_watchClick(orderId: any) {
+  //取得新增訂單選單狀態數量-刪除
+  employeeFunctionDataStore.getOrderDetailsNavBarStatusCount_watchDeleteFunction(
+    employeeFunctionDataStore.getFohGetOrderNoPagingDefault_watch[orderId]
+  )
+  //外場訂單總覽-無頁數-預設-監聽變化-刪除
+  employeeFunctionDataStore.getFohGetOrderNoPagingDefault_watchDeleteFunction(orderId)
+}
 //-----
 //取得取得今日全部訂單數量與頁數-比較
 function findDifferencesAllCount(oldOrders: any, newOrders: any) {
-  if (!oldOrders) return
+  if (!oldOrders || !newOrders) return
   const oldMap = oldOrders.map((order: any) => order.orderCount)
   const newMap = newOrders.map((order: any) => order.orderCount)
   const alertMap = newMap.map((value: any, index: any) => value - oldMap[index])
@@ -74,28 +86,38 @@ watch(
 //-----
 //監聽新舊資料比較功能
 function findDifferencesOrderNoPaging(oldOrders: any, newOrders: any) {
-  if (!oldOrders) return
+  if (!oldOrders || !newOrders) return
   // 創建一個 Map，使用 orderId 作為 key
-  const oldMap = oldOrders.map((order: any) => [order.orderId, order.orderStatus])
-  const newMap = newOrders.map((order: any) => [order.orderId, order.orderStatus])
+  const oldMap: any = oldOrders.map((order: any) => [order.orderId, order.orderStatus])
+  const newMap: any = newOrders.map((order: any) => [order.orderId, order.orderStatus])
 
   // // 找到已被刪除的項目 (old有, 但new沒有)
   // const removedItems = oldMap.filter(
   //   (oldData: any) => !newMap.some((newData: any) => newData[0] === oldData[0])
   // )
-  // // 找到新增的項目 (new有, 但old沒有)
-  // const addedItems = newMap.filter(
-  //   (newData: any) => !oldMap.some((oldData: any) => oldData[0] === newData[0])
-  // )
+  // 找到新增的項目 (new有, 但old沒有)
+  const addedItems = newMap
+    .filter((newData: any) => !oldMap.some((oldData: any) => oldData[0] === newData[0]))
+    .reduce((acc: any, [key, value]: any) => {
+      acc[key] = value
+      return acc
+    }, {})
 
   // 找到狀態有變化的項目 (id相同, 但狀態不同)
-  const changedItems = newMap.filter((newData: any) => {
-    const match = oldMap.find((oldData: any) => {
-      return oldData[0] === newData[0]
+  const changedItems = newMap
+    .filter((newData: any) => {
+      const match = oldMap.find((oldData: any) => {
+        return oldData[0] === newData[0]
+      })
+      return match && (match[1] !== newData[1] || newData[1] == null)
     })
-    return match && match[1] !== newData[1]
-  })
-  return changedItems
+    .reduce((acc: any, [key, value]: any) => {
+      acc[key] = value
+      return acc
+    }, {})
+
+  employeeFunctionDataStore.getFohGetOrderNoPagingDefault_watchFunction(addedItems)
+  employeeFunctionDataStore.getFohGetOrderNoPagingDefault_watchFunction(changedItems)
 }
 //外場訂單總覽-無頁數-預設-上一次的 API 數據
 const previousOrderNoPaging = ref(fohGetOrderNoPagingDefaultData.value)
@@ -107,10 +129,9 @@ watch(
     //外場訂單總覽-無頁數-監聽
     if (previousOrderNoPaging.value) {
       const hasChanged = JSON.stringify(oldData) !== JSON.stringify(newData) // 比較差異
-      findDifferencesOrderNoPaging(oldData, newData)
       if (hasChanged) {
-        // console.log(findDifferencesOrderNoPaging(oldData, newData))
         // console.log('API 資料有變化')
+        findDifferencesOrderNoPaging(oldData, newData)
       } else {
         // console.log('API 資料無變化')
       }
@@ -148,9 +169,17 @@ onUnmounted(() => {
       style="grid-auto-rows: 31%"
     >
       <template v-for="(order, index) in fohGetOrderNoPaging" :key="index">
-        <EmployeeFohUiWorkspaceStateOption :order-data="order" />
+        <EmployeeFohUiWorkspaceStateOption
+          :order-data="order"
+          :class="fohGetOrderNoPagingDefault_watch[order.orderId] ? 'onWatch' : ''"
+          @click="fohGetOrderNoPagingOrders_watchClick(order.orderId)"
+        />
       </template>
     </div>
   </div>
 </template>
-<style scoped></style>
+<style scoped>
+.onWatch {
+  background: #000;
+}
+</style>
