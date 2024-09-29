@@ -304,6 +304,7 @@ onMounted(async () => {
         </UiButton> -->
 
         <UiButton
+          v-if="orderDetailData.orderStatus !== '已完成'"
           :btn-style="'style3'"
           :btn-padding="'px-4 py-2'"
           :icon-size="''"
