@@ -415,7 +415,8 @@ export const useEmployeeStore = defineStore('employee', () => {
   // 完成備餐 (修改OrderStatusEnum)
   const fetchEmployeeBohOrderCompleted = async (orderId: number) => {
     try {
-      await getEmployeeBohOrderCompleted(orderId)
+      const response = await getEmployeeBohOrderCompleted(orderId)
+      customerFunction.getAlertStatusFunction(true, response.data.message, 1)
     } catch (error) {
       console.log(error)
     }
