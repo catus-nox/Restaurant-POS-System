@@ -155,6 +155,7 @@ onMounted(() => {
 onUnmounted(() => {
   clearInterval(intervalId)
 })
+const onClickOrder = ref()
 </script>
 
 <template>
@@ -237,8 +238,13 @@ onUnmounted(() => {
         <template v-for="(order, index) in fohGetOrderNoPaging" :key="index">
           <EmployeeFohUiWorkspaceStateOption
             :order-data="order"
-            :class="fohGetOrderNoPagingDefault_watch[order.orderId] ? 'onWatch' : ''"
-            @click="fohGetOrderNoPagingOrders_watchClick(order.orderId)"
+            :class="[
+              fohGetOrderNoPagingDefault_watch[order.orderId] ? 'onWatch' : '',
+              onClickOrder == order.orderId ? 'onClick' : ''
+            ]"
+            @click="
+              fohGetOrderNoPagingOrders_watchClick(order.orderId), (onClickOrder = order.orderId)
+            "
           />
         </template>
       </div>
@@ -247,6 +253,9 @@ onUnmounted(() => {
 </template>
 <style scoped>
 .onWatch {
-  background: #000;
+  @apply bg-netural-200;
+}
+.onClick {
+  @apply shadow-[0_0_0_4px] shadow-primary-700;
 }
 </style>
