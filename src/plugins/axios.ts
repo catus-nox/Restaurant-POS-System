@@ -36,7 +36,7 @@ instance.interceptors.response.use(
       }
       // console.log(response.data.message)
     } else {
-      console.log(response.data.message)
+      // console.log(response.data.message)
       // console.log(response.data.data)
     }
 
