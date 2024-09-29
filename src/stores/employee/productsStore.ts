@@ -329,6 +329,7 @@ export const useEmployeeStore = defineStore('employee', () => {
   }
 
   //外場訂單總覽-無頁數-預設
+  //已完成不在全部訂單裡
   const fetchEmployeeFohGetOrderNoPagingDefault = async () => {
     try {
       const getDataString: any = {
