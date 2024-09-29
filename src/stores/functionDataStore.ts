@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 export const useAllFunctionDataStore = defineStore('allFunction', () => {
   //------
   //每?秒抓一次資料
-  const dataGrid = 5000
+  const dataGrid = 3000
 
   //state
   const route = useRoute()
