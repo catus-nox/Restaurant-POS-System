@@ -120,9 +120,7 @@ onMounted(() => {
 
 <template>
   <template v-if="!pageCustomerOrEmployeeState()">
-    <div
-      class="top relative m-auto min-h-screen w-full max-w-screen-sm overflow-hidden bg-primary-50"
-    >
+    <div class="top relative m-auto w-full max-w-screen-sm overflow-hidden bg-primary-50">
       <UiMenubar
         v-if="menuState()"
         :menu-state="menuState()"
@@ -138,7 +136,7 @@ onMounted(() => {
         <UiMenuNavbar />
       </div>
 
-      <main class="min-h-[calc(100vh-15.75rem)]" :class="anchorMainPaddingTopChange()">
+      <main :class="anchorMainPaddingTopChange()">
         <RouterView />
       </main>
 
