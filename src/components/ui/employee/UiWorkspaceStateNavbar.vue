@@ -23,7 +23,7 @@ const props = defineProps({
 
 <template>
   <div class="scrollbar overflow-x-auto" v-if="employeeFunctionDataStore">
-    <ul class="flex shadow-[inset_0_-2px_0_-1px] shadow-neutral-300">
+    <ul class="flex">
       <template v-for="(state, index) in orderStates" :key="index">
         <li
           :id="state"
@@ -58,6 +58,7 @@ const props = defineProps({
               v-show="employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index] > 0"
               class="alertNumber"
               v-text="
+                employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index] &&
                 employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index] >= 99
                   ? '99+'
                   : employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index]
@@ -74,7 +75,7 @@ const props = defineProps({
 .state-navbar-btn {
   @apply relative grow;
   @apply cursor-pointer px-2.5 py-4 text-center text-h5;
-  @apply font-normal text-neutral-300;
+  @apply font-normal text-neutral-600 shadow-[inset_0_-2px_0_-1px] shadow-neutral-600;
 }
 .state-navbar-btn .alertNumber {
   @apply inline-flex size-6 items-center justify-center;
@@ -94,7 +95,7 @@ const props = defineProps({
   @apply text-neutral-950 shadow-neutral-950;
 }
 .press-state-navbar-btn1 {
-  @apply text-secondary-600 shadow-secondary-600;
+  @apply text-error-500 shadow-error-500;
 }
 .press-state-navbar-btn2 {
   @apply text-primary-600 shadow-primary-600;
@@ -110,7 +111,7 @@ const props = defineProps({
   @apply text-neutral-950;
 }
 .state-navbar-btn1:hover {
-  @apply text-secondary-600;
+  @apply text-error-500;
 }
 .state-navbar-btn2:hover {
   @apply text-primary-600;

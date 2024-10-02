@@ -75,6 +75,7 @@ function employeeForgetPassword() {
       >
         <div class="flex w-full flex-col gap-4">
           <UiInput
+            :id="'帳號'"
             :is-label="true"
             :label="'帳號'"
             :placeholder="'請輸入手機號碼'"
@@ -91,6 +92,7 @@ function employeeForgetPassword() {
             </template>
           </UiInput>
           <UiInput
+            :id="'密碼'"
             :is-label="true"
             :label="'密碼'"
             :placeholder="'請輸入密碼'"
