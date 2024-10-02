@@ -58,6 +58,7 @@ const props = defineProps({
               v-show="employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index] > 0"
               class="alertNumber"
               v-text="
+                employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index] &&
                 employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index] >= 99
                   ? '99+'
                   : employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index]
