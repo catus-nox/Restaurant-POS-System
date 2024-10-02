@@ -57,6 +57,13 @@ const props = defineProps({
             <span
               v-show="employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index] > 0"
               class="alertNumber"
+              :class="[
+                index === 0 ? 'bg-primary-300' : '',
+                index === 1 ? 'bg-error-300' : '',
+                index === 2 ? 'bg-primary-300' : '',
+                index === 3 ? 'bg-tertiary-300' : '',
+                index === 4 ? 'bg-neutral-300' : ''
+              ]"
               v-text="
                 employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index] &&
                 employeeFunctionDataStore.getOrderDetailsNavBarStatusCount[index] >= 99
@@ -79,7 +86,7 @@ const props = defineProps({
 }
 .state-navbar-btn .alertNumber {
   @apply inline-flex size-6 items-center justify-center;
-  @apply rounded-full bg-primary-300 px-1 text-xs font-medium text-neutral-950;
+  @apply rounded-full px-1 text-xs font-medium text-neutral-950;
   @apply absolute -right-6 -top-3;
 }
 .press-state-navbar-btn {
