@@ -38,7 +38,7 @@ async function employeeLogout() {
 </script>
 
 <template>
-  <div class="flex w-full max-w-32 flex-col justify-between bg-primary-700 px-4 py-6">
+  <div class="flex w-full max-w-32 flex-col justify-between bg-secondary-200 px-4 py-6">
     <div class="flex flex-col items-center gap-4">
       <div class="flex flex-col items-center gap-2">
         <div class="h-20 w-20 overflow-hidden rounded-full bg-white">
@@ -53,7 +53,7 @@ async function employeeLogout() {
           <template v-if="identity == 1"> 外場店員 </template>
           <template v-if="identity == 2"> 內場店員 </template>
 
-          <span class="block text-sm text-white/55">
+          <span class="block text-sm text-primary-700">
             {{ username }}
           </span>
         </div>

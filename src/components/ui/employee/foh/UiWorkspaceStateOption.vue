@@ -34,14 +34,14 @@ async function fohGetOrderDetailShow() {
 
 <template>
   <div
-    class="order inline-flex cursor-pointer overflow-hidden rounded-xl bg-white shadow-[0_0_0_2px] shadow-neutral-900"
+    class="order inline-flex cursor-pointer overflow-hidden rounded-xl bg-white opacity-50 shadow-[0_0_0_2px] shadow-neutral-900"
     @click="fohGetOrderDetailShow"
   >
     <div class="inline-flex grow flex-col">
       <div
         class="inline-flex flex-wrap items-center justify-between p-4"
         :class="[
-          props.orderData.orderStatus === '待結帳' ? 'bg-secondary-200' : '',
+          props.orderData.orderStatus === '待結帳' ? 'bg-error-200' : '',
           props.orderData.orderStatus === '準備中' ? 'bg-primary-300' : '',
           props.orderData.orderStatus === '待取餐' ? 'bg-tertiary-300' : '',
           props.orderData.orderStatus === '已完成' ? 'bg-neutral-200' : ''
@@ -115,10 +115,11 @@ async function fohGetOrderDetailShow() {
 </template>
 
 <style scoped>
-.press {
-  @apply shadow-[0_0_0_4px] shadow-primary-700;
-}
+/* .press {
+  @apply opacity-100 shadow-[0_0_0_4px] shadow-primary-700;
+} */
 .order {
-  @apply hover:shadow-[0_0_0_4px] hover:shadow-primary-700;
+  @apply hover:opacity-100;
+  /* @apply hover:opacity-100 hover:shadow-[0_0_0_4px] hover:shadow-primary-700; */
 }
 </style>

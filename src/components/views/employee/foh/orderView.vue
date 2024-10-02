@@ -256,6 +256,6 @@ const onClickOrder = ref()
   @apply bg-netural-200;
 }
 .onClick {
-  @apply shadow-[0_0_0_4px] shadow-primary-700;
+  @apply opacity-100 shadow-[0_0_0_4px] shadow-primary-700;
 }
 </style>
