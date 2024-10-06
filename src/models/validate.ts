@@ -8,9 +8,16 @@ export const phoneValidateData: {
   helper: undefined,
   validationMessage: '手機格式錯誤 ex:0912345678'
 }
-export function validatePhoneNumber(isValidateValue: boolean, validateValue: string) {
+export function validatePhoneNumber(
+  isValidateValue: boolean,
+  validateValue: string,
+  dataEmpty?: boolean
+) {
+  dataEmpty == undefined ? false : true
+  if (dataEmpty && (validateValue == undefined || validateValue === '')) return true
   const regex = /^09\d{8}$/ // 以 09 開頭，後面 8 個數字的正則表達式
   isValidateValue = regex.test(validateValue)
+
   return (isValidateValue = regex.test(validateValue))
 }
 
@@ -24,7 +31,13 @@ export const tableValidateData: {
   helper: undefined,
   validationMessage: '桌號格式錯誤，請輸入數字，ex:1'
 }
-export function validateTable(isValidateValue: boolean, validateValue: string) {
+export function validateTable(
+  isValidateValue: boolean,
+  validateValue: string,
+  dataEmpty?: boolean
+) {
+  dataEmpty == undefined ? false : true
+  if (dataEmpty && (validateValue == undefined || validateValue === '')) return true
   const regex = /^\d+$/
   isValidateValue = regex.test(validateValue)
   return (isValidateValue = regex.test(validateValue))
