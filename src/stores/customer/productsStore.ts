@@ -15,7 +15,8 @@ import {
   postConfirmOrderCash,
   postConfirmOrderLinePay,
   postConfirmLinePayRequest,
-  getOrder
+  getOrder,
+  postSearchOrders
 } from '@/models/customer/api'
 import router from '@/router'
 
@@ -56,6 +57,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const confirmLinePayRequestIsPayMent: any = ref()
   //訂單完成畫面
   const orderData: any = ref()
+  //訂單查詢(桌號、手機)
+  const customerSearchOrdersData: any = ref()
 
   //------
   //getter
@@ -92,6 +95,8 @@ export const useCustomerStore = defineStore('customer', () => {
   const getConfirmLinePayRequestIsPayMent = computed(() => confirmLinePayRequestIsPayMent.value)
   //訂單完成畫面
   const getOrderData = computed(() => orderData.value)
+  //訂單查詢(桌號、手機)
+  const postCustomerSearchOrdersData = computed(() => customerSearchOrdersData.value)
 
   //------
   //action 異步請求
@@ -360,6 +365,19 @@ export const useCustomerStore = defineStore('customer', () => {
     }
   }
 
+  //訂單查詢(桌號、手機)fetchCustomerSearchOrders
+  const fetchCustomerSearchOrders = async (data: {
+    tableNumber?: Number
+    phoneNumber?: String
+  }) => {
+    try {
+      const response = await postSearchOrders(data)
+      customerSearchOrdersData.value = response.data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getMenuCategoryData,
     fetchCustomerGetMenuCategory,
@@ -389,6 +407,8 @@ export const useCustomerStore = defineStore('customer', () => {
     getConfirmLinePayRequestIsPayMent,
     fetchConfirmLinePayRequest,
     getOrderData,
-    fetchCustomerGetOrder
+    fetchCustomerGetOrder,
+    fetchCustomerSearchOrders,
+    postCustomerSearchOrdersData
   }
 })

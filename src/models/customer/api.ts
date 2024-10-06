@@ -189,3 +189,15 @@ export function getOrder(guid: string, data?: any) {
     data
   })
 }
+
+//訂單查詢(桌號、手機)
+export function postSearchOrders(data: { tableNumber?: Number; phoneNumber?: String }) {
+  return request({
+    url: `/customer/searchOrders`,
+    method: 'POST',
+    data: {
+      tableNumber: data.tableNumber,
+      phoneNumber: data.phoneNumber
+    }
+  })
+}
