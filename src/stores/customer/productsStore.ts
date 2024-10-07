@@ -365,7 +365,7 @@ export const useCustomerStore = defineStore('customer', () => {
     }
   }
 
-  //訂單查詢(桌號、手機)fetchCustomerSearchOrders
+  //訂單查詢(桌號、手機)
   const fetchCustomerSearchOrders = async (data: {
     tableNumber?: Number
     phoneNumber?: String
