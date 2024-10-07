@@ -61,6 +61,7 @@ async function goCheckHistory() {
   }
   if (!dataValidate()) return
 
+  //訂單查詢(桌號、手機)
   await customerStore.fetchCustomerSearchOrders(data)
 
   router.push({
