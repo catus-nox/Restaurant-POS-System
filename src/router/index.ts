@@ -61,9 +61,14 @@ const router = createRouter({
       component: OrderProcessHistoryView
     },
     {
-      path: '/orderHistory',
+      path: '/orderHistory/t=:table?:and?p=:phone?',
       name: 'orderHistory',
-      component: OrderHistoryView
+      component: OrderHistoryView,
+      props: (route) => ({
+        phone: route.params.phone ? String(route.params.phone) : null,
+        table: route.params.table ? Number(route.params.table) : null,
+        and: route.params.and ? '&' : null
+      })
     },
     {
       path: '/employeeLogin',

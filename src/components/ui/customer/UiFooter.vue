@@ -10,7 +10,7 @@ const route = useRoute()
   <template v-if="!['home'].includes(route.name as string)">
     <footer class="flex flex-col gap-4 bg-netural-700 px-4 py-8">
       <div>
-        <RouterLink to="/menu">
+        <RouterLink to="/">
           <img :src="characterWhite" alt="" srcset="" class="h-16" />
         </RouterLink>
       </div>
