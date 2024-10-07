@@ -56,7 +56,9 @@ function toggleMenu() {
 }
 //顧客選單顯示判斷
 function menuState(): boolean {
-  return ['menu', 'productOrder', 'orderProcessHistory'].includes(route.name as string)
+  return ['menu', 'productOrder', 'orderProcessHistory', 'orderHistory'].includes(
+    route.name as string
+  )
 }
 //顧客選單箭頭顯示判斷
 function menuArrowState(): boolean {
