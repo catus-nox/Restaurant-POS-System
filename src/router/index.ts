@@ -61,7 +61,7 @@ const router = createRouter({
       component: OrderProcessHistoryView
     },
     {
-      path: '/orderHistory/:table?:and?:phone?',
+      path: '/orderHistory/t=:table?:and?p=:phone?',
       name: 'orderHistory',
       component: OrderHistoryView,
       props: (route) => ({
