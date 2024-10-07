@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import 'flowbite'
 const pages = [
+  { text: '首頁', pathName: '/' },
   // { text: '會員中心(x)', pathName: '/' },
   // { text: '點數兌換商城(x)', pathName: '/' },
   { text: '進度查詢', pathName: '/orderProcessHistory' }
@@ -12,7 +13,7 @@ const pages = [
 <template>
   <ul>
     <template v-for="(page, index) in pages" :key="index">
-      <li class="border-b border-netural-300 text-h5">
+      <li class="border-b border-netural-300 text-h5 hover:bg-neutral-950 hover:text-white">
         <RouterLink :to="page.pathName" class="block p-5">{{ page.text }}</RouterLink>
       </li>
     </template>
