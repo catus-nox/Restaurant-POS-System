@@ -103,6 +103,7 @@ onUnmounted(() => {})
       :is-only-icon="false"
       :font-size="'text justify-between flex w-full items-center'"
       :icon-size="'w-auto'"
+      :is-disabled="(orderInfo && orderInfo.count == 0) || !orderInfo"
       @define-function="$emit('defineFunction')"
     >
       <template #left-icon v-if="orderInfo">
