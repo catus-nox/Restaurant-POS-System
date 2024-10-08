@@ -117,6 +117,7 @@ async function goCheckHistory() {
         :is-only-icon="false"
         :font-size="'text'"
         @define-function="goCheckHistory"
+        :is-disabled="!tableNumber && !phoneNumber"
       >
         開始查詢
       </UiButton>
