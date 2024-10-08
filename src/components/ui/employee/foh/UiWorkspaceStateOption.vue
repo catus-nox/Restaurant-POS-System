@@ -19,6 +19,14 @@ const props = defineProps({
       totalAmount: 0,
       typeAndNumber: '??00'
     })
+  },
+  isWatch: {
+    type: Boolean,
+    default: false
+  },
+  isClick: {
+    type: Boolean,
+    default: false
   }
 })
 //-----
@@ -34,7 +42,12 @@ async function fohGetOrderDetailShow() {
 
 <template>
   <div
-    class="order inline-flex cursor-pointer overflow-hidden rounded-xl bg-white opacity-50 shadow-[0_0_0_2px] shadow-neutral-900"
+    class="group inline-flex cursor-pointer overflow-hidden rounded-xl bg-white"
+    :class="[
+      props.isClick
+        ? 'shadow-[0_0_0_4px] shadow-primary-700'
+        : 'text-neutral-950/50 shadow-[0_0_0_2px] shadow-neutral-900/50 hover:text-neutral-950 hover:shadow-neutral-900'
+    ]"
     @click="fohGetOrderDetailShow"
   >
     <div class="inline-flex grow flex-col">
@@ -47,11 +60,23 @@ async function fohGetOrderDetailShow() {
           props.orderData.orderStatus === '已完成' ? 'bg-neutral-200' : ''
         ]"
       >
-        <div class="text-h4 font-bold text-neutral-950">{{ props.orderData.typeAndNumber }}</div>
-        <div class="text-base font-normal text-neutral-950">{{ props.orderData.orderStatus }}</div>
+        <div class="flex gap-2">
+          <span
+            v-show="isWatch"
+            class="size-2 rounded-full"
+            :class="[
+              props.orderData.orderStatus === '待結帳' ? 'bg-error-600' : '',
+              props.orderData.orderStatus === '準備中' ? 'bg-primary-700' : '',
+              props.orderData.orderStatus === '待取餐' ? 'bg-tertiary-700' : '',
+              props.orderData.orderStatus === '已完成' ? 'bg-neutral-600' : ''
+            ]"
+          ></span>
+          <div class="text-h4 font-bold">{{ props.orderData.typeAndNumber }}</div>
+        </div>
+        <div class="text-base font-normal">{{ props.orderData.orderStatus }}</div>
       </div>
 
-      <div class="flex grow flex-col gap-2 p-4 text-h5 font-normal text-neutral-950">
+      <div class="flex grow flex-col gap-2 p-4 text-h5 font-normal">
         <div class="inline-flex flex-wrap items-center gap-2">
           <svg
             class="h-6 w-6"
@@ -114,12 +139,4 @@ async function fohGetOrderDetailShow() {
   </div>
 </template>
 
-<style scoped>
-/* .press {
-  @apply opacity-100 shadow-[0_0_0_4px] shadow-primary-700;
-} */
-.order {
-  @apply hover:opacity-100;
-  /* @apply hover:opacity-100 hover:shadow-[0_0_0_4px] hover:shadow-primary-700; */
-}
-</style>
+<style scoped></style>
