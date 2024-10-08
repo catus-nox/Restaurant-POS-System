@@ -25,8 +25,14 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
   //Status選單選擇
   const nowOrderStatusClick = ref(0)
 
-  //type選單選擇
-  const nowOrderTypeClick = ref(0)
+  //type選單選擇 ('全部','內用','外帶' = 0,1,2)
+  const nowOrderTypeClick = ref<{
+    foh: 0 | 1 | 2
+    boh: 0 | 1 | 2
+  }>({
+    foh: 0,
+    boh: 0
+  })
   //orderBy 選項選擇
   const nowOrderBySelect = ref('時間越早優先')
   //Search 搜尋
@@ -110,13 +116,13 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
     fohOrderShow()
   }
   //type選單選擇
-  function getNowOrderTypeClickFunction(index: number) {
-    nowOrderTypeClick.value = index
-    fohOrderShow()
-    if ((route.name as string).includes('employeeBoh')) {
+  function getNowOrderTypeClickFunction(index: 0 | 1 | 2) {
+    if (localStorage.boh_identity == 2 && localStorage.boh_identity) {
+      nowOrderTypeClick.value.boh = index
       bohOrderShow()
     }
-    if ((route.name as string).includes('employeeFoh')) {
+    if (localStorage.foh_identity == 1 && localStorage.foh_identity) {
+      nowOrderTypeClick.value.foh = index
       fohOrderShow()
     }
   }
@@ -232,7 +238,7 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
       //外場訂單總覽
       const orderGetData: any = {
         orderStatus: getNowOrderStatusClick.value,
-        type: getNowOrderTypeClick.value,
+        type: getNowOrderTypeClick.value.foh,
         orderBy: getNowOrderBySelect.value,
         search: getNowSearch.value
       }
@@ -252,7 +258,7 @@ export const useEmployeeFunctionDataStore = defineStore('employeeFunction', () =
   async function bohOrderShow() {
     //內場訂單總覽
     const orderGetData: any = {
-      type: getNowOrderTypeClick.value,
+      type: getNowOrderTypeClick.value.boh,
       orderBy: getNowOrderBySelect.value,
       search: getNowSearch.value
     }
