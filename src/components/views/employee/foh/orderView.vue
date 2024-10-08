@@ -237,11 +237,9 @@ const onClickOrder = ref()
       >
         <template v-for="(order, index) in fohGetOrderNoPaging" :key="index">
           <EmployeeFohUiWorkspaceStateOption
+            :is-watch="fohGetOrderNoPagingDefault_watch[order.orderId] ? true : false"
+            :is-click="onClickOrder == order.orderId ? true : false"
             :order-data="order"
-            :class="[
-              fohGetOrderNoPagingDefault_watch[order.orderId] ? 'onWatch' : '',
-              onClickOrder == order.orderId ? 'onClick' : ''
-            ]"
             @click="
               fohGetOrderNoPagingOrders_watchClick(order.orderId), (onClickOrder = order.orderId)
             "
@@ -251,11 +249,4 @@ const onClickOrder = ref()
     </template>
   </div>
 </template>
-<style scoped>
-.onWatch {
-  @apply bg-netural-200;
-}
-.onClick {
-  @apply opacity-100 shadow-[0_0_0_4px] shadow-primary-700;
-}
-</style>
+<style scoped></style>
