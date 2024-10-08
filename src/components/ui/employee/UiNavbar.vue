@@ -24,13 +24,11 @@ if ((route.name as string).includes('employeeBoh')) {
 //-----
 //員工登出
 async function employeeLogout() {
-  // ['employeeFohOrder', 'employeeFohCheckout'].includes(route.name as string)
-  if ((route.name as string).includes('employeeFoh')) {
+  if (identity == 1) {
     await employeeStore.fetchEmployeeLogout(1)
     return
   }
-  // ['employeeBohOrder'].includes(route.name as string)
-  if ((route.name as string).includes('employeeBoh')) {
+  if (identity == 2) {
     await employeeStore.fetchEmployeeLogout(2)
     return
   }
@@ -90,7 +88,7 @@ async function employeeLogout() {
       </UiButton>
     </div>
 
-    <div><EmployeeUiNavbarOptionButton></EmployeeUiNavbarOptionButton></div>
+    <div><EmployeeUiNavbarOptionButton :identity="Number(identity)" /></div>
   </div>
 </template>
 
