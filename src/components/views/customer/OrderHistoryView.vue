@@ -230,9 +230,11 @@ onMounted(async () => {
                       <th class="w-[8rem] px-2">點數</th>
                     </tr>
                   </thead>
-                  <tbody class="w-full px-2.5">
+                  <tbody class="w-full">
                     <template v-for="(item, itemIndex) in order.orderItem" :key="itemIndex">
-                      <tr class="flex items-center">
+                      <tr
+                        class="flex items-center border-b-2 border-dashed border-neutral-200 px-2.5"
+                      >
                         <td class="w-full px-2 py-2">
                           {{ item.name }}
                         </td>
@@ -478,9 +480,11 @@ onMounted(async () => {
                       <th class="w-[8rem] px-2">點數</th>
                     </tr>
                   </thead>
-                  <tbody class="w-full px-2.5">
+                  <tbody class="w-full">
                     <template v-for="(item, itemIndex) in order.orderItem" :key="itemIndex">
-                      <tr class="flex items-center">
+                      <tr
+                        class="flex items-center border-b-2 border-dashed border-neutral-200 px-2.5"
+                      >
                         <td class="w-full px-2 py-2">
                           {{ item.name }}
                         </td>
