@@ -54,7 +54,7 @@ function pageCustomerOrEmployeeState(): any {
     >
       <div></div>
     </div>
-    <div class="text-xl" v-if="props.isText"><slot></slot></div>
+    <div class="text-xl text-neutral-800" v-if="props.isText"><slot></slot></div>
   </div>
 </template>
 
