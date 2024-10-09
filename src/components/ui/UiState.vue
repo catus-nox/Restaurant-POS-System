@@ -67,6 +67,7 @@ function pageCustomerOrEmployeeState(): any {
   height: 100%;
 }
 .alert-animation > div {
+  transform: translateX(0%);
   height: 100%;
   --animation-duration: 250ms; /* 1500/6 */
   width: calc(100% * var(--w));
@@ -90,8 +91,6 @@ function pageCustomerOrEmployeeState(): any {
 .fail > div {
   --w: 5;
   background-image: url(../../assets/img/alert/fail.png);
-  animation: aa infinite steps(var(--w), end);
-  animation-duration: calc(var(--animation-duration) * var(--w));
 }
 @keyframes aa {
   0% {
