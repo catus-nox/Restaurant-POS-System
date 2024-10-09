@@ -5,6 +5,7 @@ import UiInput from '@/components/ui/UiInput.vue'
 import UiShopInformation from '@/components/ui/customer/UiShopInformation.vue'
 import UiCustomerMenuNavbar from '@/components/ui/customer/UiCustomerMenuNavbar.vue'
 import UiProductItem from '@/components/ui/customer/UiProductItem.vue'
+import UiState from '@/components/ui/UiState.vue'
 //-----
 const customerStore = useCustomerStore()
 const menuCategory: any = computed(() => customerStore.getMenuCategoryData)
@@ -110,27 +111,38 @@ onMounted(async () => {
       </template>
     </UiInput>
   </div>
-  <div
-    ref="fixSubHeaderHeight"
-    :class="{ fixed: isFixed }"
-    class="top-14 z-20 w-full max-w-screen-sm overflow-x-auto bg-primary-50 p-3 transition-all"
+  <template
+    v-if="
+      menuItemData &&
+      ((typeof menuItemData === 'object' && Object.keys(menuItemData).length > 0) ||
+        (Array.isArray(menuItemData) && menuItemData.length > 0))
+    "
   >
-    <UiCustomerMenuNavbar
-      :menu-category="menuCategory"
-      :show-id="chooseCategoryIdComputed"
-      @change-category-id="changeCategoryId"
-    />
-  </div>
-  <div class="m-3 mt-0 flex flex-col gap-3">
-    <template v-for="(menuItem, index) in menuItemData" :key="index">
-      <h2 ref="scrollElement" class="pt-2 text-h5 font-bold text-black">
-        {{ menuItem.categoryName }}
-      </h2>
+    <div
+      ref="fixSubHeaderHeight"
+      :class="{ fixed: isFixed }"
+      class="top-14 z-20 w-full max-w-screen-sm overflow-x-auto bg-primary-50 p-3 transition-all"
+    >
+      <UiCustomerMenuNavbar
+        :menu-category="menuCategory"
+        :show-id="chooseCategoryIdComputed"
+        @change-category-id="changeCategoryId"
+      />
+    </div>
+    <div class="m-3 mt-0 flex flex-col gap-3">
+      <template v-for="(menuItem, index) in menuItemData" :key="index">
+        <h2 ref="scrollElement" class="pt-2 text-h5 font-bold text-black">
+          {{ menuItem.categoryName }}
+        </h2>
 
-      <div v-for="(item, index) in menuItem.categoryItem" :key="index">
-        <UiProductItem :category-item="item" />
-      </div>
-    </template>
-  </div>
+        <div v-for="(item, index) in menuItem.categoryItem" :key="index">
+          <UiProductItem :category-item="item" />
+        </div>
+      </template>
+    </div>
+  </template>
+  <template v-else>
+    <UiState :is-error="true" :is-text="true">沒有資料</UiState>
+  </template>
 </template>
 <style scoped></style>
