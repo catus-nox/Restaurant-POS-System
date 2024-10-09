@@ -38,7 +38,7 @@ function pageCustomerOrEmployeeState(): any {
 </script>
 
 <template>
-  <div class="flex cursor-pointer flex-col items-center p-8">
+  <div class="pointer-events-none flex flex-col items-center p-8">
     <div
       class="alert-animation w-full overflow-hidden"
       :class="[
