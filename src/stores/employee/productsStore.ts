@@ -98,6 +98,7 @@ export const useEmployeeStore = defineStore('employee', () => {
         )
       }
     } catch (error) {
+      customerFunction.getAlertStatusFunction(true, '失敗', 2)
       console.log(error)
     }
   }
@@ -135,6 +136,7 @@ export const useEmployeeStore = defineStore('employee', () => {
         router.push({ name: 'employeeLogin' })
       }
     } catch (error) {
+      customerFunction.getAlertStatusFunction(true, '失敗', 2)
       console.log(error)
     }
   }
@@ -370,6 +372,7 @@ export const useEmployeeStore = defineStore('employee', () => {
       employeeFunctionDataStore.getOrderDetailsNavBarIsShowFunction(false)
       router.push({ name: 'employeeFohOrder' })
     } catch (error) {
+      customerFunction.getAlertStatusFunction(true, '失敗', 2)
       console.log(error)
     }
   }
@@ -380,6 +383,7 @@ export const useEmployeeStore = defineStore('employee', () => {
       customerFunction.getAlertStatusFunction(true, response.data.message, 1)
       employeeFunctionDataStore.getOrderDetailsNavBarIsShowFunction(false)
     } catch (error) {
+      customerFunction.getAlertStatusFunction(true, '失敗', 2)
       console.log(error)
     }
   }
@@ -418,6 +422,7 @@ export const useEmployeeStore = defineStore('employee', () => {
       const response = await getEmployeeBohOrderCompleted(orderId)
       customerFunction.getAlertStatusFunction(true, response.data.message, 1)
     } catch (error) {
+      customerFunction.getAlertStatusFunction(true, '失敗', 2)
       console.log(error)
     }
   }
