@@ -21,6 +21,10 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  isFail: {
+    type: Boolean,
+    default: false
+  },
   isText: {
     type: Boolean,
     default: false
@@ -44,7 +48,8 @@ function pageCustomerOrEmployeeState(): any {
       :class="[
         props.isLoading ? 'loading' : '',
         props.isSuccess ? 'success' : '',
-        props.isError ? 'error' : ''
+        props.isError ? 'error' : '',
+        props.isFail ? 'fail' : ''
       ]"
     >
       <div></div>
@@ -76,6 +81,10 @@ function pageCustomerOrEmployeeState(): any {
 .error > div {
   --w: 3;
   background-image: url(../../assets/img/alert/error.png);
+}
+.fail > div {
+  --w: 5;
+  background-image: url(../../assets/img/alert/fail.png);
 }
 @keyframes aa {
   0% {
