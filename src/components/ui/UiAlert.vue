@@ -2,6 +2,7 @@
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAllFunctionDataStore } from '@/stores/functionDataStore'
+import UiState from '@/components/ui/UiState.vue'
 //-----
 const route = useRoute()
 //-----
@@ -35,7 +36,7 @@ function pageCustomerOrEmployeeState(): any {
   }
   return route.name && (route.name as string).includes('employee')
 }
-// customerFunction.getAlertStatusFunction(true, '測試', 2)
+// customerFunction.getAlertStatusFunction(true, '測試', 1)
 </script>
 
 <template>
@@ -53,19 +54,12 @@ function pageCustomerOrEmployeeState(): any {
     <div
       class="pointer-events-none absolute left-1/2 top-1/2 w-fit min-w-52 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white text-neutral-950 shadow-[inset_0_0_0_1px] shadow-neutral-600"
     >
-      <div class="flex cursor-pointer flex-col items-center p-8">
-        <div
-          class="w-full overflow-hidden"
-          :class="[
-            alertStatus.status == 1 ? 'success alert-animation' : '',
-            alertStatus.status == 2 ? 'error alert-animation' : ''
-          ]"
-        >
-          <div></div>
-        </div>
-
-        <div class="text-xl" v-if="alertStatus">{{ alertStatus.text }}</div>
-      </div>
+      <UiState
+        :is-error="alertStatus.status == 2"
+        :is-success="alertStatus.status == 1"
+        :is-text="true"
+        >{{ alertStatus.text }}</UiState
+      >
     </div>
   </div>
 </template>
@@ -82,10 +76,8 @@ function pageCustomerOrEmployeeState(): any {
 }
 .success > div {
   --w: 6;
-  --step: 5;
   background-image: url(../../assets/img/alert/success.png);
-  animation: a1 infinite steps(var(--step), start);
-  animation-duration: 1s;
+  animation: a1 infinite steps(var(--w), start);
   animation-duration: calc(var(--animation-duration) * var(--w));
 }
 @keyframes a1 {
@@ -93,14 +85,13 @@ function pageCustomerOrEmployeeState(): any {
     transform: translateX(0%);
   }
   100% {
-    transform: translateX(calc(-100% / var(--w) * var(--step)));
+    transform: translateX(calc(-100%));
   }
 }
 .error > div {
   --w: 3;
-  --step: 2;
   background-image: url(../../assets/img/alert/error.png);
-  animation: a2 infinite steps(var(--step), start);
+  animation: a2 infinite steps(var(--w), end);
   animation-duration: calc(var(--animation-duration) * var(--w));
 }
 @keyframes a2 {
@@ -108,7 +99,7 @@ function pageCustomerOrEmployeeState(): any {
     transform: translateX(0%);
   }
   100% {
-    transform: translateX(calc(-100% / var(--w) * var(--step)));
+    transform: translateX(calc(-100%));
   }
 }
 </style>
