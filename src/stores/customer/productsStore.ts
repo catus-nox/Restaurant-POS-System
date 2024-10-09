@@ -179,6 +179,7 @@ export const useCustomerStore = defineStore('customer', () => {
       customerFunction.getAlertStatusFunction(true, response.data.message, 1)
       router.push({ name: 'menu' })
     } catch (error) {
+      customerFunction.getAlertStatusFunction(true, '失敗', 2)
       console.log(error)
     }
   }
@@ -242,6 +243,7 @@ export const useCustomerStore = defineStore('customer', () => {
         serving: data.serving
       })
     } catch (error) {
+      customerFunction.getAlertStatusFunction(true, '失敗', 2)
       console.log(error)
     }
   }
@@ -279,6 +281,7 @@ export const useCustomerStore = defineStore('customer', () => {
         note: data.note
       })
     } catch (error) {
+      customerFunction.getAlertStatusFunction(true, '失敗', 2)
       console.log(error)
     }
   }
@@ -300,6 +303,7 @@ export const useCustomerStore = defineStore('customer', () => {
       customerFunction.getAlertStatusFunction(true, response.data.message, 1)
       router.push({ name: 'cartConfirmInformation', params: { guid: localStorage.customer_guid } })
     } catch (error) {
+      customerFunction.getAlertStatusFunction(true, '失敗', 2)
       console.log(error)
     }
   }
@@ -331,6 +335,7 @@ export const useCustomerStore = defineStore('customer', () => {
       }
       return response
     } catch (error) {
+      customerFunction.getAlertStatusFunction(true, '失敗', 2)
       console.log(error)
     }
   }
@@ -374,6 +379,7 @@ export const useCustomerStore = defineStore('customer', () => {
       const response = await postSearchOrders(data)
       customerSearchOrdersData.value = response.data.data
     } catch (error) {
+      customerFunction.getAlertStatusFunction(true, '失敗', 2)
       console.log(error)
     }
   }
