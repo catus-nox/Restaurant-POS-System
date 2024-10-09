@@ -42,9 +42,9 @@ function pageCustomerOrEmployeeState(): any {
 </script>
 
 <template>
-  <div class="pointer-events-none flex flex-col items-center p-8">
+  <div class="pointer-events-none relative flex flex-col items-center p-8">
     <div
-      class="alert-animation w-full overflow-hidden"
+      class="alert-animation"
       :class="[
         props.isLoading ? 'loading' : '',
         props.isSuccess ? 'success' : '',
@@ -60,9 +60,14 @@ function pageCustomerOrEmployeeState(): any {
 
 <style scoped>
 .alert-animation {
+  overflow: hidden;
   max-width: 145px;
+  max-height: 145px;
+  width: 100%;
+  height: 100%;
 }
 .alert-animation > div {
+  height: 100%;
   --animation-duration: 250ms; /* 1500/6 */
   width: calc(100% * var(--w));
   background-size: 100% 100%;
@@ -85,6 +90,8 @@ function pageCustomerOrEmployeeState(): any {
 .fail > div {
   --w: 5;
   background-image: url(../../assets/img/alert/fail.png);
+  animation: aa infinite steps(var(--w), end);
+  animation-duration: calc(var(--animation-duration) * var(--w));
 }
 @keyframes aa {
   0% {
