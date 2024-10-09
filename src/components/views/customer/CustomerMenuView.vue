@@ -142,7 +142,12 @@ onMounted(async () => {
     </div>
   </template>
   <template v-else>
-    <UiState :is-error="true" :is-text="true">沒有資料</UiState>
+    <UiState
+      :class="'-mt-10 min-h-[calc(100vh-15.75rem-3.25rem-7.55rem)] justify-center'"
+      :is-error="true"
+      :is-text="true"
+      >沒有資料</UiState
+    >
   </template>
 </template>
 <style scoped></style>
