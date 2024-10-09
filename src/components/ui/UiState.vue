@@ -72,25 +72,31 @@ function pageCustomerOrEmployeeState(): any {
   --animation-duration: 250ms; /* 1500/6 */
   width: calc(100% * var(--w));
   background-size: 100% 100%;
-  animation: aa infinite steps(var(--w), end);
-  animation-duration: calc(var(--animation-duration) * var(--w));
   @apply translate-x-[0%] pt-[100%];
 }
 .loading > div {
   --w: 3;
-  background-image: url(../../assets/img/alert/loading.png);
+  background-image: url(../../assets/img/alert/loading.svg);
+  animation: aa infinite steps(var(--w), end);
+  animation-duration: calc(var(--animation-duration) * var(--w));
 }
 .success > div {
   --w: 6;
-  background-image: url(../../assets/img/alert/success.png);
+  background-image: url(../../assets/img/alert/success.svg);
+  animation: aa infinite steps(var(--w), end);
+  animation-duration: calc(var(--animation-duration) * var(--w));
 }
 .error > div {
   --w: 3;
-  background-image: url(../../assets/img/alert/error.png);
+  background-image: url(../../assets/img/alert/error.svg);
+  animation: aa infinite steps(var(--w), end);
+  animation-duration: calc(var(--animation-duration) * var(--w));
 }
 .fail > div {
   --w: 5;
-  background-image: url(../../assets/img/alert/fail.png);
+  background-image: url(../../assets/img/alert/fail.svg);
+  animation: aa infinite steps(var(--w), end);
+  animation-duration: calc(var(--animation-duration) * var(--w));
 }
 @keyframes aa {
   0% {
